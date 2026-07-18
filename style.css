@@ -287,7 +287,7 @@ body.light-theme .moon-icon {
   max-width: var(--container-max-width);
   width: 100%;
   margin: 0 auto;
-  padding: 3rem 1.5rem 5rem 1.5rem;
+  padding: 3rem 1.5rem 8rem 1.5rem;
 }
 
 /* ==========================================================================
@@ -801,22 +801,55 @@ body.light-theme .moon-icon {
   color: var(--accent-inverse);
 }
 
+.privacy-disclaimer {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  border-radius: 4px;
+  margin-top: 1.5rem;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.privacy-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  stroke: var(--text-primary);
+}
+
+.privacy-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.privacy-text strong {
+  color: var(--text-primary);
+}
+
 /* ==========================================================================
    Global Footer
    ========================================================================== */
 .footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   border-top: 1px solid var(--border-color);
   background-color: var(--bg-primary);
-  padding: 2.5rem 1.5rem;
-  margin-top: auto;
-  transition: border-color var(--transition-speed) ease;
+  padding: 0.75rem 1.5rem;
+  transition: border-color var(--transition-speed) ease, background-color var(--transition-speed) ease;
 }
 
 .footer-container {
   max-width: var(--container-max-width);
   margin: 0 auto;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
 }
 
@@ -827,6 +860,10 @@ body.light-theme .moon-icon {
 
 .footer-container a:hover {
   text-decoration: underline;
+}
+
+.footer-links {
+  margin-top: 0.25rem;
 }
 
 /* ==========================================================================
@@ -1080,3 +1117,34 @@ body.light-theme .modal-wrapper {
     padding: 1.5rem;
   }
 }
+
+/* ==========================================================================
+   Scroll Snap & Viewport Snapping (Home View)
+   ========================================================================== */
+@media (min-width: 769px) {
+  html:has(#home-view) {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  html:has(#home-view) .hero-wrapper {
+    height: calc(100vh - 180px); /* Fill screen space minus header and persistent footer */
+    scroll-snap-align: start;
+    scroll-margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  html:has(#home-view) .roadmap-container {
+    height: calc(100vh - 180px);
+    scroll-snap-align: start;
+    scroll-margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}
+

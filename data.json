@@ -129,11 +129,11 @@
       },
       {
         "title": "Verify Student Status",
-        "description": "To maintain a secure, spam-free study space, send a photo of your UITS Student ID card to one of the group maintainers or admins."
+        "description": "To maintain student privacy and protect shared academic assets, verify your status with a maintainer. The project is not intended to be restrictive; rather, these verification procedures are necessary to ensure a private study environment where students can comfortably share chat histories, class notes, and solutions."
       },
       {
-        "title": "Get WhatsApp Group Access",
-        "description": "Upon verification, you'll receive direct invitation links to join active, semester-specific discussion groups on WhatsApp."
+        "title": "Save Contact & Join",
+        "description": "Once verified, add the maintainer's phone number to your contacts before joining the group. WhatsApp security protocol only synchronizes and shares group chat history to contacts saved in your address book upon adding you."
       }
     ]
   }
