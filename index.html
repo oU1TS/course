@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="UITS Course Mastery - A student-led community initiative under the oU1TS banner. Seniors guide juniors by reverse-engineering past exam papers to maximize study efficiency and focus on career skills.">
+  <meta name="author" content="oU1TS Community">
+  <title>UITS Course Mastery</title>
+
+  <!-- Google Fonts: Outfit (headings) and Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Custom CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Premium Header and Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <a href="#home" class="logo" aria-label="UITS Course Mastery Portal Home">
+        <span class="logo-accent">&lt;</span>UITS Course Mastery<span class="logo-accent">/&gt;</span>
+      </a>
+
+      <!-- Navigation Drawer Links -->
+      <nav class="nav" id="main-nav" aria-label="Main Navigation">
+        <a href="#home" class="nav-link active" data-section="home">Home</a>
+        <a href="#discussions" class="nav-link" data-section="discussions">Discussions</a>
+        <a href="#resources" class="nav-link" data-section="resources">Resources</a>
+        <a href="#about" class="nav-link" data-section="about">About Us</a>
+        <a href="#join" class="nav-link" data-section="join">Join Us</a>
+      </nav>
+
+      <!-- Theme Switcher Control -->
+      <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <!-- Sun SVG (Vibrant Mode) -->
+        <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <!-- Moon SVG (Dark Mode Default) -->
+        <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <!-- Mobile Hamburger Button Toggle -->
+      <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle Mobile Menu Menu" aria-expanded="false"
+        aria-controls="main-nav">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main SPA Rendering Container -->
+  <main class="main-content" id="content-app">
+    <!-- View content is injected here dynamically from render.js and app.js -->
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>&copy; 2026 UITS Course Mastery. An open-source student collective powered by the <a
+          href="https://ou1ts.github.io/" target="_blank" rel="noopener noreferrer">oU1TS Community</a>.</p>
+    </div>
+  </footer>
+
+  <!-- Floating Overlay Roadmap Modal Window -->
+  <div id="roadmap-modal" class="modal-overlay" aria-hidden="true" role="dialog">
+    <div class="modal-wrapper">
+      <div class="modal-header">
+        <span id="modal-tag" class="modal-tag">Step Detail</span>
+        <button id="modal-close-btn" class="modal-close-btn" aria-label="Close modal window">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3 id="modal-title" class="modal-title">Step Title</h3>
+        <p id="modal-description" class="modal-description">Deep purpose and description goes here...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPA Router and Render Engines -->
+  <script src="render.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

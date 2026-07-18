@@ -1,0 +1,140 @@
+{
+  "motto": "Let's do the obvious: Asking seniors about their last final exams, Studying the topics that appear in the exams, Spending time on what actually matters. Start this semester with a blast!",
+  "roadmap": [
+    {
+      "step": 1,
+      "title": "Guidance with experience",
+      "subtitle": "Fresh Senior Insights",
+      "summary": "Connect with immediate seniors who have just cleared the same courses.",
+      "description": "Immediate seniors who just finished the final exams have the freshest memory of what was taught, how the instructor graded, what resources were actually useful, and what traps to avoid. Talking to them gives you a realistic, head-start strategy for the semester."
+    },
+    {
+      "step": 2,
+      "title": "Reverse Engineering Questions",
+      "subtitle": "Exam-First Analysis",
+      "summary": "Analyze past exam papers to isolate high-yield recurring topics.",
+      "description": "Instead of studying the entire textbook line-by-line, we look at the last few final and midterm exam papers first. By mapping questions back to syllabus topics, we identify recurring patterns and high-yield concepts that are almost guaranteed to appear."
+    },
+    {
+      "step": 3,
+      "title": "Brainstorming & Collaboration",
+      "subtitle": "Co-created Solutions",
+      "summary": "Solve past papers together and share detailed study guides.",
+      "description": "Students compile their notes, draft code, and write step-by-step solutions to exam questions in shared repositories or forums. Peer discussion groups help clarify complex edge cases and ensure everyone is aligned before exam week."
+    },
+    {
+      "step": 4,
+      "title": "Time Management",
+      "subtitle": "Strategic Efficiency",
+      "summary": "Optimize study schedules to minimize academic overhead.",
+      "description": "By focusing primarily on high-probability exam topics first, students can drastically reduce the number of hours spent on aimless studying. This targeted workflow prevents last-minute panic and keeps stress levels manageable."
+    },
+    {
+      "step": 5,
+      "title": "ECA, Skill dev, Job Prep",
+      "subtitle": "Real-World Focus",
+      "summary": "Redirect saved academic hours to build career-ready skills.",
+      "description": "The ultimate goal is to minimize waste in pure academic cramming so students have ample time for Extracurricular Activities (ECAs), building software projects, learning marketable skills, participating in hackathons, and preparing for job interviews."
+    }
+  ],
+  "discussions": [
+    {
+      "course": "CSE-211: Object Oriented Programming",
+      "semester": "Fall 2025",
+      "instructor": "Yeasin Arafat & Mim Rahman (Seniors Class)",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse211-oop.md"
+    },
+    {
+      "course": "CSE-213: Data Structures & Algorithms",
+      "semester": "Spring 2026",
+      "instructor": "Tasnim Ahmed (Peer Class)",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse213-dsa.md"
+    },
+    {
+      "course": "MAT-205: Coordinate Geometry & Vector Analysis",
+      "semester": "Spring 2026",
+      "instructor": "Sadman Sakib (Seniors Q&A)",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/mat205-geometry.md"
+    }
+  ],
+  "resources": [
+    {
+      "category": "Academic Toolkit",
+      "description": "Central repositories and archives collected by UITS students.",
+      "items": [
+        {
+          "title": "UITS Exam Repository",
+          "description": "A centralized archive of past mid and final exam question papers collected by UITS students.",
+          "url": "https://github.com/oU1TS/uits-exam-repo"
+        },
+        {
+          "title": "CSE Lecture Notes Drive",
+          "description": "Curated Google Drive folders containing course slides, lab codes, and student notebooks.",
+          "url": "https://drive.google.com/drive/folders/placeholder"
+        }
+      ]
+    },
+    {
+      "category": "Skill Development & Trackers",
+      "description": "Boilerplates and toolkits to excel in tech contests and projects.",
+      "items": [
+        {
+          "title": "oU1TS Hackathon Survival Kit",
+          "description": "Templates, boilerplate codes, and guidelines for rapid prototyping in web, mobile, and AI contests.",
+          "url": "https://github.com/oU1TS/hackathon-toolkit"
+        },
+        {
+          "title": "Interactive Career Roadmaps",
+          "description": "Role-based career roadmaps and educational guides to help you pick your professional track.",
+          "url": "https://roadmap.sh"
+        }
+      ]
+    }
+  ],
+  "about": {
+    "title": "Our Structural Vision",
+    "description": "UITS Course Mastery is an open-source, student-centered initiative designed to optimize academic traversal. Traditional university curriculums often demand extensive rote memorization of low-impact topics, leading to high student burnout and insufficient time for building real-world software engineering or research skills. By establishing an organized mentorship bridge between recently promoted seniors and incoming juniors, we bypass these academic bottlenecks.",
+    "features": [
+      {
+        "title": "Reverse-Engineering Exam Vectors",
+        "description": "We analyze past exam structures to isolate major topic distributions. This ensures students study what actually matters, saving time while still excelling academically."
+      },
+      {
+        "title": "Fresh Peer-Led Mentorship",
+        "description": "Immediate seniors share practical course tips, instructor expectations, grading criteria, and curated resources rather than repeating dry textbook theory."
+      },
+      {
+        "title": "Open Source Collaboration",
+        "description": "All notes, solution guides, and lecture recordings are free, public, and open-source, hosted under the oU1TS Community banner."
+      }
+    ],
+    "parentPortal": "https://ou1ts.github.io/"
+  },
+  "join": {
+    "facebook": {
+      "name": "oU1TS Course Mastery Facebook Group",
+      "url": "https://facebook.com/groups/uits-course-mastery"
+    },
+    "whatsapp": {
+      "channel": "Central oU1TS Whatsapp Channel",
+      "url": "https://chat.whatsapp.com/uits-course-mastery"
+    },
+    "instructions": [
+      {
+        "title": "Join the Facebook Group",
+        "description": "This is our primary community portal. Request entry using your UITS Student ID to ask questions, request notes, and coordinate peer reviews."
+      },
+      {
+        "title": "Verify Student Status",
+        "description": "To maintain a secure, spam-free study space, send a photo of your UITS Student ID card to one of the group maintainers or admins."
+      },
+      {
+        "title": "Get WhatsApp Group Access",
+        "description": "Upon verification, you'll receive direct invitation links to join active, semester-specific discussion groups on WhatsApp."
+      }
+    ]
+  }
+}
