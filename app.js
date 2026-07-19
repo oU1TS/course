@@ -131,8 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
             lectures.forEach(item => {
               lecturesHtml += `
                 <div class="discussion-card" id="lecture-${escapeHTML(item.lectureId)}">
-                  <div class="card-header">
-                    <span class="semester-tag">${escapeHTML(item.semester)}</span>
+                  <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <span class="semester-tag" style="margin-bottom: 0;">${escapeHTML(item.semester)}</span>
+                    <button class="btn-copy-id" data-copy-type="lecture" data-copy-id="${escapeHTML(item.lectureId)}" title="Copy Lecture Link">
+                      <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                      </svg>
+                    </button>
                   </div>
                   <h4 class="lecture-title">${escapeHTML(item.title)}</h4>
                   <p class="lecture-instructor">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
@@ -162,13 +168,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
           accordionHtml += `
             <div class="course-accordion-item" id="course-${escapeHTML(course.courseId)}">
-              <button class="course-accordion-header" aria-expanded="false" aria-controls="lectures-${escapeHTML(course.courseId)}">
-                <span class="course-title-text">${escapeHTML(course.courseName)}</span>
-                <span class="lectures-count">${lectures.length} ${lectures.length === 1 ? 'Lecture' : 'Lectures'}</span>
-                <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </button>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem;">
+                <button class="course-accordion-header" aria-expanded="false" aria-controls="lectures-${escapeHTML(course.courseId)}" style="flex: 1; padding-right: 0.5rem;">
+                  <span class="course-title-text">${escapeHTML(course.courseName)}</span>
+                  <span class="lectures-count">${lectures.length} ${lectures.length === 1 ? 'Lecture' : 'Lectures'}</span>
+                  <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <button class="btn-copy-id" data-copy-type="course" data-copy-id="${escapeHTML(course.courseId)}" title="Copy Course Link" style="flex-shrink: 0; margin-left: 0.5rem;">
+                  <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+                </button>
+              </div>
               <div class="course-accordion-content" id="lectures-${escapeHTML(course.courseId)}">
                 <div class="lectures-grid">
                   ${lecturesHtml}
@@ -205,14 +219,29 @@ document.addEventListener('DOMContentLoaded', () => {
           let itemsHtml = '';
           category.items.forEach(item => {
             let redirectionLinkHtml = '';
-            if (item.relatedLectureId) {
+            
+            // Normalize relatedLectureId to an array
+            const lectureIds = Array.isArray(item.relatedLectureId)
+              ? item.relatedLectureId
+              : (item.relatedLectureId ? [item.relatedLectureId] : []);
+
+            if (lectureIds.length === 1) {
               redirectionLinkHtml = `
-                <a href="#discussions?lecture=${escapeHTML(item.relatedLectureId)}" class="resource-link related-link">
+                <a href="#discussions?lecture=${escapeHTML(lectureIds[0])}" class="resource-link related-link">
                   <span>View Related Lecture</span>
                   <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                   </svg>
                 </a>
+              `;
+            } else if (lectureIds.length > 1) {
+              redirectionLinkHtml = `
+                <button class="resource-link related-link btn-select-lecture" data-lecture-ids="${escapeHTML(lectureIds.join(','))}">
+                  <span>View Related Lectures</span>
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </button>
               `;
             } else if (item.relatedCourseId) {
               redirectionLinkHtml = `
@@ -226,8 +255,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             itemsHtml += `
-              <div class="resource-card">
-                <h4 class="resource-title">${escapeHTML(item.title)}</h4>
+              <div class="resource-card" id="resource-${escapeHTML(item.resourceId)}">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; width: 100%;">
+                  <h4 class="resource-title" style="margin-bottom: 0; line-height: 1.2;">${escapeHTML(item.title)}</h4>
+                  <button class="btn-copy-id" data-copy-type="resource" data-copy-id="${escapeHTML(item.resourceId)}" title="Copy Resource Link" style="margin-left: 0.5rem; flex-shrink: 0;">
+                    <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                  </button>
+                </div>
                 <p class="resource-desc">${escapeHTML(item.description)}</p>
                 <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: auto;">
                   <a href="${escapeHTML(item.url)}" class="resource-link" target="_blank" rel="noopener noreferrer">
@@ -570,7 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 4. Scroll page to top (if no specific anchor redirection is happening)
-    if (!queryParams.course && !queryParams.lecture) {
+    if (!queryParams.course && !queryParams.lecture && !queryParams.resource) {
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
@@ -584,22 +621,38 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      4. Setup View Interactions (Modal bindings, CTA intercepts)
      ========================================================================== */
+  /* ==========================================================================
+     4. Setup View Interactions (Modal bindings, CTA intercepts)
+     ========================================================================== */
   function setupViewInteractions(viewKey, queryParams) {
+    // Bind deep-link copy buttons dynamically
+    bindCopyButtons();
+
     if (viewKey === 'home') {
       // Bind Roadmap Block Click Event Listeners
       const roadmapBlocks = document.querySelectorAll('.roadmap-block');
       roadmapBlocks.forEach(block => {
         block.addEventListener('click', () => {
-          const stepIndex = parseInt(block.getAttribute('data-step-index'), 10);
-          showRoadmapModal(stepIndex);
+          try {
+            const stepIndex = parseInt(block.getAttribute('data-step-index'), 10);
+            console.log(`[Roadmap] Block clicked, index: ${stepIndex}`);
+            showRoadmapModal(stepIndex);
+          } catch (err) {
+            console.error('[Roadmap] Error handling block click:', err);
+          }
         });
 
         // Accessibility: Keyboard Enter
         block.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            const stepIndex = parseInt(block.getAttribute('data-step-index'), 10);
-            showRoadmapModal(stepIndex);
+            try {
+              const stepIndex = parseInt(block.getAttribute('data-step-index'), 10);
+              console.log(`[Roadmap] Block keydown, index: ${stepIndex}`);
+              showRoadmapModal(stepIndex);
+            } catch (err) {
+              console.error('[Roadmap] Error handling block keydown:', err);
+            }
           }
         });
       });
@@ -657,6 +710,30 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       }
+    } else if (viewKey === 'resources') {
+      // Bind Multiple Lectures Selection Popups
+      const selectLectureBtns = document.querySelectorAll('.btn-select-lecture');
+      selectLectureBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idsAttr = btn.getAttribute('data-lecture-ids') || '';
+          const ids = idsAttr.split(',').filter(Boolean);
+          if (ids.length > 0) {
+            openLectureSelectModal(ids);
+          }
+        });
+      });
+
+      // Handle redirect query parameter for resource card deep linking
+      if (queryParams && queryParams.resource) {
+        const resourceCard = document.getElementById(`resource-${queryParams.resource}`);
+        if (resourceCard) {
+          setTimeout(() => {
+            resourceCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            resourceCard.classList.add('highlight-flash');
+            setTimeout(() => resourceCard.classList.remove('highlight-flash'), 2000);
+          }, 150);
+        }
+      }
     }
   }
 
@@ -664,8 +741,13 @@ document.addEventListener('DOMContentLoaded', () => {
      5. Roadmap Modal Controllers
      ========================================================================== */
   function showRoadmapModal(stepIndex) {
-    if (!appState || !appState.roadmap || !appState.roadmap[stepIndex]) return;
+    console.log('[Roadmap] showRoadmapModal called for index:', stepIndex);
+    if (!appState || !appState.roadmap || !appState.roadmap[stepIndex]) {
+      console.warn('[Roadmap] Missing appState or roadmap item at index:', stepIndex);
+      return;
+    }
     const stepData = appState.roadmap[stepIndex];
+    console.log('[Roadmap] Step data retrieved:', stepData);
 
     if (modalTitle && modalTag && modalDescription && modalOverlay) {
       modalTag.textContent = `Step 0${stepData.step}`;
@@ -735,6 +817,133 @@ document.addEventListener('DOMContentLoaded', () => {
       closeRoadmapModal();
     }
   });
+
+  /* ==========================================================================
+     5a. Related Lectures Selection Modal & Copy Engines
+     ========================================================================== */
+  async function openLectureSelectModal(lectureIds) {
+    const modal = document.getElementById('lecture-select-modal');
+    const list = document.getElementById('lecture-links-list');
+    const closeBtn = document.getElementById('lecture-modal-close-btn');
+
+    if (!modal || !list) return;
+
+    // Show loading skeleton
+    list.innerHTML = `
+      <div class="skeleton-card" style="height: 60px; padding: 0.5rem; border-radius: 4px;"></div>
+      <div class="skeleton-card" style="height: 60px; padding: 0.5rem; border-radius: 4px;"></div>
+    `;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+    if (closeBtn) closeBtn.focus();
+
+    // Fetch lectures state if not loaded
+    const data = await fetchAppData('lecture.json');
+    if (!data || !data.courses) {
+      list.innerHTML = '<p class="no-data">Failed to load lecture details.</p>';
+      return;
+    }
+
+    // Resolve details and build links dynamically
+    list.innerHTML = '';
+    lectureIds.forEach(id => {
+      let foundLecture = null;
+      let foundCourse = null;
+
+      data.courses.forEach(course => {
+        const match = (course.lectures || []).find(l => l.lectureId === id);
+        if (match) {
+          foundLecture = match;
+          foundCourse = course;
+        }
+      });
+
+      const a = document.createElement('a');
+      a.href = `#discussions?lecture=${id}`;
+      a.className = 'select-modal-link';
+      a.innerHTML = `
+        <span class="lecture-name">${escapeHTML(foundLecture ? foundLecture.title : id)}</span>
+        <span class="course-name-sub">${escapeHTML(foundCourse ? foundCourse.courseName : 'Related Lecture')}</span>
+      `;
+      a.addEventListener('click', () => {
+        closeLectureSelectModal();
+      });
+      list.appendChild(a);
+    });
+  }
+
+  function closeLectureSelectModal() {
+    const modal = document.getElementById('lecture-select-modal');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = ''; // Restore scroll
+    }
+  }
+
+  const selectCloseBtn = document.getElementById('lecture-modal-close-btn');
+  if (selectCloseBtn) {
+    selectCloseBtn.addEventListener('click', closeLectureSelectModal);
+  }
+
+  const selectModalOverlay = document.getElementById('lecture-select-modal');
+  if (selectModalOverlay) {
+    selectModalOverlay.addEventListener('click', (e) => {
+      if (e.target === selectModalOverlay) {
+        closeLectureSelectModal();
+      }
+    });
+  }
+
+  // Keyboard Escape listener for Select Modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && selectModalOverlay && selectModalOverlay.classList.contains('open')) {
+      closeLectureSelectModal();
+    }
+  });
+
+  // Link copy click handler binder
+  function bindCopyButtons() {
+    const copyButtons = document.querySelectorAll('.btn-copy-id');
+    copyButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent accordion toggling or other triggers
+        const type = btn.getAttribute('data-copy-type');
+        const id = btn.getAttribute('data-copy-id');
+        copyLinkToClipboard(type, id, btn);
+      });
+    });
+  }
+
+  function copyLinkToClipboard(type, id, button) {
+    const baseUrl = window.location.origin + window.location.pathname;
+    let url = '';
+    if (type === 'course') {
+      url = `${baseUrl}#discussions?course=${id}`;
+    } else if (type === 'lecture') {
+      url = `${baseUrl}#discussions?lecture=${id}`;
+    } else if (type === 'resource') {
+      url = `${baseUrl}#resources?resource=${id}`;
+    }
+
+    navigator.clipboard.writeText(url).then(() => {
+      const originalHtml = button.innerHTML;
+      button.innerHTML = `
+        <svg class="copy-icon success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      `;
+      button.classList.add('copy-success');
+      setTimeout(() => {
+        button.innerHTML = originalHtml;
+        button.classList.remove('copy-success');
+      }, 1500);
+    }).catch(err => {
+      console.error('Failed to copy link to clipboard:', err);
+    });
+  }
 
   /* ==========================================================================
      6. Mobile Navigation Sidebar

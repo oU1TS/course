@@ -1,6 +1,6 @@
 # Data Mapping & Loading Reference Guide
 
-This document explains how each section of the **UITS Course Mastery** website loads and renders content from [data.json](data.json), specifically clarifying how the Hero section and main pages are populated.
+This document explains how each section of the **UITS Course Mastery** website loads and renders content from `data.json`, `lecture.json`, and `resource.json`, explaining how database structures map to the rendered UI.
 
 ---
 
@@ -48,30 +48,41 @@ The Hero Section is **not** defined statically in `index.html`. It is generated 
 3. **Modal Overlay Display**:
    - Clicking a block triggers `showRoadmapModal(stepIndex)`.
    - The modal controller reads the step object from the cached state (`appState.roadmap[stepIndex]`).
-   - It updates the DOM elements (`#modal-tag`, `#modal-title`, `#modal-description`) and applies the `.open` class to the modal overlay container (`#roadmap-modal`) in `index.html`.
+   - It updates the DOM elements (`#modal-tag`, `#modal-title`, `#modal-description`, and dynamic `#modal-links` buttons if any exist) and applies the `.open` class to the modal overlay container (`#roadmap-modal`) in `index.html`.
 
 ---
 
-## 💬 3. Discussions View
+## 💬 3. Discussions View (Collapsible Course Accordions)
 
 ### Data Schema
 ```json
-// data.json
-"discussions": [
-  {
-    "semester": "Autumn 2025",
-    "course": "Object Oriented Programming (OOP)",
-    "instructor": "Jane Doe (Senior)",
-    "videoUrl": "https://youtube.com/...",
-    "notesUrl": "https://drive.google.com/..."
-  }
-]
+// lecture.json
+{
+  "courses": [
+    {
+      "courseId": "cse-211-oop",
+      "courseName": "Object Oriented Programming (OOP)",
+      "lectures": [
+        {
+          "lectureId": "cse-211-oop-l1",
+          "semester": "Autumn 2025",
+          "title": "OOP Basics & Class Layouts",
+          "instructor": "Jane Doe (Senior)",
+          "videoUrl": "https://youtube.com/...",
+          "notesUrl": "https://drive.google.com/..."
+        }
+      ]
+    }
+  ]
+}
 ```
 
-### Rendering Flow
-- Invoked when the hash is `#discussions` via `Render.discussions(appState)`.
-- `Render.discussions()` in `app.js` loops over the `data.discussions` array.
-- Compiles card blocks with course title, semester badge, and maps `videoUrl` and `notesUrl` directly to the action button links.
+### Rendering & Interaction Flow
+- **Data Load**: Invoked when the hash is `#discussions` via `Render.discussions(lecturesState)` (fetching `lecture.json` first if uncached).
+- **Course Groupings**: The renderer creates a collapsible accordion panel `.course-accordion-item` for each course. Inside each accordion is a `.lectures-grid` listing the lecture card items.
+- **Copy Course Link**: A small link button `.btn-copy-id` (with `data-copy-type="course"`) is attached to each accordion header wrapper. Clicking it copies `#discussions?course=COURSE_ID` to the clipboard.
+- **Copy Lecture Link**: Each lecture card has a `.btn-copy-id` (with `data-copy-type="lecture"`) that copies `#discussions?lecture=LECTURE_ID` to the clipboard.
+- **Auto-expansion & Focus Redirects**: If a user visits the discussions route with query parameters (e.g. `?course=cse-211-oop` or `?lecture=cse-211-oop-l1`), `setupViewInteractions` automatically sets the target accordion wrapper height (`maxHeight = scrollHeight`), expands the panel, scrolls to the element, and pulses it with a `.highlight-flash` animation.
 
 ---
 
@@ -79,27 +90,40 @@ The Hero Section is **not** defined statically in `index.html`. It is generated 
 
 ### Data Schema
 ```json
-// data.json
-"resources": [
-  {
-    "category": "Programming Languages",
-    "description": "Recommended languages for modern software engineering.",
-    "items": [
-      {
-        "title": "Learn JS",
-        "description": "Core guide to JavaScript.",
-        "url": "https://developer.mozilla.org/..."
-      }
-    ]
-  }
-]
+// resource.json
+{
+  "resources": [
+    {
+      "category": "Academic Toolkit",
+      "description": "Central repositories and archives collected by UITS students.",
+      "items": [
+        {
+          "resourceId": "uits-exam-repo",
+          "title": "UITS Exam Repository",
+          "description": "A centralized archive of past mid and final exam question papers...",
+          "url": "https://github.com/oU1TS/uits-exam-repo",
+          "relatedCourseId": "cse-213-dsa"
+        },
+        {
+          "resourceId": "cse-notes-drive",
+          "title": "CSE Lecture Notes Drive",
+          "description": "Curated Google Drive folders containing course slides...",
+          "url": "https://drive.google.com/drive/...",
+          "relatedLectureId": ["cse-211-oop-l1", "cse-211-oop-l2"]
+        }
+      ]
+    }
+  ]
+}
 ```
 
-### Rendering Flow
-- Invoked when the hash is `#resources` via `Render.resources(appState)`.
-- `Render.resources()` in `app.js` uses a **nested loop**:
-  - The **outer loop** iterates over categories to create a header and description block.
-  - The **inner loop** iterates over the `items` array inside each category, creating individual resource link cards.
+### Rendering & Interaction Flow
+- **Data Load**: Invoked when the hash is `#resources` via `Render.resources(resourcesState)` (fetching `resource.json` first if uncached).
+- **Resource Deep Link**: Each resource card is given a copy button with `data-copy-type="resource"` linking to `#resources?resource=RESOURCE_ID` which scrolls to and flashes the card on load.
+- **Redirection / Selection Dialogue Popups**:
+  - If a resource maps to a **single** related lecture (`relatedLectureId` as string) or course (`relatedCourseId`), it renders a standard redirect anchor to Discussions (`#discussions?lecture=ID`).
+  - If a resource maps to **multiple** related lectures (`relatedLectureId` as an array of strings), it renders a select action button `.btn-select-lecture`. Clicking it pops open the `#lecture-select-modal` select overlay.
+  - The select modal displays a skeleton loader, fetches `lecture.json` (if uncached), maps the related IDs to their Course Names and Lecture Titles, and renders them as choice cards that close the popup and route the user when clicked.
 
 ---
 

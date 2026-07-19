@@ -1319,3 +1319,74 @@ body.light-theme .modal-wrapper {
   }
 }
 
+/* ==========================================================================
+   Select Related Lecture Modal & Copy Link Button Styles
+   ========================================================================== */
+
+/* Related Lectures Selector */
+.select-modal-link {
+  display: flex;
+  flex-direction: column;
+  padding: 0.85rem 1.25rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  border-radius: 4px;
+  text-align: left;
+  transition: all var(--transition-speed) ease;
+  cursor: pointer;
+}
+
+.select-modal-link:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-secondary);
+}
+
+.select-modal-link .lecture-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.select-modal-link .course-name-sub {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* Copy ID Link Buttons */
+.btn-copy-id {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  background: none;
+}
+
+.btn-copy-id:hover {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background-color: var(--bg-secondary);
+}
+
+.copy-icon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.copy-icon.success {
+  color: #10b981; /* Green checkmark */
+}
+
+.btn-copy-id.copy-success {
+  border-color: rgba(16, 185, 129, 0.3);
+  background-color: rgba(16, 185, 129, 0.05);
+}
+

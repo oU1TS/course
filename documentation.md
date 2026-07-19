@@ -2,6 +2,8 @@
 
 Welcome to the **UITS Course Mastery** portal documentation. This document describes the codebase file structure, architecture, and data routing flow of the Single Page Application (SPA).
 
+Repository: https://github.com/oU1TS/course
+
 ---
 
 ## 📂 File Structure
@@ -11,9 +13,11 @@ The project is built using a lightweight, dependency-free vanilla web stack (HTM
 ```
 c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
 ├── index.html          # Main HTML5 shell and viewport layout container
-├── style.css           # Typography, themes (dark/light), and layout styles
-├── app.js              # SPA router, state manager, and UI template rendering functions
-├── data.json           # Centralized database (discussion links, roadmaps, resources)
+├── style.css           # Typography, themes (dark/light), layouts, modal, and copy styles
+├── app.js              # SPA router, state manager, view renderers, and event managers
+├── data.json           # Content database for roadmap, about, and join sections
+├── lecture.json        # Content database for recorded peer classes and course lectures
+├── resource.json       # Content database for academic toolkits, drives, and trackers
 ├── render.html         # Local markdown document viewer
 ├── render.js           # Markdown parser and search engine for render.html
 ├── css/
@@ -25,33 +29,30 @@ c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
 
 ### Detailed File Descriptions
 
-1. **[index.html](Documents/GitHub/[oU1TS]/course/index.html)**
+1. **[index.html](index.html)**
    - Serves as the single viewport shell.
-   - Contains static global elements: `<header>` (logo, navigation drawer, theme switch, hamburger toggle), `<footer>`, and the overlay modal shell (`#roadmap-modal`).
+   - Contains static global elements: `<header>` (logo, navigation drawer, theme switch, hamburger toggle), `<footer>`, and two overlay modal shells: `#roadmap-modal` (for step details) and `#lecture-select-modal` (for select dialogs when multiple related lectures exist).
    - Hooks up the main entry viewport: `<main id="content-app">`.
 
-2. **[style.css](Documents/GitHub/[oU1TS]/course/style.css)**
+2. **[style.css](style.css)**
    - Stores design system tokens as CSS Variables in `:root` and `body.light-theme`.
    - Uses pure black (`#000000` default dark theme) and pure white (`#ffffff` light theme) color definitions (no gradients) with solid borders.
-   - Leverages modern CSS features (Flexbox, Grid, transitions, and media queries) for smooth, responsive layout rendering across mobile and desktop displays.
+   - Contains styles for the course accordion panels, resource card elements, select list cards, and link-copying success states.
 
-3. **[app.js](Documents/GitHub/[oU1TS]/course/app.js)**
+3. **[app.js](app.js)**
    - Initializes the application and controls client-side routing based on `window.location.hash`.
-   - Lazily fetches `data.json` on app load and caches the state in memory.
-   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups, and route changes.
-   - Contains stateless template compilation functions (formerly in `render.js`) that compile raw JSON data slices and inject them as safe, XSS-escaped HTML templates into `#content-app`.
+   - Lazily fetches and caches `data.json`, `lecture.json`, and `resource.json` depending on the active page, saving states into in-memory variables (`appState`, `lecturesState`, and `resourcesState`).
+   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups, accordion expanders, copy-link clicks, and route changes.
+   - Contains stateless template compilation functions that compile raw JSON data slices and inject them as safe, XSS-escaped HTML templates into `#content-app`.
 
-4. **[data.json](Documents/GitHub/[oU1TS]/course/data.json)**
-   - The centralized JSON database.
-   - Houses structural content including motto descriptions, roadmap steps, recorded discussions, resource categories, and channel links.
+4. **[data.json](data.json)**
+   - Stores structural page metadata including motto descriptions, roadmap steps, about text blocks, and channel links.
 
-5. **[render.html](Documents/GitHub/[oU1TS]/course/render.html)**
-   - Stands as a separate markdown document viewer shell.
-   - Loads markdown parser scripts, sanitizers, LaTeX renderers, and code styling libraries from CDN resources to render documents locally.
+5. **[lecture.json](lecture.json)**
+   - Grouped peer recorded lectures, semesters, guided instructors, video links, and note urls indexed by unique course IDs (`courseId`) and lecture IDs (`lectureId`).
 
-6. **[render.js](Documents/GitHub/[oU1TS]/course/render.js)**
-   - Acts as the controller for the markdown document viewer.
-   - Parses markdown into safe HTML, hooks page navigation anchors, resolves relative asset paths, compiles a slide-out Table of Contents, and runs a client-side full-text search.
+6. **[resource.json](resource.json)**
+   - Curated study folders, repository links, and guides mapped to unique resource IDs (`resourceId`) and related course or lecture IDs.
 
 ---
 
@@ -68,17 +69,19 @@ graph TD
     A[Browser loads index.html] --> B[DOM Content Loaded Event]
     B --> C[app.js: initializeTheme]
     B --> D[app.js: routePage]
-    D --> E{Is data.json cached?}
-    E -- No --> F[app.js: fetchAppData + Render Skeletons]
-    F --> G[Fetch data.json via network]
-    G --> H[Cache data in appState]
-    E -- Yes --> I[Use cached appState]
-    H --> J[app.js: Parse hash & Match Route]
-    J --> K[Call corresponding local Render templates]
-    K --> L[app.js: Compile HTML template string]
-    L --> M[app.js: Inject HTML into #content-app]
-    M --> N[app.js: Setup view interaction event listeners]
-    M --> O[Scroll viewport to top & Close mobile menus]
+    D --> E{Match Hash Route}
+    E -->|#home, #about, #join| F[Fetch data.json -> Cache in appState]
+    E -->|#discussions| G[Fetch lecture.json -> Cache in lecturesState]
+    E -->|#resources| H[Fetch resource.json -> Cache in resourcesState]
+    F --> I[Call corresponding local Render templates]
+    G --> I
+    H --> I
+    I --> J[app.js: Compile HTML template string with XSS escaping]
+    J --> K[app.js: Inject HTML into #content-app]
+    K --> L[app.js: Setup view interaction event listeners & bindCopyButtons]
+    L --> M[Handle deep-link scroll redirects & highlights]
+    M --> N[Scroll viewport to top if no query params present]
+    N --> O[Close mobile hamburger menu]
 ```
 
 ### Detailed Routing Step-by-Step
@@ -89,20 +92,22 @@ graph TD
 - It then executes `routePage()` to resolve the initial view. If no hash exists (or an invalid one is specified), it defaults to `#home` and updates the browser history.
 
 #### 2. Network Fetching & Skeletons
-- If `appState` is null, `fetchAppData()` is triggered.
+- If the requested state cache (`appState`, `lecturesState`, or `resourcesState`) is null, `fetchAppData()` is triggered.
 - While the fetch promise is pending, `renderSkeletons()` is called, injecting a loading skeleton structure into `<main id="content-app">`.
-- `data.json` is retrieved via `fetch()`. Once resolved, the parsed JSON object is saved in the memory variable `appState` to prevent subsequent network requests.
+- The target JSON database file is retrieved via `fetch()`. Once resolved, the parsed JSON object is saved in the memory cache to prevent subsequent network requests.
 
 #### 3. View Resolution and Rendering
 - The router matches the active hash (`#home`, `#discussions`, `#resources`, `#about`, `#join`) against its `validRoutes` map.
-- It calls the corresponding render template inside the local `Render` object in `app.js`, passing the cached `appState` data.
+- It calls the corresponding render template inside the local `Render` object in `app.js`, passing the cached data.
 - The render templates process the data loop, escape strings using `escapeHTML()` to prevent XSS, construct the raw HTML string, and return it.
 - `app.js` takes the returned string and sets `contentApp.innerHTML`.
 
 #### 4. Event Binding and Cleanup
-- After mounting the HTML, `setupViewInteractions()` binds post-render event listeners (like attaching click events to the homepage roadmap steps to open the roadmap details modal).
-- The window is scrolled back to `(0, 0)` to guarantee a fresh page layout.
-- Any open mobile hamburger drawers are closed.
+- After mounting the HTML, `setupViewInteractions()` binds post-render event listeners:
+  - **Home**: Binds clicks on roadmap steps to open `#roadmap-modal`.
+  - **Discussions**: Binds collapsible course accordion panels and auto-expands/scrolls/flashes target lectures if `lecture` or `course` parameters exist in the URL query.
+  - **Resources**: Binds multiple related lecture buttons to trigger `#lecture-select-modal`. Auto-scrolls and flashes card if `resource` parameter exists in the URL query.
+  - **Global**: Binds `.btn-copy-id` sharing button actions to copy deep link URLs directly to the clipboard.
 
 ---
 
@@ -111,14 +116,22 @@ graph TD
 The application state is minimal and managed entirely in the client window:
 
 1. **Theme State**: Synced using the `light-theme` class on the `<body>` element and persisted in `localStorage.getItem('theme')`.
-2. **Database Content**: Stored in a single in-memory variable `appState` in `app.js` closure once fetched from `data.json`.
-3. **Modal Overlay State**: Controlled by class manipulation (`.open`) and accessibility attributes (`aria-hidden`) on the static `#roadmap-modal` container element in `index.html`.
+2. **Database Caches**: Stored in closure variables `appState`, `lecturesState`, and `resourcesState` in `app.js`.
+3. **Modal Overlay States**: Controlled by class manipulation (`.open`) and accessibility attributes (`aria-hidden`) on static modal wrappers in `index.html`.
+4. **Copy Feedback State**: Handled using temporary class addition (`.copy-success`) and SVG changes to show a checkmark feedback indicator for 1.5 seconds.
 
 ---
 
 ## 🕒 Version History
 
-### 🚀 v1.1.0 — Architecture Refactoring & Markdown Viewer (Current)
+### 🔗 v1.2.0 — Content Segregation, Deep Linking & Selection Popups (Current)
+* **Content Segregation**: Separated core page data, lecture discussions, and academic resources into distinct databases (`data.json`, `lecture.json`, and `resource.json`) to minimize bundle sizes.
+* **Collapsible Accordions**: Replaced the long discussions list with a collapsible accordion grouped by courses.
+* **Clipboard Deep-Link Sharing**: Added link buttons next to Courses, Lectures, and Resources that generate absolute deep-linking URLs, copying them with transition success checkmarks.
+* **Selection Popups**: Added a selector modal that displays all options when clicking a resource related to multiple peer lectures.
+* **URL Parameter Actions**: Programmed routing redirects that expand accordions, scroll to targets, and apply highlight flashes when accessing a copied URL.
+
+### 🚀 v1.1.0 — Architecture Refactoring & Markdown Viewer
 * **SPA Code Simplification**: Merged page template rendering functions directly into `app.js`. Removed the separate SPA layout renderer script references from `index.html`.
 * **Markdown Document Integration**: Added `render.html`, `render.js`, and `css/render.css` to enable local rendering of markdown documentation and reference files (e.g. `documentation.md` and `explain.md`).
 * **Footer Optimization**: Made the footer persistent, reduced its vertical spacing (padding), and moved the technical document viewer links underneath the copyright text at the bottom.
