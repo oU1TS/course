@@ -801,6 +801,16 @@ body.light-theme .moon-icon {
   color: var(--accent-inverse);
 }
 
+.btn-discord {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.btn-discord:hover {
+  background-color: var(--text-primary);
+  color: var(--accent-inverse);
+}
+
 .privacy-disclaimer {
   display: flex;
   gap: 1rem;

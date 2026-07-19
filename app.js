@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const mainNav = document.getElementById('main-nav');
   const mobileToggle = document.getElementById('mobile-toggle');
   const navLinks = document.querySelectorAll('#main-nav .nav-link');
-  
+
   // Modal UI Elements
   const modalOverlay = document.getElementById('roadmap-modal');
   const modalCloseBtn = document.getElementById('modal-close-btn');
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
           let itemsHtml = '';
           category.items.forEach(item => {
             let redirectionLinkHtml = '';
-            
+
             // Normalize relatedLectureId to an array
             const lectureIds = Array.isArray(item.relatedLectureId)
               ? item.relatedLectureId
@@ -438,9 +438,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h3>WhatsApp Community Hub</h3>
                 <p>Get real-time updates and join specific active course group channels.</p>
                 <a href="${escapeHTML(join.whatsapp ? join.whatsapp.url : '')}" class="channel-link btn-wa" target="_blank" rel="noopener noreferrer">
-                  <span>Join Whatsapp Channel</span>
+                  <span>Join Whatsapp Group</span>
                   <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                  </svg>
+                </a>
+              </div>
+
+              <div class="channel-card discord-channel">
+                <h3>Discord Server</h3>
+                <p>Live discussions, direct interactions, and guidance/insight into other initiatives.</p>
+                <a href="${escapeHTML(join.discord ? join.discord.url : 'https://discord.gg/weetUpfS5X')}" class="channel-link btn-discord" target="_blank" rel="noopener noreferrer">
+                  <span>Join Discord Server</span>
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.579.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.97.077.077 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.898.077.077 0 0 1-.008-.127c.126-.094.252-.192.375-.292a.077.077 0 0 1 .084-.006c3.84 1.754 7.988 1.754 11.68 0a.077.077 0 0 1 .085.006c.123.1.25.198.376.292a.077.077 0 0 1-.007.127 12.98 12.98 0 0 1-1.873.898.077.077 0 0 0-.04.106c.456.696.953 1.352 1.488 1.97a.077.077 0 0 0 .085.027 19.9 19.9 0 0 0 5.992-3.03.077.077 0 0 0 .032-.057c.484-5.11-1.04-9.52-3.764-13.66a.072.072 0 0 0-.032-.027ZM8.02 15.332c-1.18 0-2.158-1.085-2.158-2.419 0-1.333.955-2.419 2.158-2.419 1.21 0 2.176 1.095 2.158 2.419 0 1.334-.948 2.419-2.158 2.419Zm7.974 0c-1.18 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.158 2.419 0 1.334-.948 2.419-2.158 2.419Z"/>
                   </svg>
                 </a>
               </div>
@@ -663,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
         header.addEventListener('click', () => {
           const item = header.closest('.course-accordion-item');
           const isExpanded = header.getAttribute('aria-expanded') === 'true';
-          
+
           // Toggle this accordion item
           header.setAttribute('aria-expanded', !isExpanded);
           const content = item.querySelector('.course-accordion-content');
@@ -784,7 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
       modalOverlay.classList.add('open');
       modalOverlay.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden'; // Prevent background scrolling
-      
+
       // Accessibility focus on close button
       if (modalCloseBtn) modalCloseBtn.focus();
     }

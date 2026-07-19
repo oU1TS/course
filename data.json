@@ -103,20 +103,28 @@
   "join": {
     "facebook": {
       "name": "oU1TS Course Mastery Facebook Group",
-      "url": "https://facebook.com/groups/uits-course-mastery"
+      "url": "https://tinyurl.com/3dxz2m5d"
+    },
+    "discord": {
+      "server": "oU1TS Discord Server",
+      "url": "https://discord.gg/weetUpfS5X"
     },
     "whatsapp": {
-      "channel": "Central oU1TS Whatsapp Channel",
-      "url": "https://chat.whatsapp.com/uits-course-mastery"
+      "channel": "Central oU1TS Whatsapp Group",
+      "url": "https://chat.whatsapp.com/G3bqADtI2XJGIe9YdQrnb2"
     },
     "instructions": [
       {
-        "title": "Join the Facebook Group",
-        "description": "This is our primary community portal. Request entry using your UITS Student ID to ask questions, request notes, and coordinate peer reviews.",
+        "title": "Join the Discord Server & Facebook Group",
+        "description": "These are our primary community portal. Request entry using your UITS Student ID to ask questions, request notes, and coordinate peer reviews.",
         "links": [
           {
             "text": "Facebook Group Portal",
-            "url": "https://facebook.com/groups/uits-course-mastery"
+            "url": "https://tinyurl.com/3dxz2m5d"
+          },
+          {
+            "text": "Discord Server",
+            "url": "https://discord.gg/weetUpfS5X"
           }
         ]
       },
@@ -126,7 +134,7 @@
         "links": [
           {
             "text": "Contact WhatsApp Channel",
-            "url": "https://chat.whatsapp.com/uits-course-mastery"
+            "url": "https://chat.whatsapp.com/G3bqADtI2XJGIe9YdQrnb2"
           }
         ]
       },
