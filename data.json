@@ -6,21 +6,36 @@
       "title": "Guidance with experience",
       "subtitle": "Fresh Senior Insights",
       "summary": "Connect with immediate seniors who have just cleared the same courses.",
-      "description": "Immediate seniors who just finished the final exams have the freshest memory of what was taught, how the instructor graded, what resources were actually useful, and what traps to avoid. Talking to them gives you a realistic, head-start strategy for the semester."
+      "description": "Immediate seniors who just finished the final exams have the freshest memory of what was taught, how the instructor graded, what resources were actually useful, and what traps to avoid. Talking to them gives you a realistic, head-start strategy for the semester.",
+      "links": [
+        {
+          "text": "Explore Discussions",
+          "url": "#discussions"
+        }
+      ]
     },
     {
       "step": 2,
       "title": "Reverse Engineering Questions",
       "subtitle": "Exam-First Analysis",
       "summary": "Analyze past exam papers to isolate high-yield recurring topics.",
-      "description": "Instead of studying the entire textbook line-by-line, we look at the last few final and midterm exam papers first. By mapping questions back to syllabus topics, we identify recurring patterns and high-yield concepts that are almost guaranteed to appear."
+      "description": "Instead of studying the entire textbook line-by-line, we look at the last few final and midterm exam papers first. By mapping questions back to syllabus topics, we identify recurring patterns and high-yield concepts that are almost guaranteed to appear.",
+      "links": [
+        {
+          "text": "Question Bank",
+          "url": "https://ou1ts.github.io/qbank/"
+        }
+      ]
     },
     {
       "step": 3,
       "title": "Brainstorming & Collaboration",
       "subtitle": "Co-created Solutions",
       "summary": "Solve past papers together and share detailed study guides.",
-      "description": "Students compile their notes, draft code, and write step-by-step solutions to exam questions in shared repositories or forums. Peer discussion groups help clarify complex edge cases and ensure everyone is aligned before exam week."
+      "description": "Students compile their notes, draft code, and write step-by-step solutions to exam questions in shared repositories or forums. Peer discussion groups help clarify complex edge cases and ensure everyone is aligned before exam week.",
+      "links": [
+        {}
+      ]
     },
     {
       "step": 4,
@@ -34,62 +49,19 @@
       "title": "ECA, Skill dev, Job Prep",
       "subtitle": "Real-World Focus",
       "summary": "Redirect saved academic hours to build career-ready skills.",
-      "description": "The ultimate goal is to minimize waste in pure academic cramming so students have ample time for Extracurricular Activities (ECAs), building software projects, learning marketable skills, participating in hackathons, and preparing for job interviews."
-    }
-  ],
-  "discussions": [
-    {
-      "course": "CSE-211: Object Oriented Programming",
-      "semester": "Fall 2025",
-      "instructor": "Yeasin Arafat & Mim Rahman (Seniors Class)",
-      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse211-oop.md"
-    },
-    {
-      "course": "CSE-213: Data Structures & Algorithms",
-      "semester": "Spring 2026",
-      "instructor": "Tasnim Ahmed (Peer Class)",
-      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse213-dsa.md"
-    },
-    {
-      "course": "MAT-205: Coordinate Geometry & Vector Analysis",
-      "semester": "Spring 2026",
-      "instructor": "Sadman Sakib (Seniors Q&A)",
-      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/mat205-geometry.md"
-    }
-  ],
-  "resources": [
-    {
-      "category": "Academic Toolkit",
-      "description": "Central repositories and archives collected by UITS students.",
-      "items": [
+      "description": "The ultimate goal is to minimize waste in pure academic cramming so students have ample time for Extracurricular Activities (ECAs), building software projects, learning marketable skills, participating in hackathons, and preparing for job interviews.",
+      "links": [
         {
-          "title": "UITS Exam Repository",
-          "description": "A centralized archive of past mid and final exam question papers collected by UITS students.",
-          "url": "https://github.com/oU1TS/uits-exam-repo"
+          "text": "Events",
+          "url": "https://ou1ts.github.io/events/"
         },
         {
-          "title": "CSE Lecture Notes Drive",
-          "description": "Curated Google Drive folders containing course slides, lab codes, and student notebooks.",
-          "url": "https://drive.google.com/drive/folders/placeholder"
-        }
-      ]
-    },
-    {
-      "category": "Skill Development & Trackers",
-      "description": "Boilerplates and toolkits to excel in tech contests and projects.",
-      "items": [
-        {
-          "title": "oU1TS Hackathon Survival Kit",
-          "description": "Templates, boilerplate codes, and guidelines for rapid prototyping in web, mobile, and AI contests.",
-          "url": "https://github.com/oU1TS/hackathon-toolkit"
+          "text": "Jobs",
+          "url": "#"
         },
         {
-          "title": "Interactive Career Roadmaps",
-          "description": "Role-based career roadmaps and educational guides to help you pick your professional track.",
-          "url": "https://roadmap.sh"
+          "text": "English Practice",
+          "url": "https://ou1ts.github.io/english/"
         }
       ]
     }
@@ -100,15 +72,33 @@
     "features": [
       {
         "title": "Reverse-Engineering Exam Vectors",
-        "description": "We analyze past exam structures to isolate major topic distributions. This ensures students study what actually matters, saving time while still excelling academically."
+        "description": "We analyze past exam structures to isolate major topic distributions. This ensures students study what actually matters, saving time while still excelling academically.",
+        "links": [
+          {
+            "text": "Exam Repository",
+            "url": "https://github.com/oU1TS/uits-exam-repo"
+          }
+        ]
       },
       {
         "title": "Fresh Peer-Led Mentorship",
-        "description": "Immediate seniors share practical course tips, instructor expectations, grading criteria, and curated resources rather than repeating dry textbook theory."
+        "description": "Immediate seniors share practical course tips, instructor expectations, grading criteria, and curated resources rather than repeating dry textbook theory.",
+        "links": [
+          {
+            "text": "View Recordings & Notes",
+            "url": "#discussions"
+          }
+        ]
       },
       {
         "title": "Open Source Collaboration",
-        "description": "All notes, solution guides, and lecture recordings are free, public, and open-source, hosted under the oU1TS Community banner."
+        "description": "All notes, solution guides, and lecture recordings are free, public, and open-source, hosted under the oU1TS Community banner.",
+        "links": [
+          {
+            "text": "oU1TS GitHub Organization",
+            "url": "https://github.com/oU1TS"
+          }
+        ]
       }
     ],
     "parentPortal": "https://ou1ts.github.io/"
@@ -125,11 +115,23 @@
     "instructions": [
       {
         "title": "Join the Facebook Group",
-        "description": "This is our primary community portal. Request entry using your UITS Student ID to ask questions, request notes, and coordinate peer reviews."
+        "description": "This is our primary community portal. Request entry using your UITS Student ID to ask questions, request notes, and coordinate peer reviews.",
+        "links": [
+          {
+            "text": "Facebook Group Portal",
+            "url": "https://facebook.com/groups/uits-course-mastery"
+          }
+        ]
       },
       {
         "title": "Verify Student Status",
-        "description": "To maintain student privacy and protect shared academic assets, verify your status with a maintainer. The project is not intended to be restrictive; rather, these verification procedures are necessary to ensure a private study environment where students can comfortably share chat histories, class notes, and solutions."
+        "description": "To maintain student privacy and protect shared academic assets, verify your status with a maintainer. The project is not intended to be restrictive; rather, these verification procedures are necessary to ensure a private study environment where students can comfortably share chat histories, class notes, and solutions.",
+        "links": [
+          {
+            "text": "Contact WhatsApp Channel",
+            "url": "https://chat.whatsapp.com/uits-course-mastery"
+          }
+        ]
       },
       {
         "title": "Save Contact & Join",

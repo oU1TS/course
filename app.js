@@ -29,7 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // State Variables
-  let appState = null;
+  let appState = null;       // Holds data.json content
+  let lecturesState = null;   // Holds lecture.json content
+  let resourcesState = null;  // Holds resource.json content
   let isDataLoading = false;
 
   /* ==========================================================================
@@ -113,38 +115,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render Discussions Page
     discussions(data) {
-      const discussions = data.discussions || [];
-      let cardsHtml = '';
+      const courses = data.courses || [];
+      let accordionHtml = '';
 
-      if (discussions.length === 0) {
-        cardsHtml = '<p class="no-data">No recorded peer classes or lectures available yet.</p>';
+      if (courses.length === 0) {
+        accordionHtml = '<p class="no-data">No recorded peer classes or lectures available yet.</p>';
       } else {
-        discussions.forEach(item => {
-          cardsHtml += `
-            <div class="discussion-card">
-              <div class="card-header">
-                <span class="semester-tag">${escapeHTML(item.semester)}</span>
-              </div>
-              <h3 class="course-name">${escapeHTML(item.course)}</h3>
-              <p class="instructor-name">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
-              <div class="card-actions">
-                <a href="${escapeHTML(item.videoUrl)}" class="card-btn btn-video" target="_blank" rel="noopener noreferrer">
-                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                  </svg>
-                  <span>Video Recording</span>
-                </a>
-                <a href="${escapeHTML(item.notesUrl)}" class="card-btn btn-notes" target="_blank" rel="noopener noreferrer">
-                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                  </svg>
-                  <span>Lecture Notes</span>
-                </a>
+        courses.forEach(course => {
+          let lecturesHtml = '';
+          const lectures = course.lectures || [];
+
+          if (lectures.length === 0) {
+            lecturesHtml = '<p class="no-data">No lectures available for this course.</p>';
+          } else {
+            lectures.forEach(item => {
+              lecturesHtml += `
+                <div class="discussion-card" id="lecture-${escapeHTML(item.lectureId)}">
+                  <div class="card-header">
+                    <span class="semester-tag">${escapeHTML(item.semester)}</span>
+                  </div>
+                  <h4 class="lecture-title">${escapeHTML(item.title)}</h4>
+                  <p class="lecture-instructor">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
+                  <div class="card-actions">
+                    <a href="${escapeHTML(item.videoUrl)}" class="card-btn btn-video" target="_blank" rel="noopener noreferrer">
+                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                      </svg>
+                      <span>Video Recording</span>
+                    </a>
+                    <a href="${escapeHTML(item.notesUrl)}" class="card-btn btn-notes" target="_blank" rel="noopener noreferrer">
+                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                      </svg>
+                      <span>Lecture Notes</span>
+                    </a>
+                  </div>
+                </div>
+              `;
+            });
+          }
+
+          accordionHtml += `
+            <div class="course-accordion-item" id="course-${escapeHTML(course.courseId)}">
+              <button class="course-accordion-header" aria-expanded="false" aria-controls="lectures-${escapeHTML(course.courseId)}">
+                <span class="course-title-text">${escapeHTML(course.courseName)}</span>
+                <span class="lectures-count">${lectures.length} ${lectures.length === 1 ? 'Lecture' : 'Lectures'}</span>
+                <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <div class="course-accordion-content" id="lectures-${escapeHTML(course.courseId)}">
+                <div class="lectures-grid">
+                  ${lecturesHtml}
+                </div>
               </div>
             </div>
           `;
@@ -158,8 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <h2 class="section-title">Recorded Classes & Lectures</h2>
             <p class="section-desc">Access direct study session recordings and co-created lecture notes compiled by seniors.</p>
           </div>
-          <div class="discussions-grid">
-            ${cardsHtml}
+          <div class="courses-accordion">
+            ${accordionHtml}
           </div>
         </section>
       `;
@@ -176,17 +204,41 @@ document.addEventListener('DOMContentLoaded', () => {
         resources.forEach(category => {
           let itemsHtml = '';
           category.items.forEach(item => {
+            let redirectionLinkHtml = '';
+            if (item.relatedLectureId) {
+              redirectionLinkHtml = `
+                <a href="#discussions?lecture=${escapeHTML(item.relatedLectureId)}" class="resource-link related-link">
+                  <span>View Related Lecture</span>
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </a>
+              `;
+            } else if (item.relatedCourseId) {
+              redirectionLinkHtml = `
+                <a href="#discussions?course=${escapeHTML(item.relatedCourseId)}" class="resource-link related-link">
+                  <span>View Course Lectures</span>
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </a>
+              `;
+            }
+
             itemsHtml += `
               <div class="resource-card">
                 <h4 class="resource-title">${escapeHTML(item.title)}</h4>
                 <p class="resource-desc">${escapeHTML(item.description)}</p>
-                <a href="${escapeHTML(item.url)}" class="resource-link" target="_blank" rel="noopener noreferrer">
-                  <span>Access Resource</span>
-                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="7" y1="17" x2="17" y2="7"></line>
-                    <polyline points="7 7 17 7 17 17"></polyline>
-                  </svg>
-                </a>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: auto;">
+                  <a href="${escapeHTML(item.url)}" class="resource-link" target="_blank" rel="noopener noreferrer">
+                    <span>Access Resource</span>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="7" y1="17" x2="17" y2="7"></line>
+                      <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                  </a>
+                  ${redirectionLinkHtml}
+                </div>
               </div>
             `;
           });
@@ -224,10 +276,26 @@ document.addEventListener('DOMContentLoaded', () => {
       let pointsHtml = '';
 
       features.forEach(feat => {
+        let linksHtml = '';
+        if (feat.links && feat.links.length > 0) {
+          feat.links.forEach(link => {
+            linksHtml += `
+              <a href="${escapeHTML(link.url)}" class="card-link" ${link.url.startsWith('#') ? '' : 'target="_blank" rel="noopener noreferrer"'}>
+                <span>${escapeHTML(link.text)}</span>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 10px; height: 10px; margin-left: 2px;">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+            `;
+          });
+        }
+
         pointsHtml += `
           <div class="about-point-card">
             <h4 class="point-title">${escapeHTML(feat.title)}</h4>
             <p class="point-desc">${escapeHTML(feat.description)}</p>
+            ${linksHtml ? `<div class="card-links">${linksHtml}</div>` : ''}
           </div>
         `;
       });
@@ -266,12 +334,28 @@ document.addEventListener('DOMContentLoaded', () => {
       let instructionsHtml = '';
 
       instructions.forEach((inst, index) => {
+        let linksHtml = '';
+        if (inst.links && inst.links.length > 0) {
+          inst.links.forEach(link => {
+            linksHtml += `
+              <a href="${escapeHTML(link.url)}" class="card-link" ${link.url.startsWith('#') ? '' : 'target="_blank" rel="noopener noreferrer"'}>
+                <span>${escapeHTML(link.text)}</span>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 10px; height: 10px; margin-left: 2px;">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+            `;
+          });
+        }
+
         instructionsHtml += `
           <div class="join-step-card">
             <div class="join-step-number">0${index + 1}</div>
             <div class="join-step-content">
               <h4 class="join-step-title">${escapeHTML(inst.title)}</h4>
               <p class="join-step-desc">${escapeHTML(inst.description)}</p>
+              ${linksHtml ? `<div class="card-links">${linksHtml}</div>` : ''}
             </div>
           </div>
         `;
@@ -365,22 +449,27 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      3. Asynchronous Data Fetching & Routing
      ========================================================================== */
-  async function fetchAppData() {
-    if (appState) return appState;
+  async function fetchAppData(fileName) {
+    if (fileName === 'data.json' && appState) return appState;
+    if (fileName === 'lecture.json' && lecturesState) return lecturesState;
+    if (fileName === 'resource.json' && resourcesState) return resourcesState;
     if (isDataLoading) return null;
 
     isDataLoading = true;
     renderSkeletons();
 
     try {
-      const response = await fetch('data.json');
+      const response = await fetch(fileName);
       if (!response.ok) {
-        throw new Error(`Failed to load data.json (HTTP ${response.status})`);
+        throw new Error(`Failed to load ${fileName} (HTTP ${response.status})`);
       }
-      appState = await response.json();
-      return appState;
+      const data = await response.json();
+      if (fileName === 'data.json') appState = data;
+      else if (fileName === 'lecture.json') lecturesState = data;
+      else if (fileName === 'resource.json') resourcesState = data;
+      return data;
     } catch (err) {
-      console.error('Error fetching application state:', err);
+      console.error(`Error fetching ${fileName}:`, err);
       renderError(err.message);
       return null;
     } finally {
@@ -423,8 +512,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function routePage() {
-    let currentHash = window.location.hash;
-    
+    let rawHash = window.location.hash || '#home';
+    let currentHash = rawHash;
+    let queryParams = {};
+
+    // Support query parameters in hash, e.g. #discussions?course=cse-213-dsa
+    if (rawHash.includes('?')) {
+      const parts = rawHash.split('?');
+      currentHash = parts[0];
+      const queryStr = parts[1];
+      queryStr.split('&').forEach(param => {
+        const [key, value] = param.split('=');
+        if (key) {
+          queryParams[decodeURIComponent(key)] = decodeURIComponent(value || '');
+        }
+      });
+    }
+
     // Default fallback
     if (!currentHash || !validRoutes[currentHash]) {
       currentHash = '#home';
@@ -442,25 +546,33 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 2. Fetch data (if not cached)
-    const data = await fetchAppData();
+    // 2. Fetch data (depending on page/route)
+    let data = null;
+    const renderKey = validRoutes[currentHash];
+    if (renderKey === 'home' || renderKey === 'about' || renderKey === 'join') {
+      data = await fetchAppData('data.json');
+    } else if (renderKey === 'discussions') {
+      data = await fetchAppData('lecture.json');
+    } else if (renderKey === 'resources') {
+      data = await fetchAppData('resource.json');
+    }
     if (!data) return; // Error or loading rendered inside fetchAppData
 
     // 3. Clear container & Dynamic Render
     if (contentApp) {
       contentApp.innerHTML = '';
-      const renderKey = validRoutes[currentHash];
-      
       if (Render[renderKey]) {
         contentApp.innerHTML = Render[renderKey](data);
-        setupViewInteractions(renderKey);
+        setupViewInteractions(renderKey, queryParams);
       } else {
         renderError(`Renderer for "${renderKey}" is not defined.`);
       }
     }
 
-    // 4. Scroll page to top
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // 4. Scroll page to top (if no specific anchor redirection is happening)
+    if (!queryParams.course && !queryParams.lecture) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
 
     // 5. Close Mobile Sidebar Menu
     closeMobileMenu();
@@ -472,7 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      4. Setup View Interactions (Modal bindings, CTA intercepts)
      ========================================================================== */
-  function setupViewInteractions(viewKey) {
+  function setupViewInteractions(viewKey, queryParams) {
     if (viewKey === 'home') {
       // Bind Roadmap Block Click Event Listeners
       const roadmapBlocks = document.querySelectorAll('.roadmap-block');
@@ -491,6 +603,60 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       });
+    } else if (viewKey === 'discussions') {
+      // Bind Accordion Toggle Click Handlers
+      const headers = document.querySelectorAll('.course-accordion-header');
+      headers.forEach(header => {
+        header.addEventListener('click', () => {
+          const item = header.closest('.course-accordion-item');
+          const isExpanded = header.getAttribute('aria-expanded') === 'true';
+          
+          // Toggle this accordion item
+          header.setAttribute('aria-expanded', !isExpanded);
+          const content = item.querySelector('.course-accordion-content');
+          if (content) {
+            content.style.maxHeight = !isExpanded ? `${content.scrollHeight}px` : '0';
+          }
+        });
+      });
+
+      // Handle redirect query parameters (auto-expand and scroll)
+      if (queryParams) {
+        if (queryParams.lecture) {
+          const lectureCard = document.getElementById(`lecture-${queryParams.lecture}`);
+          if (lectureCard) {
+            const accordionItem = lectureCard.closest('.course-accordion-item');
+            if (accordionItem) {
+              const header = accordionItem.querySelector('.course-accordion-header');
+              const content = accordionItem.querySelector('.course-accordion-content');
+              if (header && content) {
+                header.setAttribute('aria-expanded', 'true');
+                content.style.maxHeight = `${content.scrollHeight}px`;
+              }
+            }
+            // Smooth scroll to target lecture card
+            setTimeout(() => {
+              lectureCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              lectureCard.classList.add('highlight-flash');
+              setTimeout(() => lectureCard.classList.remove('highlight-flash'), 2000);
+            }, 150);
+          }
+        } else if (queryParams.course) {
+          const accordionItem = document.getElementById(`course-${queryParams.course}`);
+          if (accordionItem) {
+            const header = accordionItem.querySelector('.course-accordion-header');
+            const content = accordionItem.querySelector('.course-accordion-content');
+            if (header && content) {
+              header.setAttribute('aria-expanded', 'true');
+              content.style.maxHeight = `${content.scrollHeight}px`;
+            }
+            // Smooth scroll to target course
+            setTimeout(() => {
+              accordionItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 150);
+          }
+        }
+      }
     }
   }
 
@@ -505,6 +671,33 @@ document.addEventListener('DOMContentLoaded', () => {
       modalTag.textContent = `Step 0${stepData.step}`;
       modalTitle.textContent = stepData.title;
       modalDescription.textContent = stepData.description;
+
+      // Handle rendering of dynamic step links
+      const modalLinksContainer = document.getElementById('modal-links');
+      if (modalLinksContainer) {
+        modalLinksContainer.innerHTML = '';
+        if (stepData.links && stepData.links.length > 0) {
+          stepData.links.forEach(link => {
+            const a = document.createElement('a');
+            a.href = link.url;
+            a.className = 'btn btn-primary modal-link';
+            if (link.url.startsWith('#')) {
+              // SPA link, close modal on navigate
+              a.addEventListener('click', () => {
+                closeRoadmapModal();
+              });
+            } else {
+              a.target = '_blank';
+              a.rel = 'noopener noreferrer';
+            }
+            a.textContent = link.text;
+            modalLinksContainer.appendChild(a);
+          });
+          modalLinksContainer.style.display = 'flex';
+        } else {
+          modalLinksContainer.style.display = 'none';
+        }
+      }
 
       modalOverlay.classList.add('open');
       modalOverlay.setAttribute('aria-hidden', 'false');

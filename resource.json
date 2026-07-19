@@ -1,0 +1,39 @@
+{
+  "resources": [
+    {
+      "category": "Academic Toolkit",
+      "description": "Central repositories and archives collected by UITS students.",
+      "items": [
+        {
+          "title": "UITS Exam Repository",
+          "description": "A centralized archive of past mid and final exam question papers collected by UITS students.",
+          "url": "https://github.com/oU1TS/uits-exam-repo",
+          "relatedCourseId": "cse-213-dsa"
+        },
+        {
+          "title": "CSE Lecture Notes Drive",
+          "description": "Curated Google Drive folders containing course slides, lab codes, and student notebooks.",
+          "url": "https://drive.google.com/drive/folders/placeholder",
+          "relatedLectureId": "cse-211-oop-l1"
+        }
+      ]
+    },
+    {
+      "category": "Skill Development & Trackers",
+      "description": "Boilerplates and toolkits to excel in tech contests and projects.",
+      "items": [
+        {
+          "title": "oU1TS Hackathon Survival Kit",
+          "description": "Templates, boilerplate codes, and guidelines for rapid prototyping in web, mobile, and AI contests.",
+          "url": "https://github.com/oU1TS/hackathon-toolkit"
+        },
+        {
+          "title": "Interactive Career Roadmaps",
+          "description": "Role-based career roadmaps and educational guides to help you pick your professional track.",
+          "url": "https://roadmap.sh",
+          "relatedLectureId": "mat-205-geom-l1"
+        }
+      ]
+    }
+  ]
+}

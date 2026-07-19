@@ -963,6 +963,177 @@ body.light-theme .modal-wrapper {
   line-height: 1.7;
 }
 
+.modal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.25rem;
+}
+
+.modal-link {
+  font-size: 0.85rem;
+  padding: 0.6rem 1.2rem;
+}
+
+/* Card Links (for About Features & Join Instructions) */
+.card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.75rem;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 1px;
+}
+
+.card-link:hover {
+  border-color: var(--text-primary);
+}
+
+/* Course Accordion Dropdown Styles */
+.courses-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.course-accordion-item {
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--bg-secondary);
+  overflow: hidden;
+  transition: border-color var(--transition-speed) ease;
+}
+
+.course-accordion-item:hover {
+  border-color: var(--border-hover);
+}
+
+.course-accordion-header {
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  background: none;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.course-title-text {
+  flex: 1;
+}
+
+.lectures-count {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-right: 1.25rem;
+}
+
+.accordion-arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-speed) ease;
+}
+
+.course-accordion-header[aria-expanded="true"] .accordion-arrow {
+  transform: rotate(180deg);
+}
+
+.course-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-top: 0px solid transparent;
+}
+
+.course-accordion-header[aria-expanded="true"] + .course-accordion-content {
+  border-top: 1px solid var(--border-color);
+}
+
+.lectures-grid {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.discussion-card {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  padding: 1.25rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-speed) ease;
+}
+
+.discussion-card:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-secondary);
+}
+
+.lecture-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.lecture-instructor {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Related Redirect Links in Resource Cards */
+.related-link {
+  color: var(--text-secondary);
+}
+
+.related-link:hover {
+  color: var(--text-primary);
+}
+
+/* Highlight Flash Animation for Redirect Target */
+.highlight-flash {
+  animation: flash-highlight-animation 2s ease-out;
+}
+
+@keyframes flash-highlight-animation {
+  0% {
+    border-color: var(--text-primary);
+    background-color: var(--border-color);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+  }
+  100% {
+    border-color: var(--border-color);
+    background-color: var(--bg-primary);
+    box-shadow: none;
+  }
+}
+
 /* ==========================================================================
    Skeleton Shimmer loaders
    ========================================================================== */
