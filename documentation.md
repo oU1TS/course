@@ -16,7 +16,9 @@ c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
 ├── style.css           # Typography, themes (dark/light), layouts, modal, and copy styles
 ├── app.js              # SPA router, state manager, view renderers, and event managers
 ├── data.json           # Content database for roadmap, about, and join sections
-├── lecture.json        # Content database for recorded peer classes and course lectures
+├── course.json         # Content database for course discussions and lectures
+├── lecture.json        # Synced content database for recorded peer classes and lectures
+├── technical.json      # Content database for technical discussions and workshops
 ├── resource.json       # Content database for academic toolkits, drives, and trackers
 ├── render.html         # Local markdown document viewer
 ├── render.js           # Markdown parser and search engine for render.html
@@ -37,21 +39,24 @@ c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
 2. **[style.css](style.css)**
    - Stores design system tokens as CSS Variables in `:root` and `body.light-theme`.
    - Uses pure black (`#000000` default dark theme) and pure white (`#ffffff` light theme) color definitions (no gradients) with solid borders.
-   - Contains styles for the course accordion panels, resource card elements, select list cards, and link-copying success states.
+   - Contains styles for root dropdown menus, sub-accordion panels, resource card elements, select list cards, and link-copying success states.
 
 3. **[app.js](app.js)**
    - Initializes the application and controls client-side routing based on `window.location.hash`.
-   - Lazily fetches and caches `data.json`, `lecture.json`, and `resource.json` depending on the active page, saving states into in-memory variables (`appState`, `lecturesState`, and `resourcesState`).
-   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups, accordion expanders, copy-link clicks, and route changes.
+   - Lazily fetches and caches `data.json`, `course.json`, `technical.json`, and `resource.json` depending on the active page, saving states into in-memory variables (`appState`, `lecturesState`, `technicalState`, and `resourcesState`).
+   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups, root & child accordion expanders, copy-link clicks, and route changes.
    - Contains stateless template compilation functions that compile raw JSON data slices and inject them as safe, XSS-escaped HTML templates into `#content-app`.
 
 4. **[data.json](data.json)**
    - Stores structural page metadata including motto descriptions, roadmap steps, about text blocks, and channel links.
 
-5. **[lecture.json](lecture.json)**
+5. **[course.json](course.json) & [lecture.json](lecture.json)**
    - Grouped peer recorded lectures, semesters, guided instructors, video links, and note urls indexed by unique course IDs (`courseId`) and lecture IDs (`lectureId`).
 
-6. **[resource.json](resource.json)**
+6. **[technical.json](technical.json)**
+   - Technical workshop discussions, semesters, guided maintainers, video links, and note urls indexed by unique topic IDs (`topicId`) and discussion IDs (`discussionId`).
+
+7. **[resource.json](resource.json)**
    - Curated study folders, repository links, and guides mapped to unique resource IDs (`resourceId`) and related course or lecture IDs.
 
 ---

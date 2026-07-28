@@ -1,0 +1,12 @@
+{
+  "discussions": [
+    {
+      "discussionId": "tech-disc-1",
+      "title": "Technical Discussion #1 | CSE-55 UITS | 07 28 22 12 08",
+      "semester": "Summer 2022",
+      "instructor": "OmniPotato23",
+      "videoUrl": "https://youtu.be/kWSYilxPv4s",
+      "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/technical-discussion-1.md"
+    }
+  ]
+}

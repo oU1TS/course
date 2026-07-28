@@ -52,24 +52,38 @@ The Hero Section is **not** defined statically in `index.html`. It is generated 
 
 ---
 
-## 💬 3. Discussions View (Collapsible Course Accordions)
+## 💬 3. Discussions View (Root Drop-down Menus & Collapsible Accordions)
 
 ### Data Schema
 ```json
-// lecture.json
+// technical.json (2-layer structure: Root -> Entries)
+{
+  "discussions": [
+    {
+      "discussionId": "tech-disc-1",
+      "title": "Technical Discussion #1 | CSE-55 UITS | 07 28 22 12 08",
+      "semester": "Summer 2022",
+      "instructor": "OmniPotato23",
+      "videoUrl": "https://youtu.be/kWSYilxPv4s",
+      "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/technical-discussion-1.md"
+    }
+  ]
+}
+
+// course.json / lecture.json (3-layer structure: Root -> Courses -> Lectures)
 {
   "courses": [
     {
       "courseId": "cse-211-oop",
-      "courseName": "Object Oriented Programming (OOP)",
+      "courseName": "CSE-211: Object Oriented Programming",
       "lectures": [
         {
           "lectureId": "cse-211-oop-l1",
-          "semester": "Autumn 2025",
+          "semester": "Fall 2025",
           "title": "OOP Basics & Class Layouts",
-          "instructor": "Jane Doe (Senior)",
+          "instructor": "Yeasin Arafat & Mim Rahman",
           "videoUrl": "https://youtube.com/...",
-          "notesUrl": "https://drive.google.com/..."
+          "notesUrl": "https://github.com/..."
         }
       ]
     }
@@ -78,11 +92,16 @@ The Hero Section is **not** defined statically in `index.html`. It is generated 
 ```
 
 ### Rendering & Interaction Flow
-- **Data Load**: Invoked when the hash is `#discussions` via `Render.discussions(lecturesState)` (fetching `lecture.json` first if uncached).
-- **Course Groupings**: The renderer creates a collapsible accordion panel `.course-accordion-item` for each course. Inside each accordion is a `.lectures-grid` listing the lecture card items.
-- **Copy Course Link**: A small link button `.btn-copy-id` (with `data-copy-type="course"`) is attached to each accordion header wrapper. Clicking it copies `#discussions?course=COURSE_ID` to the clipboard.
-- **Copy Lecture Link**: Each lecture card has a `.btn-copy-id` (with `data-copy-type="lecture"`) that copies `#discussions?lecture=LECTURE_ID` to the clipboard.
-- **Auto-expansion & Focus Redirects**: If a user visits the discussions route with query parameters (e.g. `?course=cse-211-oop` or `?lecture=cse-211-oop-l1`), `setupViewInteractions` automatically sets the target accordion wrapper height (`maxHeight = scrollHeight`), expands the panel, scrolls to the element, and pulses it with a `.highlight-flash` animation.
+- **Data Load**: Invoked when the hash is `#discussions` via `Render.discussions({ courseData, techData })` (fetching `course.json` and `technical.json` first if uncached).
+- **Root Drop-down Menus**:
+  1. **Technical Discussions** (`#root-section-technical`): Direct 2-layer structure containing technical discussion cards directly inside the root dropdown.
+  2. **Course Discussions** (`#root-section-course`): 3-layer structure containing course accordions and lecture cards from `course.json`.
+- **Copiable Deep Links**:
+  - **Copy Root Dropdown Link**: A `.btn-copy-id` (with `data-copy-type="section"`) copies `#discussions?section=technical` or `#discussions?section=course`.
+  - **Copy Discussion Link**: Each technical discussion card has a `.btn-copy-id` (with `data-copy-type="discussion"`) copying `#discussions?discussion=DISCUSSION_ID`.
+  - **Copy Course Link**: A `.btn-copy-id` (with `data-copy-type="course"`) copies `#discussions?course=COURSE_ID`.
+  - **Copy Lecture Link**: Each lecture card has a `.btn-copy-id` (with `data-copy-type="lecture"`) copying `#discussions?lecture=LECTURE_ID`.
+- **Auto-expansion & Deep Link Redirection**: Visiting query parameter URLs (`?section=...`, `?discussion=...`, `?course=...`, `?lecture=...`) automatically expands parent root sections and inner course accordions, scrolls to target elements, and triggers a `.highlight-flash` pulse animation.
 
 ---
 

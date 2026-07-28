@@ -1,0 +1,54 @@
+{
+  "courses": [
+    {
+      "courseId": "cse-211-oop",
+      "courseName": "CSE-211: Object Oriented Programming",
+      "lectures": [
+        {
+          "lectureId": "cse-211-oop-l1",
+          "title": "OOP Basics & Class Layouts",
+          "semester": "Fall 2025",
+          "instructor": "Yeasin Arafat & Mim Rahman (Seniors Class)",
+          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse211-oop.md"
+        },
+        {
+          "lectureId": "cse-211-oop-l2",
+          "title": "Inheritance & Polymorphism Traps",
+          "semester": "Fall 2025",
+          "instructor": "Yeasin Arafat & Mim Rahman (Seniors Class)",
+          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse211-oop.md"
+        }
+      ]
+    },
+    {
+      "courseId": "cse-213-dsa",
+      "courseName": "CSE-213: Data Structures & Algorithms",
+      "lectures": [
+        {
+          "lectureId": "cse-213-dsa-l1",
+          "title": "Recursion & Dynamic Programming",
+          "semester": "Spring 2026",
+          "instructor": "Tasnim Ahmed (Peer Class)",
+          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse213-dsa.md"
+        }
+      ]
+    },
+    {
+      "courseId": "mat-205-geom",
+      "courseName": "MAT-205: Coordinate Geometry & Vector Analysis",
+      "lectures": [
+        {
+          "lectureId": "mat-205-geom-l1",
+          "title": "Vector Fields & Coordinate Projections",
+          "semester": "Spring 2026",
+          "instructor": "Sadman Sakib (Seniors Q&A)",
+          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/mat205-geometry.md"
+        }
+      ]
+    }
+  ]
+}
