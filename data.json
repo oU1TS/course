@@ -1,5 +1,5 @@
 {
-  "motto": "Let's do the obvious: Asking seniors about their last final exams, Studying the topics that appear in the exams, Spending time on what actually matters. Start this semester with a blast!",
+  "motto": "Let’s do what actually works: Ask seniors. Reverse-engineer the exams. Focus on what matters. Start this semester with a blast!",
   "roadmap": [
     {
       "step": 1,
@@ -29,10 +29,10 @@
     },
     {
       "step": 3,
-      "title": "Brainstorming & Collaboration",
-      "subtitle": "Co-created Solutions",
-      "summary": "Solve past papers together and share detailed study guides.",
-      "description": "Students compile their notes, draft code, and write step-by-step solutions to exam questions in shared repositories or forums. Peer discussion groups help clarify complex edge cases and ensure everyone is aligned before exam week."
+      "title": "Technical Discussions & Collaboration",
+      "subtitle": "Structured Planning & Co-created Solutions",
+      "summary": "Plan course projects, solve past papers together, and master lab toolchains as a team.",
+      "description": "Students align on course roadmaps, plan group projects effectively, and conduct peer-led technical sessions to set up required software and lab environments. Through shared repositories, collaborative discussions, and structured teamwork, peers help each other clear complex topics, break down assignments, and streamline project execution from start to finish."
     },
     {
       "step": 4,
