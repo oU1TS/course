@@ -167,6 +167,7 @@ button {
     opacity: 0;
     transform: translateY(15px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1025,8 +1026,10 @@ body.light-theme .modal-wrapper {
   border: 1px solid var(--border-color);
   border-radius: 4px;
   background-color: var(--bg-primary);
-  overflow: hidden;
+  overflow: visible;
   transition: border-color var(--transition-speed) ease;
+  position: relative;
+  z-index: 1;
 }
 
 .root-accordion-item:hover {
@@ -1047,21 +1050,32 @@ body.light-theme .modal-wrapper {
   cursor: pointer;
   border: none;
   color: var(--text-primary);
+  position: relative;
+  z-index: 2;
+  overflow: visible !important;
 }
 
 .root-title-text {
   flex: 1;
 }
 
-.root-count {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  padding: 3px 10px;
-  border-radius: 12px;
-  margin-right: 1.25rem;
+.root-count,
+.lectures-count {
+  position: absolute;
+  top: 1rem;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-primary);
   background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 4px 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 50;
 }
 
 .root-accordion-header[aria-expanded="true"] .accordion-arrow {
@@ -1070,14 +1084,19 @@ body.light-theme .modal-wrapper {
 
 .root-accordion-content {
   max-height: 0;
-  overflow: hidden;
+  overflow: clip;
   transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  position: relative;
+  z-index: 3;
 }
 
-.root-accordion-header[aria-expanded="true"] + .root-accordion-content {
+.root-accordion-header[aria-expanded="true"]+.root-accordion-content {
   border-top: 1px solid var(--border-color);
   padding: 1.5rem;
+  overflow: visible !important;
 }
 
 .topics-accordion,
@@ -1087,6 +1106,8 @@ body.light-theme .modal-wrapper {
   gap: 1.5rem;
   max-width: 100%;
   margin: 0;
+  position: relative;
+  z-index: 4;
 }
 
 .topic-accordion-item,
@@ -1094,8 +1115,10 @@ body.light-theme .modal-wrapper {
   border: 1px solid var(--border-color);
   border-radius: 4px;
   background-color: var(--bg-secondary);
-  overflow: hidden;
+  overflow: visible !important;
   transition: border-color var(--transition-speed) ease;
+  position: relative;
+  z-index: 5;
 }
 
 .topic-accordion-item:hover,
@@ -1118,20 +1141,13 @@ body.light-theme .modal-wrapper {
   cursor: pointer;
   border: none;
   color: var(--text-primary);
+  position: relative;
+  z-index: 6;
+  overflow: visible !important;
 }
 
 .course-title-text {
   flex: 1;
-}
-
-.lectures-count {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  padding: 2px 8px;
-  border-radius: 12px;
-  margin-right: 1.25rem;
 }
 
 .accordion-arrow {
@@ -1148,14 +1164,17 @@ body.light-theme .modal-wrapper {
 .topic-accordion-content,
 .course-accordion-content {
   max-height: 0;
-  overflow: hidden;
+  overflow: clip;
   transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-top: 0px solid transparent;
+  position: relative;
+  z-index: 7;
 }
 
-.topic-accordion-header[aria-expanded="true"] + .topic-accordion-content,
-.course-accordion-header[aria-expanded="true"] + .course-accordion-content {
+.topic-accordion-header[aria-expanded="true"]+.topic-accordion-content,
+.course-accordion-header[aria-expanded="true"]+.course-accordion-content {
   border-top: 1px solid var(--border-color);
+  overflow: visible !important;
 }
 
 .lectures-grid {
@@ -1241,7 +1260,7 @@ body.light-theme .modal-wrapper {
   border-top: 0px solid transparent;
 }
 
-.card-desc-toggle[aria-expanded="true"] + .card-desc-content {
+.card-desc-toggle[aria-expanded="true"]+.card-desc-content {
   border-top: 1px solid var(--border-color);
   padding: 0.75rem;
   background-color: var(--bg-primary);
@@ -1275,6 +1294,7 @@ body.light-theme .modal-wrapper {
     background-color: var(--border-color);
     box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
   }
+
   100% {
     border-color: var(--border-color);
     background-color: var(--bg-primary);
@@ -1290,10 +1310,10 @@ body.light-theme .modal-wrapper {
   height: 220px;
   padding: 1.5rem;
   border-radius: 4px;
-  background: linear-gradient(90deg, 
-    var(--bg-primary) 25%, 
-    var(--bg-secondary) 50%, 
-    var(--bg-primary) 75%);
+  background: linear-gradient(90deg,
+      var(--bg-primary) 25%,
+      var(--bg-secondary) 50%,
+      var(--bg-primary) 75%);
   background-size: 200% 100%;
   animation: loading-shimmer 1.5s infinite;
   pointer-events: none;
@@ -1303,6 +1323,7 @@ body.light-theme .modal-wrapper {
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
@@ -1361,9 +1382,11 @@ body.light-theme .modal-wrapper {
   .mobile-menu-toggle.open .bar:nth-child(1) {
     transform: translateY(6px) rotate(45deg);
   }
+
   .mobile-menu-toggle.open .bar:nth-child(2) {
     opacity: 0;
   }
+
   .mobile-menu-toggle.open .bar:nth-child(3) {
     transform: translateY(-6px) rotate(-45deg);
   }
@@ -1447,7 +1470,8 @@ body.light-theme .modal-wrapper {
   }
 
   html:has(#home-view) .hero-wrapper {
-    height: calc(100vh - 180px); /* Fill screen space minus header and persistent footer */
+    height: calc(100vh - 180px);
+    /* Fill screen space minus header and persistent footer */
     scroll-snap-align: start;
     scroll-margin-top: 100px;
     display: flex;
@@ -1530,11 +1554,11 @@ body.light-theme .modal-wrapper {
 }
 
 .copy-icon.success {
-  color: #10b981; /* Green checkmark */
+  color: #10b981;
+  /* Green checkmark */
 }
 
 .btn-copy-id.copy-success {
   border-color: rgba(16, 185, 129, 0.3);
   background-color: rgba(16, 185, 129, 0.05);
 }
-

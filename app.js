@@ -273,13 +273,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
           courseAccordionHtml += `
             <div class="course-accordion-item" id="course-${escapeHTML(course.courseId)}">
-              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem;">
-                <button class="course-accordion-header" aria-expanded="false" aria-controls="lectures-${escapeHTML(course.courseId)}" style="flex: 1; padding-right: 0.5rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem; position: relative;">
+                <button class="course-accordion-header" aria-expanded="false" aria-controls="lectures-${escapeHTML(course.courseId)}" style="flex: 1; padding-right: 2.2rem; position: relative;">
                   <span class="course-title-text">${escapeHTML(course.courseName)}</span>
-                  <span class="lectures-count">${lectures.length} ${lectures.length === 1 ? 'Lecture' : 'Lectures'}</span>
                   <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
+                  <span class="lectures-count">${lectures.length}</span>
                 </button>
                 <button class="btn-copy-id" data-copy-type="course" data-copy-id="${escapeHTML(course.courseId)}" title="Copy Course Link" style="flex-shrink: 0; margin-left: 0.5rem;">
                   <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -309,13 +309,13 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="root-discussions-container">
             <!-- Root Dropdown Menu 1: Course Discussions -->
             <div class="root-accordion-item" id="root-section-course">
-              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem;">
-                <button class="root-accordion-header" aria-expanded="false" aria-controls="course-discussions-content" style="flex: 1; padding-right: 0.5rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem; position: relative;">
+                <button class="root-accordion-header" aria-expanded="false" aria-controls="course-discussions-content" style="flex: 1; padding-right: 2.5rem; position: relative;">
                   <span class="root-title-text">Course Discussions</span>
-                  <span class="root-count">${totalCourseLectures} ${totalCourseLectures === 1 ? 'Lecture' : 'Lectures'}</span>
                   <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
+                  <span class="root-count">${totalCourseLectures}</span>
                 </button>
                 <button class="btn-copy-id" data-copy-type="section" data-copy-id="course" title="Copy Course Discussions Link" style="flex-shrink: 0; margin-left: 0.5rem;">
                   <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -333,13 +333,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <!-- Root Dropdown Menu 2: Technical Discussions -->
             <div class="root-accordion-item" id="root-section-technical">
-              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem;">
-                <button class="root-accordion-header" aria-expanded="false" aria-controls="tech-discussions-content" style="flex: 1; padding-right: 0.5rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem; position: relative;">
+                <button class="root-accordion-header" aria-expanded="false" aria-controls="tech-discussions-content" style="flex: 1; padding-right: 2.5rem; position: relative;">
                   <span class="root-title-text">Technical Discussions</span>
-                  <span class="root-count">${totalTechDiscussions} ${totalTechDiscussions === 1 ? 'Entry' : 'Entries'}</span>
                   <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
+                  <span class="root-count">${totalTechDiscussions}</span>
                 </button>
                 <button class="btn-copy-id" data-copy-type="section" data-copy-id="technical" title="Copy Technical Discussions Link" style="flex-shrink: 0; margin-left: 0.5rem;">
                   <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

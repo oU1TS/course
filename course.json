@@ -1,56 +1,17 @@
 {
   "courses": [
     {
-      "courseId": "cse-211-oop",
-      "courseName": "CSE-211: Object Oriented Programming",
+      "courseId": "cse-0611327-cgm",
+      "courseName": "CSE0611327: Computer Graphics & Multimedia",
       "lectures": [
         {
-          "lectureId": "cse-211-oop-l1",
-          "title": "OOP Basics & Class Layouts",
-          "semester": "Fall 2025",
-          "instructor": "Yeasin Arafat & Mim Rahman (Seniors Class)",
-          "description": "Introduction to object-oriented programming foundations, class declarations, memory layouts, constructor overloading, and encapsulation best practices in Java and C++.",
-          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse211-oop.md"
-        },
-        {
-          "lectureId": "cse-211-oop-l2",
-          "title": "Inheritance & Polymorphism Traps",
-          "semester": "Fall 2025",
-          "instructor": "Yeasin Arafat & Mim Rahman (Seniors Class)",
-          "description": "Deep dive into virtual methods, abstract classes, interface design, method overriding vs overloading pitfalls, and runtime polymorphism exam questions.",
-          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse211-oop.md"
-        }
-      ]
-    },
-    {
-      "courseId": "cse-213-dsa",
-      "courseName": "CSE-213: Data Structures & Algorithms",
-      "lectures": [
-        {
-          "lectureId": "cse-213-dsa-l1",
-          "title": "Recursion & Dynamic Programming",
-          "semester": "Spring 2026",
-          "instructor": "Tasnim Ahmed (Peer Class)",
-          "description": "Comprehensive review of recursive call stacks, recurrence relations, memoization tables, bottom-up DP state transitions, and classic exam problem patterns.",
-          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse213-dsa.md"
-        }
-      ]
-    },
-    {
-      "courseId": "mat-205-geom",
-      "courseName": "MAT-205: Coordinate Geometry & Vector Analysis",
-      "lectures": [
-        {
-          "lectureId": "mat-205-geom-l1",
-          "title": "Vector Fields & Coordinate Projections",
-          "semester": "Spring 2026",
-          "instructor": "Sadman Sakib (Seniors Q&A)",
-          "description": "Step-by-step guidance on 3D coordinate transformations, dot/cross product applications, gradient/divergence vectors, and past midterm question solutions.",
-          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/mat205-geometry.md"
+          "lectureId": "cse-0611327-cgm-l1",
+          "title": "MM Pin Diagram of 8085 Memorization Technique based on pattern | Bangla",
+          "semester": "Autumn 2026",
+          "instructor": "b1tranger",
+          "description": "",
+          "videoUrl": "https://www.youtube.com/watch?v=T3G7Rl9K6E0",
+          "notesUrl": "https://github.com/user-attachments/files/30556635/8085-pin-diagram-memorization-technique.pdf"
         }
       ]
     }
