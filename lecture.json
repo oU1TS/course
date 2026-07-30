@@ -9,6 +9,7 @@
           "title": "OOP Basics & Class Layouts",
           "semester": "Fall 2025",
           "instructor": "Yeasin Arafat & Mim Rahman (Seniors Class)",
+          "description": "Introduction to object-oriented programming foundations, class declarations, memory layouts, constructor overloading, and encapsulation best practices in Java and C++.",
           "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse211-oop.md"
         },
@@ -17,6 +18,7 @@
           "title": "Inheritance & Polymorphism Traps",
           "semester": "Fall 2025",
           "instructor": "Yeasin Arafat & Mim Rahman (Seniors Class)",
+          "description": "Deep dive into virtual methods, abstract classes, interface design, method overriding vs overloading pitfalls, and runtime polymorphism exam questions.",
           "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse211-oop.md"
         }
@@ -31,6 +33,7 @@
           "title": "Recursion & Dynamic Programming",
           "semester": "Spring 2026",
           "instructor": "Tasnim Ahmed (Peer Class)",
+          "description": "Comprehensive review of recursive call stacks, recurrence relations, memoization tables, bottom-up DP state transitions, and classic exam problem patterns.",
           "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/cse213-dsa.md"
         }
@@ -45,6 +48,7 @@
           "title": "Vector Fields & Coordinate Projections",
           "semester": "Spring 2026",
           "instructor": "Sadman Sakib (Seniors Q&A)",
+          "description": "Step-by-step guidance on 3D coordinate transformations, dot/cross product applications, gradient/divergence vectors, and past midterm question solutions.",
           "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/mat205-geometry.md"
         }

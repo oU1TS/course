@@ -151,6 +151,23 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
           }
 
+          let descDropdownHtml = '';
+          if (item.description) {
+            descDropdownHtml = `
+              <div class="card-desc-wrapper">
+                <button class="card-desc-toggle" aria-expanded="false" aria-controls="desc-${escapeHTML(item.discussionId)}">
+                  <span>Session Description</span>
+                  <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <div class="card-desc-content" id="desc-${escapeHTML(item.discussionId)}" style="max-height: 0;">
+                  <p class="card-desc-text">${escapeHTML(item.description)}</p>
+                </div>
+              </div>
+            `;
+          }
+
           cardsHtml += `
             <div class="discussion-card" id="discussion-${escapeHTML(item.discussionId)}">
               <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
@@ -164,6 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
               <h4 class="lecture-title">${escapeHTML(item.title)}</h4>
               <p class="lecture-instructor">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
+              ${descDropdownHtml}
               <div class="card-actions">
                 <a href="${escapeHTML(item.videoUrl)}" class="card-btn btn-video" target="_blank" rel="noopener noreferrer">
                   <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -198,6 +216,23 @@ document.addEventListener('DOMContentLoaded', () => {
             lecturesHtml = '<p class="no-data">No lectures available for this course.</p>';
           } else {
             lectures.forEach(item => {
+              let descDropdownHtml = '';
+              if (item.description) {
+                descDropdownHtml = `
+                  <div class="card-desc-wrapper">
+                    <button class="card-desc-toggle" aria-expanded="false" aria-controls="desc-${escapeHTML(item.lectureId)}">
+                      <span>Session Description</span>
+                      <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="card-desc-content" id="desc-${escapeHTML(item.lectureId)}" style="max-height: 0;">
+                      <p class="card-desc-text">${escapeHTML(item.description)}</p>
+                    </div>
+                  </div>
+                `;
+              }
+
               lecturesHtml += `
                 <div class="discussion-card" id="lecture-${escapeHTML(item.lectureId)}">
                   <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
@@ -211,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   </div>
                   <h4 class="lecture-title">${escapeHTML(item.title)}</h4>
                   <p class="lecture-instructor">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
+                  ${descDropdownHtml}
                   <div class="card-actions">
                     <a href="${escapeHTML(item.videoUrl)}" class="card-btn btn-video" target="_blank" rel="noopener noreferrer">
                       <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -238,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
           courseAccordionHtml += `
             <div class="course-accordion-item" id="course-${escapeHTML(course.courseId)}">
               <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem;">
-                <button class="course-accordion-header" aria-expanded="true" aria-controls="lectures-${escapeHTML(course.courseId)}" style="flex: 1; padding-right: 0.5rem;">
+                <button class="course-accordion-header" aria-expanded="false" aria-controls="lectures-${escapeHTML(course.courseId)}" style="flex: 1; padding-right: 0.5rem;">
                   <span class="course-title-text">${escapeHTML(course.courseName)}</span>
                   <span class="lectures-count">${lectures.length} ${lectures.length === 1 ? 'Lecture' : 'Lectures'}</span>
                   <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -252,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   </svg>
                 </button>
               </div>
-              <div class="course-accordion-content" id="lectures-${escapeHTML(course.courseId)}" style="max-height: none;">
+              <div class="course-accordion-content" id="lectures-${escapeHTML(course.courseId)}" style="max-height: 0;">
                 <div class="lectures-grid">
                   ${lecturesHtml}
                 </div>
@@ -271,32 +307,10 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <div class="root-discussions-container">
-            <!-- Root Dropdown Menu 1: Technical Discussions -->
-            <div class="root-accordion-item" id="root-section-technical">
-              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem;">
-                <button class="root-accordion-header" aria-expanded="true" aria-controls="tech-discussions-content" style="flex: 1; padding-right: 0.5rem;">
-                  <span class="root-title-text">Technical Discussions</span>
-                  <span class="root-count">${totalTechDiscussions} ${totalTechDiscussions === 1 ? 'Entry' : 'Entries'}</span>
-                  <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
-                </button>
-                <button class="btn-copy-id" data-copy-type="section" data-copy-id="technical" title="Copy Technical Discussions Link" style="flex-shrink: 0; margin-left: 0.5rem;">
-                  <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                  </svg>
-                </button>
-              </div>
-              <div class="root-accordion-content" id="tech-discussions-content" style="max-height: none;">
-                ${techDiscussionsHtml}
-              </div>
-            </div>
-
-            <!-- Root Dropdown Menu 2: Course Discussions -->
+            <!-- Root Dropdown Menu 1: Course Discussions -->
             <div class="root-accordion-item" id="root-section-course">
               <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem;">
-                <button class="root-accordion-header" aria-expanded="true" aria-controls="course-discussions-content" style="flex: 1; padding-right: 0.5rem;">
+                <button class="root-accordion-header" aria-expanded="false" aria-controls="course-discussions-content" style="flex: 1; padding-right: 0.5rem;">
                   <span class="root-title-text">Course Discussions</span>
                   <span class="root-count">${totalCourseLectures} ${totalCourseLectures === 1 ? 'Lecture' : 'Lectures'}</span>
                   <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -310,10 +324,32 @@ document.addEventListener('DOMContentLoaded', () => {
                   </svg>
                 </button>
               </div>
-              <div class="root-accordion-content" id="course-discussions-content" style="max-height: none;">
+              <div class="root-accordion-content" id="course-discussions-content" style="max-height: 0;">
                 <div class="courses-accordion">
                   ${courseAccordionHtml}
                 </div>
+              </div>
+            </div>
+
+            <!-- Root Dropdown Menu 2: Technical Discussions -->
+            <div class="root-accordion-item" id="root-section-technical">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem;">
+                <button class="root-accordion-header" aria-expanded="false" aria-controls="tech-discussions-content" style="flex: 1; padding-right: 0.5rem;">
+                  <span class="root-title-text">Technical Discussions</span>
+                  <span class="root-count">${totalTechDiscussions} ${totalTechDiscussions === 1 ? 'Entry' : 'Entries'}</span>
+                  <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <button class="btn-copy-id" data-copy-type="section" data-copy-id="technical" title="Copy Technical Discussions Link" style="flex-shrink: 0; margin-left: 0.5rem;">
+                  <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="root-accordion-content" id="tech-discussions-content" style="max-height: 0;">
+                ${techDiscussionsHtml}
               </div>
             </div>
           </div>
@@ -811,6 +847,20 @@ document.addEventListener('DOMContentLoaded', () => {
           header.setAttribute('aria-expanded', !isExpanded);
           const content = item.querySelector('.course-accordion-content, .topic-accordion-content');
           if (content) {
+            content.style.maxHeight = !isExpanded ? 'none' : '0';
+          }
+        });
+      });
+
+      // 3. Bind Entry Card Nested Description Toggle Handlers
+      const descHeaders = document.querySelectorAll('.card-desc-toggle');
+      descHeaders.forEach(header => {
+        header.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isExpanded = header.getAttribute('aria-expanded') === 'true';
+          header.setAttribute('aria-expanded', !isExpanded);
+          const content = header.nextElementSibling;
+          if (content && content.classList.contains('card-desc-content')) {
             content.style.maxHeight = !isExpanded ? 'none' : '0';
           }
         });

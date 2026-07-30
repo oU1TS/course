@@ -5,8 +5,9 @@
       "title": "Technical Discussion #1 | CSE-55 UITS | 07 28 22 12 08",
       "semester": "Summer 2022",
       "instructor": "OmniPotato23",
+      "description": "Interactive peer workshop reviewing UITS CSE-55 semester coursework, core programming constructs, laboratory assignments, and practical exam question breakdowns.",
       "videoUrl": "https://youtu.be/kWSYilxPv4s",
-      "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/technical-discussion-1.md"
+      "notesUrl": "render.html?file=note/technical/tech-1.md"
     }
   ]
 }
