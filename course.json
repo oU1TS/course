@@ -5,6 +5,15 @@
       "courseName": "CSE0611327: Computer Graphics & Multimedia",
       "lectures": [
         {
+          "lectureId": "cse-0611327-cgm-l2",
+          "title": "MM Memory Data Banks",
+          "semester": "Autumn 2026",
+          "instructor": "b1tranger",
+          "description": "",
+          "videoUrl": "https://youtu.be/sbMpP3OyGGQ",
+          "notesUrl": "https://github.com/user-attachments/files/30592546/03.RISC.CISC.and.8085.pins.pdf"
+        },
+        {
           "lectureId": "cse-0611327-cgm-l1",
           "title": "MM Pin Diagram of 8085 Memorization Technique based on pattern | Bangla",
           "semester": "Autumn 2026",
