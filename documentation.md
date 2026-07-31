@@ -33,7 +33,7 @@ c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
 
 1. **[index.html](index.html)**
    - Serves as the single viewport shell.
-   - Contains static global elements: `<header>` (logo, navigation drawer, theme switch, hamburger toggle), `<footer>`, and two overlay modal shells: `#roadmap-modal` (for step details) and `#lecture-select-modal` (for select dialogs when multiple related lectures exist).
+   - Contains static global elements: `<header>` (logo, navigation drawer, theme switch, hamburger toggle), `<footer>`, and three overlay modal shells: `#roadmap-modal` (for step details), `#lecture-select-modal` (for select dialogs when multiple related lectures exist), and `#notes-select-modal` (for select dialogs when multiple lecture notes exist).
    - Hooks up the main entry viewport: `<main id="content-app">`.
 
 2. **[style.css](style.css)**
@@ -44,17 +44,17 @@ c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
 3. **[app.js](app.js)**
    - Initializes the application and controls client-side routing based on `window.location.hash`.
    - Lazily fetches and caches `data.json`, `course.json`, `technical.json`, and `resource.json` depending on the active page, saving states into in-memory variables (`appState`, `lecturesState`, `technicalState`, and `resourcesState`).
-   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups, root & child accordion expanders, copy-link clicks, and route changes.
-   - Contains stateless template compilation functions that compile raw JSON data slices and inject them as safe, XSS-escaped HTML templates into `#content-app`.
+   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups (`#roadmap-modal`, `#lecture-select-modal`, `#notes-select-modal`), root & child accordion expanders, copy-link clicks, and route changes.
+   - Normalizes single vs multiple note entries in `notesUrl` (`normalizeNotesUrl`) and compiles safe HTML templates.
 
 4. **[data.json](data.json)**
    - Stores structural page metadata including motto descriptions, roadmap steps, about text blocks, and channel links.
 
 5. **[course.json](course.json) & [lecture.json](lecture.json)**
-   - Grouped peer recorded lectures, semesters, guided instructors, video links, and note urls indexed by unique course IDs (`courseId`) and lecture IDs (`lectureId`).
+   - Grouped peer recorded lectures, semesters, guided instructors, video links, and note URLs (supporting single strings, string arrays, or note object arrays) indexed by unique course IDs (`courseId`) and lecture IDs (`lectureId`).
 
 6. **[technical.json](technical.json)**
-   - Technical workshop discussions, semesters, guided maintainers, video links, and note urls indexed by unique topic IDs (`topicId`) and discussion IDs (`discussionId`).
+   - Technical workshop discussions, semesters, guided maintainers, video links, and note URLs (supporting single or multiple note attachments) indexed by unique topic IDs (`topicId`) and discussion IDs (`discussionId`).
 
 7. **[resource.json](resource.json)**
    - Curated study folders, repository links, and guides mapped to unique resource IDs (`resourceId`) and related course or lecture IDs.
@@ -110,7 +110,7 @@ graph TD
 #### 4. Event Binding and Cleanup
 - After mounting the HTML, `setupViewInteractions()` binds post-render event listeners:
   - **Home**: Binds clicks on roadmap steps to open `#roadmap-modal`.
-  - **Discussions**: Binds collapsible course accordion panels and auto-expands/scrolls/flashes target lectures if `lecture` or `course` parameters exist in the URL query.
+  - **Discussions**: Binds collapsible course & root accordion panels, session description toggles, and multiple notes selection popups (`#notes-select-modal`). Auto-expands/scrolls/flashes target lectures if `lecture` or `course` parameters exist in the URL query.
   - **Resources**: Binds multiple related lecture buttons to trigger `#lecture-select-modal`. Auto-scrolls and flashes card if `resource` parameter exists in the URL query.
   - **Global**: Binds `.btn-copy-id` sharing button actions to copy deep link URLs directly to the clipboard.
 
@@ -129,7 +129,12 @@ The application state is minimal and managed entirely in the client window:
 
 ## 🕒 Version History
 
-### 🔗 v1.2.0 — Content Segregation, Deep Linking & Selection Popups (Current)
+### 🔗 v1.3.0 — Multiple Notes Support & Selection Popups (Current)
+* **Multiple Note Attachments**: Extended `notesUrl` in `course.json` and `technical.json` to accept single URL strings, string arrays, or note object arrays (`{ title, url }`).
+* **Notes Selector Modal**: Added `#notes-select-modal` overlay dialog to prompt users with a clean file selection popup when a lecture or discussion contains multiple note attachments.
+* **Automatic Title Extraction**: Programmed `deriveNoteTitle()` in `app.js` to automatically extract human-readable titles from note attachment URLs and file parameters.
+
+### 🔗 v1.2.0 — Content Segregation & Deep Linking
 * **Content Segregation**: Separated core page data, lecture discussions, and academic resources into distinct databases (`data.json`, `lecture.json`, and `resource.json`) to minimize bundle sizes.
 * **Collapsible Accordions**: Replaced the long discussions list with a collapsible accordion grouped by courses.
 * **Clipboard Deep-Link Sharing**: Added link buttons next to Courses, Lectures, and Resources that generate absolute deep-linking URLs, copying them with transition success checkmarks.

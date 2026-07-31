@@ -49,6 +49,78 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/'/g, '&#039;');
   }
 
+  function deriveNoteTitle(url, index) {
+    if (!url) return `Note ${index + 1}`;
+    try {
+      if (url.includes('render.html?file=')) {
+        const fileParam = url.split('render.html?file=')[1];
+        const filename = fileParam.split('/').pop();
+        return filename || `Note ${index + 1}`;
+      }
+      const pathname = new URL(url, window.location.href).pathname;
+      const filename = pathname.split('/').pop();
+      if (filename) {
+        return decodeURIComponent(filename);
+      }
+    } catch (e) {
+      // Fallback if URL parsing fails
+    }
+    return `Note ${index + 1}`;
+  }
+
+  function normalizeNotesUrl(notesUrl) {
+    if (!notesUrl) return [];
+    if (typeof notesUrl === 'string') {
+      return [{ title: 'Lecture Notes', url: notesUrl }];
+    }
+    if (Array.isArray(notesUrl)) {
+      return notesUrl.map((item, idx) => {
+        if (typeof item === 'string') {
+          return { title: deriveNoteTitle(item, idx), url: item };
+        } else if (item && typeof item === 'object') {
+          return {
+            title: item.title || deriveNoteTitle(item.url, idx),
+            url: item.url || ''
+          };
+        }
+        return { title: `Note ${idx + 1}`, url: '' };
+      }).filter(n => Boolean(n.url));
+    }
+    return [];
+  }
+
+  function renderNotesButtonHtml(notesUrl, itemTitle) {
+    const notes = normalizeNotesUrl(notesUrl);
+    if (notes.length === 0) return '';
+
+    const iconSvg = `
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+    `;
+
+    if (notes.length === 1) {
+      return `
+        <a href="${escapeHTML(notes[0].url)}" class="card-btn btn-notes" target="_blank" rel="noopener noreferrer">
+          ${iconSvg}
+          <span>${escapeHTML(notes[0].title || 'Lecture Notes')}</span>
+        </a>
+      `;
+    }
+
+    const notesJson = JSON.stringify(notes);
+    return `
+      <button class="card-btn btn-notes btn-select-notes" data-notes="${escapeHTML(notesJson)}" data-title="${escapeHTML(itemTitle || 'Lecture Notes')}">
+        ${iconSvg}
+        <span>Lecture Notes (${notes.length})</span>
+      </button>
+    `;
+  }
+
   const Render = {
     // Render Homepage
     home(data) {
@@ -135,21 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         let cardsHtml = '';
         techDiscussions.forEach(item => {
-          let notesBtnHtml = '';
-          if (item.notesUrl) {
-            notesBtnHtml = `
-              <a href="${escapeHTML(item.notesUrl)}" class="card-btn btn-notes" target="_blank" rel="noopener noreferrer">
-                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                  <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                <span>Lecture Notes</span>
-              </a>
-            `;
-          }
+          const notesBtnHtml = renderNotesButtonHtml(item.notesUrl, item.title);
 
           let descDropdownHtml = '';
           if (item.description) {
@@ -255,16 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
                       </svg>
                       <span>Video Recording</span>
                     </a>
-                    <a href="${escapeHTML(item.notesUrl)}" class="card-btn btn-notes" target="_blank" rel="noopener noreferrer">
-                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                      </svg>
-                      <span>Lecture Notes</span>
-                    </a>
+                    ${renderNotesButtonHtml(item.notesUrl, item.title)}
                   </div>
                 </div>
               `;
@@ -866,6 +915,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
 
+      // 4. Bind Multiple Notes Selection Popups
+      const selectNotesBtns = document.querySelectorAll('.btn-select-notes');
+      selectNotesBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          try {
+            const notesAttr = btn.getAttribute('data-notes') || '[]';
+            const notes = JSON.parse(notesAttr);
+            const title = btn.getAttribute('data-title') || 'Lecture Notes';
+            if (notes.length > 0) {
+              openNotesSelectModal(notes, title);
+            }
+          } catch (err) {
+            console.error('Error parsing notes data:', err);
+          }
+        });
+      });
+
       // Helper functions for auto-expansion
       function expandRootSection(sectionKey) {
         const rootItem = document.getElementById(`root-section-${sectionKey}`);
@@ -1135,6 +1202,74 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && selectModalOverlay && selectModalOverlay.classList.contains('open')) {
       closeLectureSelectModal();
+    }
+  });
+
+  /* ==========================================================================
+     5b. Notes Selection Modal Engine
+     ========================================================================== */
+  function openNotesSelectModal(notes, itemTitle) {
+    const modal = document.getElementById('notes-select-modal');
+    const list = document.getElementById('notes-links-list');
+    const titleEl = document.getElementById('notes-modal-title');
+    const closeBtn = document.getElementById('notes-modal-close-btn');
+
+    if (!modal || !list) return;
+
+    if (titleEl) {
+      titleEl.textContent = itemTitle ? `Notes: ${itemTitle}` : 'Select Lecture Notes';
+    }
+
+    list.innerHTML = '';
+    notes.forEach((note, idx) => {
+      const a = document.createElement('a');
+      a.href = note.url;
+      a.className = 'select-modal-link';
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.innerHTML = `
+        <span class="lecture-name">${escapeHTML(note.title || `Note ${idx + 1}`)}</span>
+        <span class="course-name-sub">${escapeHTML(note.url)}</span>
+      `;
+      a.addEventListener('click', () => {
+        closeNotesSelectModal();
+      });
+      list.appendChild(a);
+    });
+
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closeNotesSelectModal() {
+    const modal = document.getElementById('notes-select-modal');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+  }
+
+  const notesCloseBtn = document.getElementById('notes-modal-close-btn');
+  if (notesCloseBtn) {
+    notesCloseBtn.addEventListener('click', closeNotesSelectModal);
+  }
+
+  const notesModalOverlay = document.getElementById('notes-select-modal');
+  if (notesModalOverlay) {
+    notesModalOverlay.addEventListener('click', (e) => {
+      if (e.target === notesModalOverlay) {
+        closeNotesSelectModal();
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && notesModalOverlay && notesModalOverlay.classList.contains('open')) {
+      closeNotesSelectModal();
     }
   });
 

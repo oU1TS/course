@@ -20,7 +20,10 @@
           "instructor": "b1tranger",
           "description": "",
           "videoUrl": "https://www.youtube.com/watch?v=T3G7Rl9K6E0",
-          "notesUrl": "https://github.com/user-attachments/files/30556635/8085-pin-diagram-memorization-technique.pdf"
+          "notesUrl": [
+            "https://github.com/user-attachments/files/30556635/8085-pin-diagram-memorization-technique.pdf",
+            "https://github.com/user-attachments/files/30592546/03.RISC.CISC.and.8085.pins.pdf"
+          ]
         }
       ]
     }
