@@ -1179,59 +1179,123 @@ body.light-theme .modal-wrapper {
 
 .lectures-grid {
   padding: 1.5rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 1.25rem;
 }
 
-.discussion-card {
+.discussion-accordion-item {
   border: 1px solid var(--border-color);
   background-color: var(--bg-primary);
-  padding: 1.25rem;
   border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  transition: all var(--transition-speed) ease;
+  overflow: visible !important;
+  transition: border-color var(--transition-speed) ease;
 }
 
-.discussion-card:hover {
+.discussion-accordion-item:hover {
   border-color: var(--border-hover);
-  background-color: var(--bg-secondary);
 }
 
-.lecture-title {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
+.discussion-accordion-header-wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  position: relative;
+}
+
+.discussion-accordion-header {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0 2.5rem 0 0;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-primary);
+  position: relative;
+  font-family: inherit;
+}
+
+.discussion-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.id-tag {
+  font-size: 0.75rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  font-family: monospace;
+  padding: 2px 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: 4px;
 }
 
-.lecture-instructor {
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  margin-bottom: 0.75rem;
+.discussion-accordion-header .lecture-title {
+  margin-bottom: 0.35rem;
+}
+
+.discussion-accordion-header .lecture-instructor {
+  margin-bottom: 0;
+}
+
+.discussion-accordion-header .accordion-arrow {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.5rem;
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-speed) ease;
+}
+
+.discussion-accordion-header[aria-expanded="true"] .accordion-arrow {
+  transform: rotate(180deg);
+}
+
+.discussion-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-top: 0px solid transparent;
+}
+
+.discussion-accordion-item.expanded .discussion-accordion-content,
+.discussion-accordion-header[aria-expanded="true"] + .discussion-accordion-content,
+.discussion-accordion-header[aria-expanded="true"] ~ .discussion-accordion-content {
+  border-top: 1px solid var(--border-color);
+  overflow: visible !important;
+}
+
+.discussion-card-body {
+  padding: 1.25rem 1.5rem;
+  background-color: var(--bg-secondary);
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 /* Card Nested Description Dropdown Styles */
 .card-desc-wrapper {
-  margin-top: 0.25rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-primary);
   overflow: hidden;
 }
 
 .card-desc-toggle {
   width: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: none;
   border: none;
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.825rem;
   font-weight: 600;
   color: var(--text-secondary);
   cursor: pointer;
@@ -1240,7 +1304,7 @@ body.light-theme .modal-wrapper {
 
 .card-desc-toggle:hover {
   color: var(--text-primary);
-  background-color: var(--bg-primary);
+  background-color: var(--bg-secondary);
 }
 
 .card-desc-toggle .accordion-arrow {
@@ -1260,17 +1324,30 @@ body.light-theme .modal-wrapper {
   border-top: 0px solid transparent;
 }
 
-.card-desc-toggle[aria-expanded="true"]+.card-desc-content {
+.card-desc-toggle[aria-expanded="true"] + .card-desc-content {
   border-top: 1px solid var(--border-color);
-  padding: 0.75rem;
+  padding: 0.85rem 1rem;
   background-color: var(--bg-primary);
 }
 
 .card-desc-text {
-  font-size: 0.825rem;
-  line-height: 1.5;
+  font-size: 0.85rem;
+  line-height: 1.6;
   color: var(--text-secondary);
   margin: 0;
+}
+
+.lecture-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.lecture-instructor {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
 }
 
 

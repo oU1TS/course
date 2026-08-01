@@ -227,9 +227,19 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           cardsHtml += `
-            <div class="discussion-card" id="discussion-${escapeHTML(item.discussionId)}">
-              <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <span class="semester-tag" style="margin-bottom: 0;">${escapeHTML(item.semester)}</span>
+            <div class="discussion-accordion-item" id="discussion-${escapeHTML(item.discussionId)}">
+              <div class="discussion-accordion-header-wrapper">
+                <button class="discussion-accordion-header" aria-expanded="false" aria-controls="content-discussion-${escapeHTML(item.discussionId)}">
+                  <div class="discussion-header-meta">
+                    <span class="semester-tag">${escapeHTML(item.semester)}</span>
+                    <span class="id-tag">${escapeHTML(item.discussionId)}</span>
+                  </div>
+                  <h4 class="lecture-title">${escapeHTML(item.title)}</h4>
+                  <p class="lecture-instructor">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
+                  <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
                 <button class="btn-copy-id" data-copy-type="discussion" data-copy-id="${escapeHTML(item.discussionId)}" title="Copy Discussion Link">
                   <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
@@ -237,18 +247,20 @@ document.addEventListener('DOMContentLoaded', () => {
                   </svg>
                 </button>
               </div>
-              <h4 class="lecture-title">${escapeHTML(item.title)}</h4>
-              <p class="lecture-instructor">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
-              ${descDropdownHtml}
-              <div class="card-actions">
-                <a href="${escapeHTML(item.videoUrl)}" class="card-btn btn-video" target="_blank" rel="noopener noreferrer">
-                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                  </svg>
-                  <span>Video Recording</span>
-                </a>
-                ${notesBtnHtml}
+              <div class="discussion-accordion-content" id="content-discussion-${escapeHTML(item.discussionId)}" style="max-height: 0;">
+                <div class="discussion-card-body">
+                  ${descDropdownHtml}
+                  <div class="card-actions">
+                    <a href="${escapeHTML(item.videoUrl)}" class="card-btn btn-video" target="_blank" rel="noopener noreferrer">
+                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                      </svg>
+                      <span>Video Recording</span>
+                    </a>
+                    ${notesBtnHtml}
+                  </div>
+                </div>
               </div>
             </div>
           `;
@@ -274,6 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
             lecturesHtml = '<p class="no-data">No lectures available for this course.</p>';
           } else {
             lectures.forEach(item => {
+              const notesBtnHtml = renderNotesButtonHtml(item.notesUrl, item.title);
+
               let descDropdownHtml = '';
               if (item.description) {
                 descDropdownHtml = `
@@ -292,9 +306,19 @@ document.addEventListener('DOMContentLoaded', () => {
               }
 
               lecturesHtml += `
-                <div class="discussion-card" id="lecture-${escapeHTML(item.lectureId)}">
-                  <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                    <span class="semester-tag" style="margin-bottom: 0;">${escapeHTML(item.semester)}</span>
+                <div class="discussion-accordion-item" id="lecture-${escapeHTML(item.lectureId)}">
+                  <div class="discussion-accordion-header-wrapper">
+                    <button class="discussion-accordion-header" aria-expanded="false" aria-controls="content-lecture-${escapeHTML(item.lectureId)}">
+                      <div class="discussion-header-meta">
+                        <span class="semester-tag">${escapeHTML(item.semester)}</span>
+                        <span class="id-tag">${escapeHTML(item.lectureId)}</span>
+                      </div>
+                      <h4 class="lecture-title">${escapeHTML(item.title)}</h4>
+                      <p class="lecture-instructor">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
+                      <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
                     <button class="btn-copy-id" data-copy-type="lecture" data-copy-id="${escapeHTML(item.lectureId)}" title="Copy Lecture Link">
                       <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
@@ -302,18 +326,20 @@ document.addEventListener('DOMContentLoaded', () => {
                       </svg>
                     </button>
                   </div>
-                  <h4 class="lecture-title">${escapeHTML(item.title)}</h4>
-                  <p class="lecture-instructor">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
-                  ${descDropdownHtml}
-                  <div class="card-actions">
-                    <a href="${escapeHTML(item.videoUrl)}" class="card-btn btn-video" target="_blank" rel="noopener noreferrer">
-                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                      </svg>
-                      <span>Video Recording</span>
-                    </a>
-                    ${renderNotesButtonHtml(item.notesUrl, item.title)}
+                  <div class="discussion-accordion-content" id="content-lecture-${escapeHTML(item.lectureId)}" style="max-height: 0;">
+                    <div class="discussion-card-body">
+                      ${descDropdownHtml}
+                      <div class="card-actions">
+                        <a href="${escapeHTML(item.videoUrl)}" class="card-btn btn-video" target="_blank" rel="noopener noreferrer">
+                          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                          </svg>
+                          <span>Video Recording</span>
+                        </a>
+                        ${notesBtnHtml}
+                      </div>
+                    </div>
                   </div>
                 </div>
               `;
@@ -901,7 +927,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
 
-      // 3. Bind Entry Card Nested Description Toggle Handlers
+      // 3. Bind Item Level Accordion Toggle Handlers
+      const itemHeaders = document.querySelectorAll('.discussion-accordion-header');
+      itemHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+          const item = header.closest('.discussion-accordion-item');
+          const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+          header.setAttribute('aria-expanded', !isExpanded);
+          if (item) item.classList.toggle('expanded', !isExpanded);
+          const content = item.querySelector('.discussion-accordion-content');
+          if (content) {
+            content.style.maxHeight = !isExpanded ? 'none' : '0';
+          }
+        });
+      });
+
+      // 4. Bind Nested Session Description Toggle Handlers
       const descHeaders = document.querySelectorAll('.card-desc-toggle');
       descHeaders.forEach(header => {
         header.addEventListener('click', (e) => {
@@ -915,7 +957,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
 
-      // 4. Bind Multiple Notes Selection Popups
+      // 5. Bind Multiple Notes Selection Popups
       const selectNotesBtns = document.querySelectorAll('.btn-select-notes');
       selectNotesBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -957,7 +999,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // 3. Handle redirect query parameters (auto-expand and scroll)
+      function expandDiscussionItem(item) {
+        if (item) {
+          const header = item.querySelector('.discussion-accordion-header');
+          const content = item.querySelector('.discussion-accordion-content');
+          if (header && content) {
+            header.setAttribute('aria-expanded', 'true');
+            item.classList.add('expanded');
+            content.style.maxHeight = 'none';
+          }
+        }
+      }
+
+      // 5. Handle redirect query parameters (auto-expand and scroll)
       if (queryParams) {
         if (queryParams.discussion) {
           expandRootSection('technical');
@@ -965,6 +1019,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (discussionCard) {
             const topicItem = discussionCard.closest('.topic-accordion-item');
             if (topicItem) expandAccordionItem(topicItem);
+            expandDiscussionItem(discussionCard);
             setTimeout(() => {
               discussionCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
               discussionCard.classList.add('highlight-flash');
@@ -985,7 +1040,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const lectureCard = document.getElementById(`lecture-${queryParams.lecture}`);
           if (lectureCard) {
             const courseItem = lectureCard.closest('.course-accordion-item');
-            expandAccordionItem(courseItem);
+            if (courseItem) expandAccordionItem(courseItem);
+            expandDiscussionItem(lectureCard);
             setTimeout(() => {
               lectureCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
               lectureCard.classList.add('highlight-flash');

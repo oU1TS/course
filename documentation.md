@@ -44,7 +44,7 @@ c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
 3. **[app.js](app.js)**
    - Initializes the application and controls client-side routing based on `window.location.hash`.
    - Lazily fetches and caches `data.json`, `course.json`, `technical.json`, and `resource.json` depending on the active page, saving states into in-memory variables (`appState`, `lecturesState`, `technicalState`, and `resourcesState`).
-   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups (`#roadmap-modal`, `#lecture-select-modal`, `#notes-select-modal`), root & child accordion expanders, copy-link clicks, and route changes.
+   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups (`#roadmap-modal`, `#lecture-select-modal`, `#notes-select-modal`), root & child accordion expanders, item-level parent dropdown accordions, nested session description toggles, copy-link clicks, and route changes.
    - Normalizes single vs multiple note entries in `notesUrl` (`normalizeNotesUrl`) and compiles safe HTML templates.
 
 4. **[data.json](data.json)**
@@ -129,7 +129,13 @@ The application state is minimal and managed entirely in the client window:
 
 ## 🕒 Version History
 
-### 🔗 v1.3.0 — Multiple Notes Support & Selection Popups (Current)
+### 🔗 v1.4.0 — Expandable Item Dropdowns & Session Description Toggles (Current)
+* **Item-Level Parent Dropdowns**: Wrapped individual lecture and technical discussion cards in `.discussion-accordion-item` expandable parent dropdowns.
+* **Collapsed Item View**: Before expanding, item headers display `"lectureId"` / `"discussionId"`, `"title"`, `"semester"`, and `"instructor"`, while hiding `"description"`, `"videoUrl"`, and `"notesUrl"`.
+* **Nested Session Description Dropdown**: Hidden `"description"` text behind a `.card-desc-toggle` dropdown toggle button ("Session Description") inside the expanded item body.
+* **Deep-Link Auto Expansion**: Updated URL hash router (`#discussions?lecture=ID` or `#discussions?discussion=ID`) to automatically expand the root section, course dropdown, and target item dropdown before scrolling and highlighting.
+
+### 🔗 v1.3.0 — Multiple Notes Support & Selection Popups
 * **Multiple Note Attachments**: Extended `notesUrl` in `course.json` and `technical.json` to accept single URL strings, string arrays, or note object arrays (`{ title, url }`).
 * **Notes Selector Modal**: Added `#notes-select-modal` overlay dialog to prompt users with a clean file selection popup when a lecture or discussion contains multiple note attachments.
 * **Automatic Title Extraction**: Programmed `deriveNoteTitle()` in `app.js` to automatically extract human-readable titles from note attachment URLs and file parameters.

@@ -56,33 +56,38 @@ The Hero Section is **not** defined statically in `index.html`. It is generated 
 
 ### Data Schema
 ```json
-// technical.json (2-layer structure: Root -> Entries)
+// technical.json (Root -> Discussion Item Accordions)
 {
   "discussions": [
     {
-      "discussionId": "tech-disc-1",
-      "title": "Technical Discussion #1 | CSE-55 UITS | 07 28 22 12 08",
-      "semester": "Summer 2022",
+      "discussionId": "tech-disc-1.1",
+      "title": "Technical Discussion #1.1 | CSE-55 UITS",
+      "semester": "Autumn 2026",
       "instructor": "OmniPotato23",
-      "videoUrl": "https://youtu.be/kWSYilxPv4s",
-      "notesUrl": "https://github.com/oU1TS/course/blob/main/doc/notes/technical-discussion-1.md"
+      "description": "This video covers topics ranging from hosting portfolio websites...",
+      "videoUrl": "https://youtu.be/icGNcUG_fKI",
+      "notesUrl": [
+        "render.html?file=note/technical/tech-1.1.md",
+        "https://github.com/user-attachments/files/30622748/Linux.VM.Installation.Guide.pdf"
+      ]
     }
   ]
 }
 
-// course.json / lecture.json (3-layer structure: Root -> Courses -> Lectures)
+// course.json / lecture.json (Root -> Courses -> Lecture Item Accordions)
 {
   "courses": [
     {
-      "courseId": "cse-211-oop",
-      "courseName": "CSE-211: Object Oriented Programming",
+      "courseId": "cse-0611327-cgm",
+      "courseName": "CSE0611327: Computer Graphics & Multimedia",
       "lectures": [
         {
-          "lectureId": "cse-211-oop-l1",
-          "semester": "Fall 2025",
-          "title": "OOP Basics & Class Layouts",
-          "instructor": "Yeasin Arafat & Mim Rahman",
-          "videoUrl": "https://youtube.com/...",
+          "lectureId": "cse-0611327-cgm-l2",
+          "title": "MM Memory Data Banks",
+          "semester": "Autumn 2026",
+          "instructor": "b1tranger",
+          "description": "",
+          "videoUrl": "https://youtu.be/sbMpP3OyGGQ",
           "notesUrl": "https://github.com/..."
         }
       ]
@@ -93,15 +98,20 @@ The Hero Section is **not** defined statically in `index.html`. It is generated 
 
 ### Rendering & Interaction Flow
 - **Data Load**: Invoked when the hash is `#discussions` via `Render.discussions({ courseData, techData })` (fetching `course.json` and `technical.json` first if uncached).
-- **Root Drop-down Menus**:
-  1. **Technical Discussions** (`#root-section-technical`): Direct 2-layer structure containing technical discussion cards directly inside the root dropdown.
-  2. **Course Discussions** (`#root-section-course`): 3-layer structure containing course accordions and lecture cards from `course.json`.
+- **Multi-Tier Accordion Hierarchy**:
+  1. **Root Section Accordions**: Top-level dropdown containers for **Course Discussions** (`#root-section-course`) and **Technical Discussions** (`#root-section-technical`).
+  2. **Course Accordions**: Inner course panel dropdowns grouped by `courseId` inside Course Discussions.
+  3. **Item Parent Dropdowns (`.discussion-accordion-item`)**: Each individual lecture or technical discussion item is rendered as an expandable parent dropdown card.
+- **Item Collapsed vs Expanded View**:
+  - **Collapsed View (Before Expanding)**: Each item's header (`.discussion-accordion-header`) displays `"lectureId"` / `"discussionId"` tag, `"title"`, `"semester"` tag, and `"instructor"`, along with the copy link button and dropdown arrow. It hides `"description"`, `"videoUrl"`, and `"notesUrl"`.
+  - **Expanded View (On Header Click)**: Expands `.discussion-card-body` to reveal the **Video Recording** button, **Lecture Notes** button (or multiple notes selector button), and a **Session Description** dropdown toggle button (`.card-desc-toggle`) if description text is present.
+- **Nested Session Description Dropdown**: Clicking the "Session Description" toggle button inside the expanded item body expands/collapses the `"description"` text container (`.card-desc-content`).
 - **Copiable Deep Links**:
   - **Copy Root Dropdown Link**: A `.btn-copy-id` (with `data-copy-type="section"`) copies `#discussions?section=technical` or `#discussions?section=course`.
-  - **Copy Discussion Link**: Each technical discussion card has a `.btn-copy-id` (with `data-copy-type="discussion"`) copying `#discussions?discussion=DISCUSSION_ID`.
+  - **Copy Discussion Link**: Each technical discussion item has a `.btn-copy-id` (with `data-copy-type="discussion"`) copying `#discussions?discussion=DISCUSSION_ID`.
   - **Copy Course Link**: A `.btn-copy-id` (with `data-copy-type="course"`) copies `#discussions?course=COURSE_ID`.
-  - **Copy Lecture Link**: Each lecture card has a `.btn-copy-id` (with `data-copy-type="lecture"`) copying `#discussions?lecture=LECTURE_ID`.
-- **Auto-expansion & Deep Link Redirection**: Visiting query parameter URLs (`?section=...`, `?discussion=...`, `?course=...`, `?lecture=...`) automatically expands parent root sections and inner course accordions, scrolls to target elements, and triggers a `.highlight-flash` pulse animation.
+  - **Copy Lecture Link**: Each lecture item has a `.btn-copy-id` (with `data-copy-type="lecture"`) copying `#discussions?lecture=LECTURE_ID`.
+- **Auto-expansion & Deep Link Redirection**: Visiting query parameter URLs (`?section=...`, `?discussion=...`, `?course=...`, `?lecture=...`) automatically expands parent root sections, course accordions, and the target item's parent dropdown, scrolls to the element, and triggers a `.highlight-flash` pulse animation.
 
 ---
 
