@@ -1,4 +1,4 @@
-VM: https://tinyurl.com/4eup7xjn
+VM: https://tinyurl.com/4eup7xjn | https://github.com/oU1TS/course/releases/tag/%231
 
 ---
 
