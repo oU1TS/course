@@ -840,6 +840,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function routePage() {
+    const isOBEPage = !!document.getElementById('obe-app') || window.location.pathname.includes('obe_cracked.html');
+
+    if (isOBEPage) {
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href') || '';
+        if (href.includes('obe_cracked.html')) {
+          link.classList.add('active');
+          link.setAttribute('aria-current', 'page');
+        } else {
+          link.classList.remove('active');
+          link.removeAttribute('aria-current');
+        }
+      });
+      return;
+    }
+
     let rawHash = window.location.hash || '#home';
     let currentHash = rawHash;
     let queryParams = {};
@@ -865,7 +881,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Sync Active Navbar Link
     navLinks.forEach(link => {
-      if (link.getAttribute('href') === currentHash) {
+      const href = link.getAttribute('href') || '';
+      if (href === currentHash || href.endsWith(currentHash)) {
         link.classList.add('active');
         link.setAttribute('aria-current', 'page');
       } else {
@@ -1463,4 +1480,327 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   initializeTheme();
   routePage();
+
+  /* ==========================================================================
+     8. OBE Cracked Controller
+     ========================================================================== */
+  let obeDataState = null;
+  let selectedOBECourse = null;
+  let selectedOBECategory = 'all';
+
+  async function initOBECracked() {
+    const obeApp = document.getElementById('obe-app');
+    if (!obeApp) return;
+
+    const courseSelect = document.getElementById('obe-course-select');
+    const cardsGrid = document.getElementById('obe-outcome-cards-grid');
+
+    if (cardsGrid) {
+      cardsGrid.innerHTML = '<div class="skeleton-card" style="height: 200px; grid-column: 1 / -1;"></div>';
+    }
+
+    try {
+      const response = await fetch('obe_data.json');
+      if (!response.ok) throw new Error('Failed to fetch obe_data.json');
+      obeDataState = await response.json();
+    } catch (err) {
+      console.error('OBE Cracked error:', err);
+      if (cardsGrid) {
+        cardsGrid.innerHTML = '<p class="no-data">Failed to load OBE outcome data. Please check obe_data.json.</p>';
+      }
+      return;
+    }
+
+    if (!obeDataState || !obeDataState.courses || obeDataState.courses.length === 0) {
+      if (cardsGrid) {
+        cardsGrid.innerHTML = '<p class="no-data">No course outcomes available.</p>';
+      }
+      return;
+    }
+
+    // Populate course select dropdown
+    if (courseSelect) {
+      courseSelect.innerHTML = obeDataState.courses.map(c => `
+        <option value="${escapeHTML(c.course_code)}">${escapeHTML(c.course_code)}: ${escapeHTML(c.course_name)}</option>
+      `).join('');
+
+      selectedOBECourse = obeDataState.courses[0].course_code;
+
+      courseSelect.addEventListener('change', (e) => {
+        selectedOBECourse = e.target.value;
+        renderOBECards();
+      });
+    }
+
+    // Category Filter Tabs
+    const filterTabs = document.querySelectorAll('.obe-filter-tab');
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        selectedOBECategory = tab.getAttribute('data-category') || 'all';
+        renderOBECards();
+      });
+    });
+
+    renderOBECards();
+    initOBESandbox();
+    initNarrativeCarousel();
+  }
+
+  function initNarrativeCarousel() {
+    const box = document.getElementById('obe-narrative-box');
+    const contextEl = document.getElementById('obe-narrative-context');
+    const academicEl = document.getElementById('obe-academic-text');
+    const engineeringEl = document.getElementById('obe-engineering-text');
+    const counterEl = document.getElementById('obe-narrative-counter');
+    const hintEl = document.getElementById('obe-cycle-hint');
+
+    if (!box || !obeDataState || !obeDataState.narrative_comparisons || obeDataState.narrative_comparisons.length === 0) {
+      return;
+    }
+
+    const items = obeDataState.narrative_comparisons;
+    let currentNarrativeIndex = 0;
+    let narrativeTimer = null;
+    let isPaused = false;
+
+    function updateNarrative(index, animated = true) {
+      const item = items[index];
+      if (!item) return;
+
+      if (!animated) {
+        if (contextEl) contextEl.textContent = item.course_context || '';
+        if (academicEl) academicEl.textContent = item.academic_text || '';
+        if (engineeringEl) engineeringEl.textContent = item.engineering_text || '';
+        if (counterEl) counterEl.textContent = `${index + 1} / ${items.length}`;
+        return;
+      }
+
+      // Add cycling class to trigger fade-out & shift
+      if (contextEl) contextEl.classList.add('cycling');
+      if (academicEl) academicEl.classList.add('cycling');
+      if (engineeringEl) engineeringEl.classList.add('cycling');
+
+      setTimeout(() => {
+        if (contextEl) contextEl.textContent = item.course_context || '';
+        if (academicEl) academicEl.textContent = item.academic_text || '';
+        if (engineeringEl) engineeringEl.textContent = item.engineering_text || '';
+        if (counterEl) counterEl.textContent = `${index + 1} / ${items.length}`;
+
+        // Remove cycling class to fade back in smoothly
+        if (contextEl) contextEl.classList.remove('cycling');
+        if (academicEl) academicEl.classList.remove('cycling');
+        if (engineeringEl) engineeringEl.classList.remove('cycling');
+      }, 180);
+    }
+
+    function nextNarrative() {
+      currentNarrativeIndex = (currentNarrativeIndex + 1) % items.length;
+      updateNarrative(currentNarrativeIndex, true);
+    }
+
+    function startTimer() {
+      if (isPaused) return;
+      stopTimer();
+      if (hintEl) hintEl.textContent = 'Auto 7s | Click/Tap to cycle';
+      narrativeTimer = setInterval(() => {
+        nextNarrative();
+      }, 7000);
+    }
+
+    function stopTimer() {
+      if (narrativeTimer) {
+        clearInterval(narrativeTimer);
+        narrativeTimer = null;
+      }
+      if (isPaused && hintEl) {
+        hintEl.textContent = 'Paused | Click/Tap to cycle';
+      }
+    }
+
+    function pauseCycle() {
+      isPaused = true;
+      stopTimer();
+    }
+
+    function resumeCycle() {
+      isPaused = false;
+      startTimer();
+    }
+
+    function handleUserClick(e) {
+      if (e && e.type === 'touchstart') {
+        e.preventDefault();
+      }
+      nextNarrative();
+    }
+
+    // Initial render without animation
+    updateNarrative(currentNarrativeIndex, false);
+    startTimer();
+
+    // Interaction bindings: Click, Hover, Focus, Touch
+    box.addEventListener('click', handleUserClick);
+    box.addEventListener('mouseenter', pauseCycle);
+    box.addEventListener('mouseleave', resumeCycle);
+    box.addEventListener('focusin', pauseCycle);
+    box.addEventListener('focusout', resumeCycle);
+
+    box.addEventListener('touchstart', () => {
+      pauseCycle();
+      nextNarrative();
+    }, { passive: true });
+
+    box.addEventListener('touchend', () => {
+      // Resume timer after a short buffer on touch release
+      setTimeout(resumeCycle, 3000);
+    });
+
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleUserClick(e);
+      }
+    });
+  }
+
+  function renderOBECards() {
+    const cardsGrid = document.getElementById('obe-outcome-cards-grid');
+    const countEl = document.getElementById('obe-cards-count');
+    if (!cardsGrid || !obeDataState) return;
+
+    const courseObj = obeDataState.courses.find(c => c.course_code === selectedOBECourse);
+    if (!courseObj || !courseObj.outcomes) {
+      cardsGrid.innerHTML = '<p class="no-data">No outcomes found for this course.</p>';
+      if (countEl) countEl.textContent = 'Showing 0 outcomes';
+      return;
+    }
+
+    let outcomes = courseObj.outcomes;
+    if (selectedOBECategory !== 'all') {
+      outcomes = outcomes.filter(o => o.category === selectedOBECategory || o.po === selectedOBECategory);
+    }
+
+    if (countEl) {
+      countEl.textContent = `Showing ${outcomes.length} outcome${outcomes.length === 1 ? '' : 's'}`;
+    }
+
+    if (outcomes.length === 0) {
+      cardsGrid.innerHTML = '<p class="no-data">No matching outcomes found for the selected category filter.</p>';
+      return;
+    }
+
+    cardsGrid.innerHTML = outcomes.map(o => {
+      const categoryClass = (o.category || 'po1').toLowerCase();
+      return `
+        <article class="obe-card">
+          <div class="obe-card-header">
+            <div class="obe-card-badge-group">
+              <span class="obe-tag obe-tag-co">${escapeHTML(o.co)}</span>
+              <span class="obe-tag obe-tag-${categoryClass}">${escapeHTML(o.po)}</span>
+            </div>
+            <span class="obe-bloom-tag">Bloom Level: ${escapeHTML(o.bloom_level)}</span>
+          </div>
+
+          <div class="obe-card-block">
+            <span class="obe-block-label">Formal Outline Text</span>
+            <p class="obe-formal-text">"${escapeHTML(o.formal_desc)}"</p>
+          </div>
+
+          <div class="obe-card-block">
+            <span class="obe-block-label">Plain-English Translation</span>
+            <p class="obe-practical-text">${escapeHTML(o.practical_translation)}</p>
+          </div>
+
+          <div class="obe-card-block">
+            <span class="obe-block-label">Applied Evidence / Task</span>
+            <p class="obe-applied-text">${escapeHTML(o.applied_task)}</p>
+          </div>
+
+          <div class="obe-resume-box">
+            <span class="obe-block-label" style="color: #2563eb;">Resume Bullet Suggestion</span>
+            <p class="obe-resume-text">${escapeHTML(o.resume_impact)}</p>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  function initOBESandbox() {
+    const checklistContainer = document.getElementById('obe-sandbox-checklist');
+    if (!checklistContainer || !obeDataState || !obeDataState.sandbox_tasks) return;
+
+    checklistContainer.innerHTML = obeDataState.sandbox_tasks.map(task => `
+      <label class="obe-task-item" for="${escapeHTML(task.id)}">
+        <input type="checkbox" id="${escapeHTML(task.id)}" class="obe-task-checkbox" data-task-id="${escapeHTML(task.id)}">
+        <div class="obe-task-content">
+          <span class="obe-task-title">${escapeHTML(task.title)}</span>
+          <span class="obe-task-desc">${escapeHTML(task.desc)}</span>
+        </div>
+      </label>
+    `).join('');
+
+    const checkboxes = checklistContainer.querySelectorAll('.obe-task-checkbox');
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', updateOBESandbox);
+    });
+
+    updateOBESandbox();
+  }
+
+  function updateOBESandbox() {
+    if (!obeDataState || !obeDataState.sandbox_tasks) return;
+
+    const checkboxes = document.querySelectorAll('.obe-task-checkbox:checked');
+    const checkedTaskIds = Array.from(checkboxes).map(cb => cb.getAttribute('data-task-id'));
+
+    const satisfiedPOs = new Set();
+    const poLogs = [];
+
+    checkedTaskIds.forEach(id => {
+      const task = obeDataState.sandbox_tasks.find(t => t.id === id);
+      if (task) {
+        (task.satisfied_pos || []).forEach(po => satisfiedPOs.add(po));
+        if (task.po_breakdown) {
+          Object.entries(task.po_breakdown).forEach(([poKey, exp]) => {
+            poLogs.push(`<strong>[${escapeHTML(poKey)}]</strong> ${escapeHTML(exp)}`);
+          });
+        }
+      }
+    });
+
+    // Update PO Status Cards
+    const poCards = document.querySelectorAll('.obe-po-status-card');
+    poCards.forEach(card => {
+      const poCode = card.getAttribute('data-po');
+      const indicator = card.querySelector('.obe-po-status-indicator');
+      if (satisfiedPOs.has(poCode)) {
+        card.classList.add('active');
+        if (indicator) indicator.textContent = 'Satisfied';
+      } else {
+        card.classList.remove('active');
+        if (indicator) indicator.textContent = 'Inactive';
+      }
+    });
+
+    // Update Log Box
+    const logContainer = document.getElementById('obe-sandbox-log-content');
+    if (logContainer) {
+      if (poLogs.length === 0) {
+        logContainer.innerHTML = '<p class="obe-log-empty">Select one or more developer actions above to see live outcome breakdowns.</p>';
+      } else {
+        logContainer.innerHTML = poLogs.map(log => `
+          <div class="obe-log-item">${log}</div>
+        `).join('');
+      }
+    }
+  }
+
+  // Run OBE Initialization if on OBE Cracked page
+  initOBECracked();
 });

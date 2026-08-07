@@ -8,8 +8,9 @@ Seniors use this portal to guide juniors by reverse-engineering past exam papers
 
 ## 🚀 Key Features
 
+- **OBE Cracked Component**: Standalone single-page web component (`obe_cracked.html`) translating Outcome-Based Education (CO/PO) course outlines into concrete software development practices, Bloom taxonomy levels, Knowledge Profiles (K-Profile), resume bullet points, interactive narrative comparison carousel, and developer action-to-outcome sandbox checklist widget.
 - **Hash-Based Router SPA**: Blazing fast client-side page rendering without page reloads using vanilla JS.
-- **Lazy Fetch & State Caching**: Dynamic page routing loads data databases (`data.json`, `course.json`, `technical.json`, and `resource.json`) lazily depending on user navigation and caches them in memory.
+- **Lazy Fetch & State Caching**: Dynamic page routing loads data databases (`data.json`, `course.json`, `technical.json`, `resource.json`, and `obe_data.json`) lazily depending on user navigation and caches them in memory.
 - **Multi-Tier Accordions**: Expandable root sections, course accordions, item-level parent dropdowns (hiding video/notes/description until expanded), and nested session description toggle dropdowns.
 - **Deep Linking & Sharing**: Sharing buttons next to courses, lectures, and resources that copy direct URLs (e.g. `#discussions?lecture=ID` or `#resources?resource=ID`) to your clipboard. Navigating to these URLs automatically auto-expands accordions (including item dropdowns), scrolls to the card, and flashes it.
 - **Selection Dialog Modals**: Open custom, accessible select modals (`#notes-select-modal` and `#lecture-select-modal`) when selecting resources or notes with multiple attachments.
@@ -26,12 +27,14 @@ Here is a summary of the main files in this repository:
 | File | Description |
 | --- | --- |
 | **[index.html](index.html)** | App HTML5 shell container, navigation layouts, and modal overlay components. |
+| **[obe_cracked.html](obe_cracked.html)** | Standalone component layout for OBE Cracked, hero narrative carousel, and outcome sandbox. |
 | **[style.css](style.css)** | Custom design tokens, dark/light theme configurations, layout grids, accordion and button animations. |
-| **[app.js](app.js)** | SPA router, state manager, template view compilers, modal controllers, and clipboard copy engines. |
+| **[app.js](app.js)** | SPA router, state manager, template view compilers, modal controllers, and OBE Cracked controller. |
 | **[data.json](data.json)** | Content database housing the motto, roadmap timeline steps, about sections, and join channels. |
 | **[course.json](course.json)** | Content database for recorded peer classes and course lectures indexed by `courseId`. |
 | **[technical.json](technical.json)** | Content database for technical workshops and discussions grouped by sequence/topic (`topicId`). |
 | **[resource.json](resource.json)** | Curated academic resources, toolkits, drive links, and course/lecture mappings. |
+| **[obe_data.json](obe_data.json)** | Content database for CO/PO outcome mappings, Knowledge Profiles (K-Profile), and sandbox tasks. |
 | **[documentation.md](documentation.md)** | Technical reference describing routing flow, lifecycle architecture, and state. |
 | **[explain.md](explain.md)** | Mapping guidelines explaining JSON schemas and corresponding view renderers. |
 

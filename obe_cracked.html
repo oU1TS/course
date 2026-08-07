@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="OBE Cracked - Translating academic Outcome-Based Education (CO/PO) course outlines into concrete software development practices and resume skills.">
+  <meta name="author" content="oU1TS Community">
+  <title>OBE Cracked | UITS Course Mastery</title>
+
+  <!-- Google Fonts: Outfit (headings) and Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Custom CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Header and Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html#home" class="logo" aria-label="UITS Course Mastery Portal Home">
+        <span class="logo-accent">&lt;</span>UITS Course Mastery<span class="logo-accent">/&gt;</span>
+      </a>
+
+      <!-- Navigation Drawer Links -->
+      <nav class="nav" id="main-nav" aria-label="Main Navigation">
+        <a href="index.html#home" class="nav-link">Home</a>
+        <a href="index.html#discussions" class="nav-link">Discussions</a>
+        <a href="obe_cracked.html" class="nav-link active">OBE Cracked</a>
+        <a href="index.html#resources" class="nav-link">Resources</a>
+        <a href="index.html#about" class="nav-link">About Us</a>
+        <a href="index.html#join" class="nav-link">Join Us</a>
+      </nav>
+
+      <!-- Theme Switcher Control -->
+      <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <!-- Sun SVG (Vibrant Mode) -->
+        <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <!-- Moon SVG (Dark Mode Default) -->
+        <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <!-- Mobile Hamburger Button Toggle -->
+      <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle Mobile Menu" aria-expanded="false"
+        aria-controls="main-nav">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main OBE Cracked Container -->
+  <main class="main-content" id="obe-app">
+    <!-- Hero Section -->
+    <section class="obe-hero-section">
+      <div class="obe-hero-container">
+        <span class="obe-badge">Academic to Engineering Bridge</span>
+        <h1 class="obe-hero-title">OBE Cracked</h1>
+        <p class="obe-hero-tagline">Translating course outlines into practical developer skills.</p>
+
+        <!-- Interactive Narrative Contrast Box -->
+        <div class="obe-narrative-box" id="obe-narrative-box" title="Click or tap to cycle comparison" tabindex="0"
+          role="region" aria-label="Interactive Narrative Comparison Carousel">
+          <div class="obe-narrative-column academic">
+            <div class="obe-narrative-header">
+              <span class="obe-narrative-label">Academic CO / PO Language</span>
+              <span id="obe-narrative-context" class="obe-narrative-context">Data Structures &amp; Algorithms
+                (PO1)</span>
+            </div>
+            <p id="obe-academic-text" class="obe-narrative-text">
+              "Analyze basic linear and non-linear data structures for computational efficiency (CO1 / PO1 - Bloom:
+              Analyze)."
+            </p>
+          </div>
+          <div class="obe-narrative-divider">
+            <span class="obe-vs-badge">VS</span>
+            <span id="obe-narrative-counter" class="obe-narrative-counter">1 / 5</span>
+          </div>
+          <div class="obe-narrative-column engineering">
+            <div class="obe-narrative-header">
+              <span class="obe-narrative-label">Real-World Engineering Value</span>
+              <span class="obe-cycle-hint" id="obe-cycle-hint">Auto 7s | Click/Tap to cycle</span>
+            </div>
+            <p id="obe-engineering-text" class="obe-narrative-text">
+              Selecting the optimal data structure (HashMaps vs. Arrays) so backend memory usage stays low and lookup
+              speed executes in O(1) time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Course & Outcome Filters Section -->
+    <section class="obe-filters-section">
+      <div class="obe-filters-container">
+        <div class="obe-course-selector-wrapper">
+          <label for="obe-course-select" class="obe-filter-label">Select Course Outline:</label>
+          <select id="obe-course-select" class="obe-course-select" aria-label="Select Course Outline">
+            <!-- Dynamically populated from obe_data.json -->
+          </select>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="obe-category-tabs" role="tablist" aria-label="Outcome Category Filters">
+          <button class="obe-filter-tab active" data-category="all" role="tab" aria-selected="true">All
+            Outcomes</button>
+          <button class="obe-filter-tab" data-category="PO1" role="tab" aria-selected="false">Engineering Knowledge
+            (PO1)</button>
+          <button class="obe-filter-tab" data-category="PO3" role="tab" aria-selected="false">Design &amp; Development
+            (PO3)</button>
+          <button class="obe-filter-tab" data-category="PO5" role="tab" aria-selected="false">Modern Tool Usage
+            (PO5)</button>
+          <button class="obe-filter-tab" data-category="PO9_PO10" role="tab" aria-selected="false">Communication &amp;
+            Teamwork (PO9/PO10)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Outcome Mapping Cards Grid Section -->
+    <section class="obe-cards-section">
+      <div class="obe-cards-container">
+        <div class="obe-section-header">
+          <h2 class="obe-section-title">Outcome Mapping Cards</h2>
+          <span id="obe-cards-count" class="obe-cards-count">Showing 0 outcomes</span>
+        </div>
+
+        <div id="obe-outcome-cards-grid" class="obe-cards-grid">
+          <!-- Dynamically populated cards -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Action-to-Outcome Interactive Sandbox Section -->
+    <section class="obe-sandbox-section" id="sandbox">
+      <div class="obe-sandbox-container">
+        <div class="obe-section-header">
+          <div>
+            <span class="obe-badge">Interactive Widget</span>
+            <h2 class="obe-section-title">Action-to-Outcome Interactive Sandbox</h2>
+          </div>
+          <p class="obe-section-desc">
+            Check off practical software tasks you completed in labs or projects to visualize which official Program
+            Outcomes (POs) you satisfied in real-world terms.
+          </p>
+        </div>
+
+        <div class="obe-sandbox-layout">
+          <!-- Interactive Checklist -->
+          <div class="obe-sandbox-checklist-wrapper">
+            <h3 class="obe-sandbox-subtitle">Completed Developer Actions</h3>
+            <div id="obe-sandbox-checklist" class="obe-sandbox-checklist">
+              <!-- Dynamically populated from obe_data.json -->
+            </div>
+          </div>
+
+          <!-- PO Satisfaction Dashboard -->
+          <div class="obe-sandbox-dashboard-wrapper">
+            <h3 class="obe-sandbox-subtitle">Satisfied Program Outcomes (POs)</h3>
+            <div id="obe-sandbox-po-badges" class="obe-sandbox-po-badges">
+              <div class="obe-po-status-card" data-po="PO1">
+                <div class="obe-po-status-header">
+                  <span class="obe-po-code">PO1</span>
+                  <span class="obe-po-title">Engineering Knowledge</span>
+                </div>
+                <span class="obe-po-status-indicator">Inactive</span>
+              </div>
+              <div class="obe-po-status-card" data-po="PO3">
+                <div class="obe-po-status-header">
+                  <span class="obe-po-code">PO3</span>
+                  <span class="obe-po-title">Design &amp; Development</span>
+                </div>
+                <span class="obe-po-status-indicator">Inactive</span>
+              </div>
+              <div class="obe-po-status-card" data-po="PO5">
+                <div class="obe-po-status-header">
+                  <span class="obe-po-code">PO5</span>
+                  <span class="obe-po-title">Modern Tool Usage</span>
+                </div>
+                <span class="obe-po-status-indicator">Inactive</span>
+              </div>
+              <div class="obe-po-status-card" data-po="PO9">
+                <div class="obe-po-status-header">
+                  <span class="obe-po-code">PO9</span>
+                  <span class="obe-po-title">Team Work</span>
+                </div>
+                <span class="obe-po-status-indicator">Inactive</span>
+              </div>
+              <div class="obe-po-status-card" data-po="PO10">
+                <div class="obe-po-status-header">
+                  <span class="obe-po-code">PO10</span>
+                  <span class="obe-po-title">Communication</span>
+                </div>
+                <span class="obe-po-status-indicator">Inactive</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Explanations Log -->
+            <div class="obe-sandbox-log-box">
+              <h4 class="obe-log-title">Real-World Outcome Proof</h4>
+              <div id="obe-sandbox-log-content" class="obe-log-content">
+                <p class="obe-log-empty">Select one or more developer actions above to see live outcome breakdowns.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>&copy; 2026 UITS Course Mastery. An open-source student collective powered by the <a
+          href="https://ou1ts.github.io/" target="_blank" rel="noopener noreferrer">oU1TS Community</a>.</p>
+      <p class="footer-links">
+
+        <a href="render.html?file=documentation.md" rel="noopener noreferrer">Documentation</a> |
+        <a href="render.html?file=explain.md" rel="noopener noreferrer">Code Explanation</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Application Controller JS -->
+  <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,496 @@
+{
+  "narrative_comparisons": [
+    {
+      "id": 1,
+      "course_context": "Data Structures & Algorithms (POa / K3, K4)",
+      "academic_text": "\"Analyze basic linear and non-linear data structures for computational efficiency (CO1 / POa - Bloom: Analyze/C4).\"",
+      "engineering_text": "Selecting the optimal data structure (HashMaps vs. Arrays) so backend memory usage stays low and lookup speed executes in O(1) time."
+    },
+    {
+      "id": 2,
+      "course_context": "Compiler Construction & Translation (POb / K3, K4, K5)",
+      "academic_text": "\"Identify similarities and differences among parsing techniques and grammar transformations (CO2 / POb - Bloom: Understand/C2).\"",
+      "engineering_text": "Constructing top-down LL(1) and bottom-up LR parsers with AST generation to analyze source syntax and eliminate ambiguous grammar rules."
+    },
+    {
+      "id": 3,
+      "course_context": "Computer Graphics & Rendering (POc / K5)",
+      "academic_text": "\"Implement and analyze computer graphics algorithms for graphical modeling and visualization (CO3 / POc - Bloom: Apply/C3, Evaluate/C5).\"",
+      "engineering_text": "Coding Bresenham line/circle algorithms, Cohen-Sutherland clipping, and 3D transformation matrices for low-latency canvas rendering."
+    },
+    {
+      "id": 4,
+      "course_context": "Microprocessors & Low-Level Interfacing (POb, POc / K3, K4, K5)",
+      "academic_text": "\"Design & analyze integration of microprocessor-based systems for real-world problems (CO3, CO4 / POb, POc - Bloom: Analyze/C4, Design/C6).\"",
+      "engineering_text": "Writing 8086 Assembly routines, managing stack frames, and programming 8255 PPI / 8259 PIC controllers to handle hardware interrupts."
+    },
+    {
+      "id": 5,
+      "course_context": "Cyber Security & Defensive Systems (POa, POb / K3, K4)",
+      "academic_text": "\"Apply knowledge of ICT security protocols, cryptography, malware, and risk management (CLO3, CLO4 / POa, POb - Bloom: Apply/C3).\"",
+      "engineering_text": "Conducting buffer overflow exploits, SQL injection mitigations, and configuring PKI authentication to secure network APIs against attacks."
+    }
+  ],
+  "courses": [
+    {
+      "course_code": "CSE0613321",
+      "course_name": "Compiler",
+      "outcomes": [
+        {
+          "id": "cmp-co1",
+          "co": "CO1",
+          "po": "POa",
+          "category": "PO1",
+          "bloom_level": "Understand (C2)",
+          "knowledge_profile": "K2, K3",
+          "formal_desc": "Explain the phases of a compiler and the role of each phase in syntax-directed translation.",
+          "practical_translation": "Understanding how raw source code text moves from lexical analysis (tokens) to AST generation and machine assembly emission.",
+          "applied_task": "Tracing source code compilation steps through lexical scanner, parser, and intermediate 3-address code generation.",
+          "resume_impact": "Understood low-level program compilation lifecycles and syntax-directed translation pipelines."
+        },
+        {
+          "id": "cmp-co2",
+          "co": "CO2",
+          "po": "POb",
+          "category": "PO2",
+          "bloom_level": "Understand (C2)",
+          "knowledge_profile": "K2, K3",
+          "formal_desc": "Identify the similarities and differences among various parsing techniques and grammar transformation techniques.",
+          "practical_translation": "Eliminating left recursion from Context-Free Grammars (CFG) and constructing LL(1) or LR shift-reduce parsing tables.",
+          "applied_task": "Designing an LL(1) parsing table manually and resolving grammar ambiguity for arithmetic expressions.",
+          "resume_impact": "Built formal grammar parsing tables and handled syntax analysis for custom domain-specific languages."
+        },
+        {
+          "id": "cmp-co3",
+          "co": "CO3",
+          "po": "POc",
+          "category": "PO3",
+          "bloom_level": "Create (C6)",
+          "knowledge_profile": "K3, K5, K6",
+          "formal_desc": "Design compiler optimization techniques to improve the performance and efficiency of generated machine code.",
+          "practical_translation": "Analyzing intermediate code patterns to perform dead code elimination, constant folding, and register allocation optimizations.",
+          "applied_task": "Writing target machine code optimization passes to strip redundant stack operations and instructions.",
+          "resume_impact": "Engineered intermediate code optimization algorithms to reduce compiled binary execution overhead."
+        }
+      ]
+    },
+    {
+      "course_code": "CSE0611327",
+      "course_name": "Computer Graphics and Multimedia",
+      "outcomes": [
+        {
+          "id": "cg-co1",
+          "co": "CO1",
+          "po": "POa",
+          "category": "PO1",
+          "bloom_level": "Understand (C2, C4)",
+          "knowledge_profile": "K3",
+          "formal_desc": "Remember and understand the basic concepts of computer graphics, raster display architectures, and Look-Up Tables (LUT).",
+          "practical_translation": "Understanding pixel framebuffers, refresh rates, screen resolutions, and anti-aliasing techniques in modern display drivers.",
+          "applied_task": "Analyzing raster vs. random scan architectures and LUT color mapping tables.",
+          "resume_impact": "Understood raster display pipeline mechanics, framebuffer architectures, and digital color representation."
+        },
+        {
+          "id": "cg-co2",
+          "co": "CO2",
+          "po": "POb",
+          "category": "PO2",
+          "bloom_level": "Apply (C3, C4)",
+          "knowledge_profile": "K3, K4",
+          "formal_desc": "Describe and apply the mathematical principles of computer graphics on 2D and 3D geometric objects.",
+          "practical_translation": "Applying 2D/3D transformation matrices (Translation, Scaling, Rotation, Shearing, Reflection) using homogeneous coordinates.",
+          "applied_task": "Calculating composite 3D transformation matrices for object rotation and perspective projection.",
+          "resume_impact": "Implemented linear algebra matrix transformations for rendering 2D/3D vector geometries."
+        },
+        {
+          "id": "cg-co3",
+          "co": "CO3",
+          "po": "POc",
+          "category": "PO3",
+          "bloom_level": "Evaluate (C5)",
+          "knowledge_profile": "K5",
+          "formal_desc": "Implement and analyze computer graphics algorithms and techniques for graphical modeling and visualization.",
+          "practical_translation": "Coding line/circle rasterization algorithms (DDA, Bresenham) and polygon clipping algorithms (Cohen-Sutherland, Liang-Barsky).",
+          "applied_task": "Implementing Midpoint Circle generation and Sutherland-Hodgman polygon clipping routines.",
+          "resume_impact": "Coded core graphics rasterization and view window clipping algorithms for geometric rendering engine."
+        },
+        {
+          "id": "cg-co4",
+          "co": "CO4",
+          "po": "POe",
+          "category": "PO5",
+          "bloom_level": "Understand (C2, C4)",
+          "knowledge_profile": "K5, K6",
+          "formal_desc": "Explain the structure and technologies used in multimedia systems, color models, and file encoding formats.",
+          "practical_translation": "Working with digital video/audio encoding formats, RGB/CMY/YIQ color spaces, and timeline keyframe animation principles.",
+          "applied_task": "Comparing lossy vs. lossless compression specs for multimedia streaming formats.",
+          "resume_impact": "Analyzed digital signal compression algorithms, CIE chromaticity models, and multimedia streaming formats."
+        }
+      ]
+    },
+    {
+      "course_code": "CSE0611323",
+      "course_name": "Microprocessors, Microcontrollers and Assembly Language",
+      "outcomes": [
+        {
+          "id": "mp-co1",
+          "co": "CO1",
+          "po": "POa",
+          "category": "PO1",
+          "bloom_level": "Understand (C2)",
+          "knowledge_profile": "K3",
+          "formal_desc": "Explain microprocessor and microcontroller internal architecture, physical memory organization, and CISC/RISC operations.",
+          "practical_translation": "Navigating segment/offset register memory mapping (CS, DS, SS, IP) in x86 8086 execution environments.",
+          "applied_task": "Calculating 20-bit physical memory addresses from 16-bit segment and offset register pairs.",
+          "resume_impact": "Mastered low-level x86/8051 hardware memory architectures and bus system mechanics."
+        },
+        {
+          "id": "mp-co2",
+          "co": "CO2",
+          "po": "POb",
+          "category": "PO2",
+          "bloom_level": "Analyze (C4)",
+          "knowledge_profile": "K3, K4",
+          "formal_desc": "Analyze the structure of high-level vs low-level languages and explain program execution via machine instruction cycles.",
+          "practical_translation": "Tracing opcode execution, CPU flag changes, instruction queue behavior, and stack operations (PUSH/POP/CALL).",
+          "applied_task": "Tracing CPU register states through multi-byte string data transfer and conditional jump instruction sets.",
+          "resume_impact": "Analyzed machine instruction cycles, register flag manipulation, and call stack memory operations."
+        },
+        {
+          "id": "mp-co3",
+          "co": "CO3",
+          "po": "POb",
+          "category": "PO2",
+          "bloom_level": "Analyze (C4)",
+          "knowledge_profile": "K3, K4",
+          "formal_desc": "Design and analyze the integration of microprocessor and microcontroller-based systems focusing on problem solving.",
+          "practical_translation": "Interfacing peripheral devices via 8255 PPI, configuring 8259 PIC interrupt priority vectors, and managing DMA transfers.",
+          "applied_task": "Designing an interrupt-driven peripheral communication interface using 8086 and 8259 PIC controllers.",
+          "resume_impact": "Designed hardware peripheral interfacing logic using programmable interrupt controllers and I/O buses."
+        },
+        {
+          "id": "mp-co4",
+          "co": "CO4",
+          "po": "POc",
+          "category": "PO3",
+          "bloom_level": "Design (C6)",
+          "knowledge_profile": "K5, K8",
+          "formal_desc": "Design microprocessor/microcontroller based solutions for real-world problems considering performance, reliability, and cost.",
+          "practical_translation": "Building standalone embedded systems using microcontrollers with ADC/DAC sensors, hardware timers, and external RAM.",
+          "applied_task": "Architecting an automated embedded sensor monitoring kit driven by 8051 microcontroller hardware timers.",
+          "resume_impact": "Architected embedded hardware solutions utilizing microcontroller timers, converters, and memory bus logic."
+        }
+      ]
+    },
+    {
+      "course_code": "CSE0611324",
+      "course_name": "Microprocessors & Assembly Language Lab",
+      "outcomes": [
+        {
+          "id": "mpl-co1",
+          "co": "CO1",
+          "po": "POa",
+          "category": "PO1",
+          "bloom_level": "Understand (C1)",
+          "knowledge_profile": "K3",
+          "formal_desc": "Explain how low-level languages are implemented and how a processor executes a program line by line.",
+          "practical_translation": "Using EMU8086 emulator software to inspect CPU registers, memory segments, and execution flow line-by-line.",
+          "applied_task": "Debugging low-level assembly execution inside EMU8086 step-by-step debugger view.",
+          "resume_impact": "Proficient in inspecting CPU registers, memory segment offsets, and flags using emulator debug tools."
+        },
+        {
+          "id": "mpl-co2",
+          "co": "CO2",
+          "po": "POb",
+          "category": "PO2",
+          "bloom_level": "Apply (C3)",
+          "knowledge_profile": "K4",
+          "formal_desc": "Implement assembly language and embedded programs for microprocessor and microcontroller operations.",
+          "practical_translation": "Writing assembly algorithms for string reversing, array sorting, loop counters, and microcontroller LED blinking.",
+          "applied_task": "Developing assembly routines for multi-element array sorting and hardware timer interrupts.",
+          "resume_impact": "Implemented assembly language routines for low-level memory string manipulation and arithmetic sorting."
+        },
+        {
+          "id": "mpl-co3",
+          "co": "CO3",
+          "po": "POc",
+          "category": "PO3",
+          "bloom_level": "Create (C6)",
+          "knowledge_profile": "K3, K4, K5",
+          "formal_desc": "Design and implement practical engineering solutions using appropriate tools and techniques to solve real-life engineering problems.",
+          "practical_translation": "Building an embedded system project prototype combining sensor inputs, microcontroller logic, and hardware reports.",
+          "applied_task": "Delivering an embedded hardware project prototype with complete technical documentation and presentation.",
+          "resume_impact": "Designed and built custom embedded hardware projects with microcontrollers and external peripheral modules."
+        }
+      ]
+    },
+    {
+      "course_code": "CSE0612325",
+      "course_name": "Cyber Security",
+      "outcomes": [
+        {
+          "id": "sec-co1",
+          "co": "CLO1",
+          "po": "POa",
+          "category": "PO1",
+          "bloom_level": "Understand (C2)",
+          "knowledge_profile": "K3",
+          "formal_desc": "Develop a good understanding of fundamental knowledge of the cyber-security domain, CIA triad, and threat analysis.",
+          "practical_translation": "Applying Confidentiality, Integrity, and Availability (CIA) principles to evaluate system vulnerability vectors.",
+          "applied_task": "Conducting threat modeling and risk probability assessments on multi-tier application architectures.",
+          "resume_impact": "Evaluated web application attack vectors and security architectures using threat modeling principles."
+        },
+        {
+          "id": "sec-co2",
+          "co": "CLO2",
+          "po": "POb",
+          "category": "PO2",
+          "bloom_level": "Analyze (C4)",
+          "knowledge_profile": "K3, K4",
+          "formal_desc": "Identify what a vulnerability is and how to address common vulnerabilities across operating systems and networks.",
+          "practical_translation": "Auditing application source code to detect low-level buffer overflow risks, XSS injection, and improper access controls.",
+          "applied_task": "Analyzing application vulnerability scans to patch memory corruption flaws and SQL injection points.",
+          "resume_impact": "Identified and remediated high-risk software security vulnerabilities including memory corruption and code injection."
+        },
+        {
+          "id": "sec-co4",
+          "co": "CLO4",
+          "po": "POa",
+          "category": "PO1",
+          "bloom_level": "Apply (C3)",
+          "knowledge_profile": "K4, K6",
+          "formal_desc": "Apply knowledge of current trends in ICT security, cryptography, malware analysis, and digital forensics.",
+          "practical_translation": "Configuring symmetric/asymmetric encryption, digital signature verification, and PKI authentication mechanisms.",
+          "applied_task": "Setting up public key infrastructure (PKI) certificates and cryptographic digital signature validation.",
+          "resume_impact": "Configured PKI certificate infrastructure and cryptographic signature protocols to safeguard sensitive data transfers."
+        }
+      ]
+    },
+    {
+      "course_code": "CSE-211",
+      "course_name": "Data Structures",
+      "outcomes": [
+        {
+          "id": "co1",
+          "co": "CO1",
+          "po": "POa",
+          "category": "PO1",
+          "bloom_level": "Analyze (C4)",
+          "knowledge_profile": "K3, K4",
+          "formal_desc": "Analyze basic linear and non-linear data structures for computational efficiency.",
+          "practical_translation": "Selecting the optimal data structure (HashMaps vs Arrays) so memory usage remains low and lookup time stays fast.",
+          "applied_task": "Benchmarking HashMap lookup times against sequential Array search in Lab Assignment 3.",
+          "resume_impact": "Optimized search operations using hash-based data indexing to reduce runtime complexity from O(N) to O(1)."
+        },
+        {
+          "id": "co2",
+          "co": "CO2",
+          "po": "POc",
+          "category": "PO3",
+          "bloom_level": "Design (C6)",
+          "knowledge_profile": "K5",
+          "formal_desc": "Design and implement custom non-linear data structures to resolve complex algorithmic constraints.",
+          "practical_translation": "Building production-grade Binary Search Trees and Graphs with clean pointer manipulation and zero memory leaks.",
+          "applied_task": "Constructing a self-balancing AVL Tree module with memory allocation validation in C++.",
+          "resume_impact": "Engineered custom tree data structures for efficient hierarchical data retrieval and memory safety."
+        },
+        {
+          "id": "co3",
+          "co": "CO3",
+          "po": "POe",
+          "category": "PO5",
+          "bloom_level": "Apply (C3)",
+          "knowledge_profile": "K6",
+          "formal_desc": "Utilize modern software diagnostic and profiling tools to measure algorithmic performance metrics.",
+          "practical_translation": "Using VS Code debuggers, Valgrind, and memory profilers to catch stack overflows and memory leaks before deployment.",
+          "applied_task": "Executing Valgrind leak check scripts on dynamic linked list implementations.",
+          "resume_impact": "Profiled and debugged C++ memory consumption using Valgrind, eliminating dynamic allocation leaks."
+        },
+        {
+          "id": "co4",
+          "co": "CO4",
+          "po": "POj",
+          "category": "PO9_PO10",
+          "bloom_level": "Evaluate (C5)",
+          "knowledge_profile": "K7",
+          "formal_desc": "Document algorithmic complexity trade-offs and communicate technical findings to peers.",
+          "practical_translation": "Writing clear technical README files and benchmarking reports explaining asymptotic runtime analysis to team members.",
+          "applied_task": "Authoring Markdown performance reports comparing QuickSort vs MergeSort execution times.",
+          "resume_impact": "Authored comprehensive technical documentation detailing algorithmic performance benchmarks for engineering teams."
+        }
+      ]
+    },
+    {
+      "course_code": "CSE-311",
+      "course_name": "Software Engineering",
+      "outcomes": [
+        {
+          "id": "se-co1",
+          "co": "CO1",
+          "po": "POc",
+          "category": "PO3",
+          "bloom_level": "Design (C6)",
+          "knowledge_profile": "K5",
+          "formal_desc": "Design scalable software architectures using standard object-oriented design patterns.",
+          "practical_translation": "Architecting modular codebase structures (Factory, Singleton, Observer) so components remain decoupled and maintainable.",
+          "applied_task": "Implementing a notification dispatch service using the Observer pattern in Lab 4.",
+          "resume_impact": "Architected decoupled backend microservices applying Object-Oriented Design Patterns for high maintainability."
+        },
+        {
+          "id": "se-co2",
+          "co": "CO2",
+          "po": "POe",
+          "category": "PO5",
+          "bloom_level": "Apply (C3)",
+          "knowledge_profile": "K6",
+          "formal_desc": "Apply modern version control workflows, automated build pipelines, and containerization toolchains.",
+          "practical_translation": "Managing feature branches on Git, setting up Docker containers, and automating build checks with CI/CD actions.",
+          "applied_task": "Configuring Docker container builds and GitHub Actions CI pipelines for team repository.",
+          "resume_impact": "Streamlined developer workflows by containerizing environments with Docker and configuring GitHub Actions CI/CD pipelines."
+        },
+        {
+          "id": "se-co3",
+          "co": "CO3",
+          "po": "POi",
+          "category": "PO9_PO10",
+          "bloom_level": "Create (C6)",
+          "knowledge_profile": "K7",
+          "formal_desc": "Function effectively as a team member or leader in multidisciplinary software development groups.",
+          "practical_translation": "Collaborating via GitHub Pull Requests, conducting peer code reviews, and managing Agile sprint tasks.",
+          "applied_task": "Leading 4-person Agile sprint retrospectives and conducting PR code reviews on GitHub.",
+          "resume_impact": "Collaborated in Agile engineering sprints, performing structured code reviews and managing multi-developer pull requests."
+        }
+      ]
+    },
+    {
+      "course_code": "CSE-411",
+      "course_name": "Database Management Systems",
+      "outcomes": [
+        {
+          "id": "db-co1",
+          "co": "CO1",
+          "po": "POa",
+          "category": "PO1",
+          "bloom_level": "Analyze (C4)",
+          "knowledge_profile": "K3",
+          "formal_desc": "Analyze relational data models and apply normalization principles to eliminate data redundancy.",
+          "practical_translation": "Designing database schemas in 3NF (Third Normal Form) to prevent duplicate data, anomalies, and storage bloat.",
+          "applied_task": "Normalizing an unorganized enterprise sales spreadsheet into 3NF relational tables.",
+          "resume_impact": "Designed 3NF normalized SQL database schemas to optimize storage efficiency and prevent data anomalies."
+        },
+        {
+          "id": "db-co2",
+          "co": "CO2",
+          "po": "POc",
+          "category": "PO3",
+          "bloom_level": "Design (C6)",
+          "knowledge_profile": "K5",
+          "formal_desc": "Construct optimized SQL queries and indexing strategies for high-concurrency database operations.",
+          "practical_translation": "Writing indexed SQL queries and joins that execute in milliseconds even under high user traffic.",
+          "applied_task": "Benchmarking indexed SQL query performance against unindexed tables in PostgreSQL.",
+          "resume_impact": "Accelerated database query response times by implementing strategic B-tree indexes on high-traffic SQL tables."
+        },
+        {
+          "id": "db-co3",
+          "co": "CO3",
+          "po": "POe",
+          "category": "PO5",
+          "bloom_level": "Apply (C3)",
+          "knowledge_profile": "K6",
+          "formal_desc": "Utilize modern database management interfaces and ORM tools for data persistence.",
+          "practical_translation": "Connecting applications to database servers using Prisma, Drizzle, or raw SQL drivers safely with parametrized queries.",
+          "applied_task": "Connecting Node.js REST backend to PostgreSQL using parametrized query drivers to block SQL injection.",
+          "resume_impact": "Integrated secure PostgreSQL database persistence layers using parametrized queries to prevent security vulnerabilities."
+        }
+      ]
+    }
+  ],
+  "sandbox_tasks": [
+    {
+      "id": "sb-task-1",
+      "title": "Created a GitHub Pull Request",
+      "desc": "Submitted code via feature branch, requested peer code review, and resolved merge conflicts.",
+      "satisfied_pos": [
+        "POe",
+        "POi",
+        "POj"
+      ],
+      "po_breakdown": {
+        "POe": "Modern Tool Usage (PO5): Managed distributed Git version control workflows.",
+        "POi": "Teamwork (PO9): Coordinated with teammates during pull request iterations.",
+        "POj": "Communication (PO10): Authored clear PR descriptions and code review comments."
+      }
+    },
+    {
+      "id": "sb-task-2",
+      "title": "Configured Docker Development Environment",
+      "desc": "Wrote a Dockerfile and docker-compose.yml to standardize environment setup across team machines.",
+      "satisfied_pos": [
+        "POc",
+        "POe"
+      ],
+      "po_breakdown": {
+        "POc": "Design & Development (PO3): Created repeatable container infrastructure configuration.",
+        "POe": "Modern Tool Usage (PO5): Leveraged industry-standard containerization tools."
+      }
+    },
+    {
+      "id": "sb-task-3",
+      "title": "Configured 8259 Interrupt Controller Interfacing",
+      "desc": "Mapped IRQ vectors on 8259 PIC to handle hardware hardware interrupts on 8086 CPU.",
+      "satisfied_pos": [
+        "POa",
+        "POb",
+        "POc"
+      ],
+      "po_breakdown": {
+        "POa": "Engineering Knowledge (PO1): Applied low-level hardware memory mapping and hardware interrupt theory.",
+        "POb": "Problem Analysis (PO2): Resolved hardware priority conflicts across multi-device buses.",
+        "POc": "Design & Development (PO3): Built embedded interrupt service subroutines (ISR)."
+      }
+    },
+    {
+      "id": "sb-task-4",
+      "title": "Implemented O(N log N) Sorting & Benchmark",
+      "desc": "Wrote MergeSort in C++ and measured execution time against sequential algorithms.",
+      "satisfied_pos": [
+        "POa",
+        "POc"
+      ],
+      "po_breakdown": {
+        "POa": "Engineering Knowledge (PO1): Analyzed computational complexity and Big-O notation.",
+        "POc": "Design & Development (PO3): Built efficient algorithmic implementations."
+      }
+    },
+    {
+      "id": "sb-task-5",
+      "title": "Designed 3NF Database Schema & ERD",
+      "desc": "Mapped entities, primary/foreign keys, and normalized database tables to eliminate redundancy.",
+      "satisfied_pos": [
+        "POa",
+        "POc",
+        "POj"
+      ],
+      "po_breakdown": {
+        "POa": "Engineering Knowledge (PO1): Applied relational algebra and normalization theory.",
+        "POc": "Design & Development (PO3): Architected scalable data storage structures.",
+        "POj": "Communication (PO10): Created clear Entity-Relationship Diagrams for project documentation."
+      }
+    },
+    {
+      "id": "sb-task-6",
+      "title": "Patched SQL Injection Vulnerability in REST API",
+      "desc": "Audited database queries, replaced string concats with parameterized SQL statements, and tested security boundaries.",
+      "satisfied_pos": [
+        "POa",
+        "POb",
+        "POe"
+      ],
+      "po_breakdown": {
+        "POa": "Engineering Knowledge (PO1): Applied cyber security fundamentals and defensive input validation.",
+        "POb": "Problem Analysis (PO2): Analyzed code execution paths for potential SQL injection flaws.",
+        "POe": "Modern Tool Usage (PO5): Utilized static code security analysis tools."
+      }
+    }
+  ]
+}

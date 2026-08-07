@@ -2,14 +2,14 @@
   "topics": [
     {
       "topicId": "tech-disc-1",
-      "topicName": "Technical Discussion #1",
+      "topicName": "#1",
       "discussions": [
         {
           "discussionId": "tech-disc-1.2",
           "title": "Technical Discussion #1.2 | CSE-55 UITS",
           "semester": "Autumn 2026",
           "instructor": "OmniPotato23",
-          "description": "",
+          "description": "This video tutorial covers various technical setup guides, starting with removing a shortcut virus and analyzing scan results before moving into a GLUT project setup. It then explores web hosting concepts—specifically contrasting localhost and live host environments—with practical demonstrations on deploying sites using GitHub Pages and Vercel. Finally, the session concludes with a walkthrough on running Kali Linux within GitHub Codespaces, ending with its successful deployment. All referenced code repositories, PDF logs, and live hosted website links are provided in the accompanying documentation.",
           "videoUrl": "https://youtu.be/AZ2gCnOuxtI",
           "notesUrl": [
             "render.html?file=note/technical/tech-1.2.md",

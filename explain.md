@@ -212,3 +212,72 @@ The Hero Section is **not** defined statically in `index.html`. It is generated 
   - Loops over the `data.join.instructions` timeline array.
   - Renders a Privacy Policy & student data protection note box underneath the timeline to address data lifecycle guidelines.
   - Binds `data.join.facebook.url` and `data.join.whatsapp.url` to the respective onboarding channel action button links.
+
+---
+
+## 🎯 7. OBE Cracked View (Outcome-Based Education Bridge)
+
+### Data Schema (`obe_data.json`)
+```json
+{
+  "narrative_comparisons": [
+    {
+      "id": 1,
+      "course_context": "Data Structures & Algorithms (POa / K3, K4)",
+      "academic_text": "\"Analyze basic linear and non-linear data structures for computational efficiency (CO1 / POa - Bloom: Analyze/C4).\"",
+      "engineering_text": "Selecting the optimal data structure (HashMaps vs. Arrays) so backend memory usage stays low and lookup speed executes in O(1) time."
+    }
+  ],
+  "courses": [
+    {
+      "course_code": "CSE0613321",
+      "course_name": "Compiler",
+      "outcomes": [
+        {
+          "id": "cmp-co1",
+          "co": "CO1",
+          "po": "POa",
+          "category": "PO1",
+          "bloom_level": "Understand (C2)",
+          "knowledge_profile": "K2, K3",
+          "formal_desc": "Explain the phases of a compiler...",
+          "practical_translation": "Understanding how raw source code text moves from lexical analysis...",
+          "applied_task": "Tracing source code compilation steps...",
+          "resume_impact": "Understood low-level program compilation lifecycles..."
+        }
+      ]
+    }
+  ],
+  "sandbox_tasks": [
+    {
+      "id": "sb-task-1",
+      "title": "Created a GitHub Pull Request",
+      "desc": "Submitted code via feature branch, requested peer code review...",
+      "satisfied_pos": ["POe", "POi", "POj"],
+      "po_breakdown": {
+        "POe": "Modern Tool Usage (PO5): Managed distributed Git version control workflows.",
+        "POi": "Teamwork (PO9): Coordinated with teammates during PR iterations.",
+        "POj": "Communication (PO10): Authored clear PR descriptions and code review comments."
+      }
+    }
+  ]
+}
+```
+
+### Rendering & Interaction Flow
+- **Data Load**: Invoked on `obe_cracked.html` load via `initOBECracked()` in [app.js](app.js), fetching `obe_data.json`.
+- **Interactive Hero Narrative Carousel**:
+  - `initNarrativeCarousel()` loops over `obe_data.json`'s `narrative_comparisons` array.
+  - Automatically cycles comparisons every 7 seconds (`setInterval`).
+  - Triggers a smooth 180ms CSS fade-slide transition (`.cycling`) during content updates.
+  - Pauses timer on `mouseenter`, `focusin`, and `touchstart` (`pauseCycle()`), dynamically updating `#obe-cycle-hint` text to `"Paused | Click/Tap to cycle"`.
+  - Resumes timer on `mouseleave`, `focusout`, and `touchend` (`resumeCycle()`), updating status text to `"Auto 7s | Click/Tap to cycle"`.
+  - Clicking/tapping advances immediately to the next comparison card (`handleUserClick()`).
+- **Dynamic Course & Category Filters**:
+  - `initOBECracked()` populates `#obe-course-select` with available Computer Science course outlines.
+  - `renderOBECards()` filters outcome cards dynamically by selected course and active category tab (`All Outcomes`, `PO1`, `PO3`, `PO5`, `PO9/PO10`).
+- **Interactive Outcome Cards**:
+  - Renders Academic Outcome Badges (`CO` / `PO`), Bloom Taxonomy Levels, Knowledge Profiles (`K-Profile`), Formal Syllabus Descriptions, Plain-English Practical Translations, Applied Evidence/Lab Tasks, and Resume Bullet Point Suggestions.
+- **Action-to-Outcome Interactive Sandbox**:
+  - `initOBESandbox()` renders practical developer action checkboxes from `obe_data.json`.
+  - `updateOBESandbox()` calculates checked task satisfied POs, activates status cards (`.obe-po-status-card.active`), and renders live outcome proof log entries.
