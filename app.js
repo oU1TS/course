@@ -929,8 +929,74 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', routePage);
 
   /* ==========================================================================
-     4. Setup View Interactions (Modal bindings, CTA intercepts)
+     3b. Custom Smooth Scroll & Roadmap Section Auto-Bounce
      ========================================================================== */
+  let hasBouncedOnPageLoad = false;
+
+  function smoothScrollTo(targetY, duration = 1400, callback) {
+    const startY = window.pageYOffset || document.documentElement.scrollTop;
+    const distance = targetY - startY;
+    let startTime = null;
+
+    function easing(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function step(currentTime) {
+      if (!startTime) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const easeProgress = easing(progress);
+
+      window.scrollTo(0, startY + distance * easeProgress);
+
+      if (timeElapsed < duration) {
+        requestAnimationFrame(step);
+      } else if (callback) {
+        callback();
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  function triggerRoadmapBounce() {
+    if (hasBouncedOnPageLoad) return;
+
+    const roadmapContainer = document.querySelector('.roadmap-container');
+    if (!roadmapContainer) return;
+
+    // Do not auto-scroll if user has already scrolled down the page
+    if (window.scrollY > 200) return;
+
+    hasBouncedOnPageLoad = true;
+
+    // Target "Our Study Roadmap" title element specifically
+    const titleEl = roadmapContainer.querySelector('.section-title') || roadmapContainer;
+    const titleRect = titleEl.getBoundingClientRect();
+
+    // Scroll until "Our Study Roadmap" title reaches half the screen height
+    const targetY = Math.max(0, window.pageYOffset + titleRect.top - (window.innerHeight / 5));
+
+    // Smooth slow scroll down to half-screen view
+    smoothScrollTo(targetY, 1400, () => {
+      // Bounce section in half-screen view
+      roadmapContainer.classList.add('bounce-active');
+
+      setTimeout(() => {
+        roadmapContainer.classList.remove('bounce-active');
+
+        // Smooth slow scroll back to hero section
+        setTimeout(() => {
+          smoothScrollTo(0, 1400);
+        }, 300);
+      }, 900);
+    });
+  }
+
+  // Schedule auto-bounce 5 seconds after initial page load
+  setTimeout(triggerRoadmapBounce, 5000);
+
   /* ==========================================================================
      4. Setup View Interactions (Modal bindings, CTA intercepts)
      ========================================================================== */

@@ -28,6 +28,7 @@
 
   --transition-speed: 0.25s;
   --container-max-width: 1100px;
+  --hero-shadow: 0 0 50px rgba(255, 255, 255, 0.12), 0 20px 40px rgba(255, 255, 255, 0.06), 0 0 100px rgba(255, 255, 255, 0.04);
 }
 
 /* --- Light Theme Variables --- */
@@ -50,6 +51,7 @@ body.light-theme {
   --btn-primary-text: #ffffff;
   --btn-secondary-bg: #ffffff;
   --btn-secondary-text: #000000;
+  --hero-shadow: 0 25px 70px rgba(0, 0, 0, 0.12), 0 10px 30px rgba(0, 0, 0, 0.08), 0 0 80px rgba(0, 0, 0, 0.06);
 }
 
 /* ==========================================================================
@@ -301,7 +303,9 @@ body.light-theme .moon-icon {
   border: 1px solid var(--border-color);
   text-align: center;
   background-color: var(--bg-secondary);
-  border-radius: 4px;
+  border-radius: 6px;
+  box-shadow: var(--hero-shadow);
+  transition: box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease, background-color var(--transition-speed) ease;
 }
 
 .hero-title {
@@ -370,6 +374,29 @@ body.light-theme .moon-icon {
   width: 16px;
   height: 16px;
   stroke-width: 2.5;
+}
+
+/* Roadmap Container & Bounce Animation */
+.roadmap-container {
+  will-change: transform;
+}
+
+.roadmap-container.bounce-active {
+  animation: singleRoadmapBounce 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes singleRoadmapBounce {
+  0% {
+    transform: translateY(0);
+  }
+
+  45% {
+    transform: translateY(-12px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* Roadmap Grid */
@@ -1280,8 +1307,8 @@ body.light-theme .modal-wrapper {
 }
 
 .discussion-accordion-item.expanded .discussion-accordion-content,
-.discussion-accordion-header[aria-expanded="true"] + .discussion-accordion-content,
-.discussion-accordion-header[aria-expanded="true"] ~ .discussion-accordion-content {
+.discussion-accordion-header[aria-expanded="true"]+.discussion-accordion-content,
+.discussion-accordion-header[aria-expanded="true"]~.discussion-accordion-content {
   border-top: 1px solid var(--border-color);
   overflow: visible !important;
 }
@@ -1340,7 +1367,7 @@ body.light-theme .modal-wrapper {
   border-top: 0px solid transparent;
 }
 
-.card-desc-toggle[aria-expanded="true"] + .card-desc-content {
+.card-desc-toggle[aria-expanded="true"]+.card-desc-content {
   border-top: 1px solid var(--border-color);
   padding: 0.85rem 1rem;
   background-color: var(--bg-primary);
@@ -1553,36 +1580,7 @@ body.light-theme .modal-wrapper {
   }
 }
 
-/* ==========================================================================
-   Scroll Snap & Viewport Snapping (Home View)
-   ========================================================================== */
-@media (min-width: 769px) {
-  html:has(#home-view) {
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
-  }
 
-  html:has(#home-view) .hero-wrapper {
-    height: calc(100vh - 180px);
-    /* Fill screen space minus header and persistent footer */
-    scroll-snap-align: start;
-    scroll-margin-top: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-
-  html:has(#home-view) .roadmap-container {
-    height: calc(100vh - 180px);
-    scroll-snap-align: start;
-    scroll-margin-top: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-}
 
 /* ==========================================================================
    Select Related Lecture Modal & Copy Link Button Styles
@@ -2365,7 +2363,7 @@ body.light-theme .obe-po-status-card.active .obe-po-status-indicator {
   .obe-sandbox-layout {
     grid-template-columns: 1fr;
   }
-  
+
   .obe-cards-grid {
     grid-template-columns: 1fr;
   }
