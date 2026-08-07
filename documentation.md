@@ -44,7 +44,7 @@ c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
 3. **[app.js](app.js)**
    - Initializes the application and controls client-side routing based on `window.location.hash`.
    - Lazily fetches and caches `data.json`, `course.json`, `technical.json`, and `resource.json` depending on the active page, saving states into in-memory variables (`appState`, `lecturesState`, `technicalState`, and `resourcesState`).
-   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups (`#roadmap-modal`, `#lecture-select-modal`, `#notes-select-modal`), root & child accordion expanders, item-level parent dropdown accordions, nested session description toggles, copy-link clicks, and route changes.
+   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups (`#roadmap-modal`, `#lecture-select-modal`, `#notes-select-modal`), root & child (course & sequence topic) accordion expanders, item-level parent dropdown accordions, nested session description toggles, copy-link clicks, and route changes.
    - Normalizes single vs multiple note entries in `notesUrl` (`normalizeNotesUrl`) and compiles safe HTML templates.
 
 4. **[data.json](data.json)**
@@ -54,7 +54,7 @@ c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
    - Grouped peer recorded lectures, semesters, guided instructors, video links, and note URLs (supporting single strings, string arrays, or note object arrays) indexed by unique course IDs (`courseId`) and lecture IDs (`lectureId`).
 
 6. **[technical.json](technical.json)**
-   - Technical workshop discussions, semesters, guided maintainers, video links, and note URLs (supporting single or multiple note attachments) indexed by unique topic IDs (`topicId`) and discussion IDs (`discussionId`).
+   - Grouped technical workshop discussions, topics/sequences, semesters, guided maintainers, video links, and note URLs (supporting single or multiple note attachments) indexed by unique topic IDs (`topicId`) and discussion IDs (`discussionId`).
 
 7. **[resource.json](resource.json)**
    - Curated study folders, repository links, and guides mapped to unique resource IDs (`resourceId`) and related course or lecture IDs.
@@ -129,7 +129,12 @@ The application state is minimal and managed entirely in the client window:
 
 ## 🕒 Version History
 
-### 🔗 v1.4.0 — Expandable Item Dropdowns & Session Description Toggles (Current)
+### 🔗 v1.5.0 — Grouped Technical Discussion Sequences (Current)
+* **Sequence Dropdown Accordions**: Grouped technical discussions belonging to the same sequence (e.g. `#1`, `#1.1`, `#1.2`) into sequence dropdown accordions (`topicId`, `topicName`) under the root "Technical Discussions" section, matching Course Discussions.
+* **Dynamic Count & Copy Link Sharing**: Added sequence discussion count badges and direct link-copying functionality (`#discussions?topic=topicId`) for sequence dropdown headers.
+* **Deep-Link Auto Expansion**: Updated URL routing to auto-expand parent root section, sequence topic accordion, and target discussion card when deep-linking.
+
+### 🔗 v1.4.0 — Expandable Item Dropdowns & Session Description Toggles
 * **Item-Level Parent Dropdowns**: Wrapped individual lecture and technical discussion cards in `.discussion-accordion-item` expandable parent dropdowns.
 * **Collapsed Item View**: Before expanding, item headers display `"lectureId"` / `"discussionId"`, `"title"`, `"semester"`, and `"instructor"`, while hiding `"description"`, `"videoUrl"`, and `"notesUrl"`.
 * **Nested Session Description Dropdown**: Hidden `"description"` text behind a `.card-desc-toggle` dropdown toggle button ("Session Description") inside the expanded item body.

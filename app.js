@@ -192,7 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const techData = (data && data.techData) || { discussions: [] };
 
       const courses = courseData.courses || [];
-      const techDiscussions = techData.discussions || (techData.topics ? techData.topics.flatMap(t => t.discussions || []) : []);
+      const topics = techData.topics || [];
+      const techDiscussions = techData.topics
+        ? topics.flatMap(t => t.discussions || [])
+        : (techData.discussions || []);
 
       // Calculate total counts
       let totalCourseLectures = 0;
@@ -200,70 +203,120 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const totalTechDiscussions = techDiscussions.length;
 
-      // Build Technical Discussions HTML (2-Layer: Root -> Entries)
-      let techDiscussionsHtml = '';
-      if (techDiscussions.length === 0) {
-        techDiscussionsHtml = '<p class="no-data">No technical discussions available yet.</p>';
-      } else {
-        let cardsHtml = '';
-        techDiscussions.forEach(item => {
-          const notesBtnHtml = renderNotesButtonHtml(item.notesUrl, item.title);
+      // Helper function to build a single discussion item card HTML
+      function renderDiscussionCard(item) {
+        const notesBtnHtml = renderNotesButtonHtml(item.notesUrl, item.title);
 
-          let descDropdownHtml = '';
-          if (item.description) {
-            descDropdownHtml = `
-              <div class="card-desc-wrapper">
-                <button class="card-desc-toggle" aria-expanded="false" aria-controls="desc-${escapeHTML(item.discussionId)}">
-                  <span>Session Description</span>
-                  <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
-                </button>
-                <div class="card-desc-content" id="desc-${escapeHTML(item.discussionId)}" style="max-height: 0;">
-                  <p class="card-desc-text">${escapeHTML(item.description)}</p>
+        let descDropdownHtml = '';
+        if (item.description) {
+          descDropdownHtml = `
+            <div class="card-desc-wrapper">
+              <button class="card-desc-toggle" aria-expanded="false" aria-controls="desc-${escapeHTML(item.discussionId)}">
+                <span>Session Description</span>
+                <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <div class="card-desc-content" id="desc-${escapeHTML(item.discussionId)}" style="max-height: 0;">
+                <p class="card-desc-text">${escapeHTML(item.description)}</p>
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="discussion-accordion-item" id="discussion-${escapeHTML(item.discussionId)}">
+            <div class="discussion-accordion-header-wrapper">
+              <button class="discussion-accordion-header" aria-expanded="false" aria-controls="content-discussion-${escapeHTML(item.discussionId)}">
+                <div class="discussion-header-meta">
+                  <span class="semester-tag">${escapeHTML(item.semester)}</span>
+                  <span class="id-tag">${escapeHTML(item.discussionId)}</span>
+                </div>
+                <h4 class="lecture-title">${escapeHTML(item.title)}</h4>
+                <p class="lecture-instructor">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
+                <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <button class="btn-copy-id" data-copy-type="discussion" data-copy-id="${escapeHTML(item.discussionId)}" title="Copy Discussion Link">
+                <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="discussion-accordion-content" id="content-discussion-${escapeHTML(item.discussionId)}" style="max-height: 0;">
+              <div class="discussion-card-body">
+                ${descDropdownHtml}
+                <div class="card-actions">
+                  <a href="${escapeHTML(item.videoUrl)}" class="card-btn btn-video" target="_blank" rel="noopener noreferrer">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                      <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    <span>Video Recording</span>
+                  </a>
+                  ${notesBtnHtml}
                 </div>
               </div>
-            `;
+            </div>
+          </div>
+        `;
+      }
+
+      // Build Technical Discussions HTML (Topics Accordion if topics present, else flat)
+      let techDiscussionsHtml = '';
+      if (totalTechDiscussions === 0) {
+        techDiscussionsHtml = '<p class="no-data">No technical discussions available yet.</p>';
+      } else if (techData.topics && techData.topics.length > 0) {
+        let topicItemsHtml = '';
+        topics.forEach(topic => {
+          let discussionsHtml = '';
+          const discussions = topic.discussions || [];
+
+          if (discussions.length === 0) {
+            discussionsHtml = '<p class="no-data">No discussions in this topic.</p>';
+          } else {
+            discussions.forEach(item => {
+              discussionsHtml += renderDiscussionCard(item);
+            });
           }
 
-          cardsHtml += `
-            <div class="discussion-accordion-item" id="discussion-${escapeHTML(item.discussionId)}">
-              <div class="discussion-accordion-header-wrapper">
-                <button class="discussion-accordion-header" aria-expanded="false" aria-controls="content-discussion-${escapeHTML(item.discussionId)}">
-                  <div class="discussion-header-meta">
-                    <span class="semester-tag">${escapeHTML(item.semester)}</span>
-                    <span class="id-tag">${escapeHTML(item.discussionId)}</span>
-                  </div>
-                  <h4 class="lecture-title">${escapeHTML(item.title)}</h4>
-                  <p class="lecture-instructor">Guided by: <strong>${escapeHTML(item.instructor)}</strong></p>
+          topicItemsHtml += `
+            <div class="topic-accordion-item" id="topic-${escapeHTML(topic.topicId)}">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem; position: relative;">
+                <button class="topic-accordion-header" aria-expanded="false" aria-controls="discussions-${escapeHTML(topic.topicId)}" style="flex: 1; padding-right: 2.2rem; position: relative;">
+                  <span class="topic-title-text">${escapeHTML(topic.topicName)}</span>
                   <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
+                  <span class="lectures-count">${discussions.length}</span>
                 </button>
-                <button class="btn-copy-id" data-copy-type="discussion" data-copy-id="${escapeHTML(item.discussionId)}" title="Copy Discussion Link">
+                <button class="btn-copy-id" data-copy-type="topic" data-copy-id="${escapeHTML(topic.topicId)}" title="Copy Topic Link" style="flex-shrink: 0; margin-left: 0.5rem;">
                   <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                   </svg>
                 </button>
               </div>
-              <div class="discussion-accordion-content" id="content-discussion-${escapeHTML(item.discussionId)}" style="max-height: 0;">
-                <div class="discussion-card-body">
-                  ${descDropdownHtml}
-                  <div class="card-actions">
-                    <a href="${escapeHTML(item.videoUrl)}" class="card-btn btn-video" target="_blank" rel="noopener noreferrer">
-                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                      </svg>
-                      <span>Video Recording</span>
-                    </a>
-                    ${notesBtnHtml}
-                  </div>
+              <div class="topic-accordion-content" id="discussions-${escapeHTML(topic.topicId)}" style="max-height: 0;">
+                <div class="lectures-grid">
+                  ${discussionsHtml}
                 </div>
               </div>
             </div>
           `;
+        });
+
+        techDiscussionsHtml = `
+          <div class="topics-accordion">
+            ${topicItemsHtml}
+          </div>
+        `;
+      } else {
+        let cardsHtml = '';
+        techDiscussions.forEach(item => {
+          cardsHtml += renderDiscussionCard(item);
         });
 
         techDiscussionsHtml = `
@@ -1221,8 +1274,8 @@ document.addEventListener('DOMContentLoaded', () => {
       a.href = `#discussions?lecture=${id}`;
       a.className = 'select-modal-link';
       a.innerHTML = `
-        <span class="lecture-name">${escapeHTML(foundLecture ? foundLecture.title : id)}</span>
-        <span class="course-name-sub">${escapeHTML(foundCourse ? foundCourse.courseName : 'Related Lecture')}</span>
+        <span class="lecture-name" title="${escapeHTML(foundLecture ? foundLecture.title : id)}">${escapeHTML(foundLecture ? foundLecture.title : id)}</span>
+        <span class="course-name-sub" title="${escapeHTML(foundCourse ? foundCourse.courseName : 'Related Lecture')}">${escapeHTML(foundCourse ? foundCourse.courseName : 'Related Lecture')}</span>
       `;
       a.addEventListener('click', () => {
         closeLectureSelectModal();
@@ -1284,8 +1337,8 @@ document.addEventListener('DOMContentLoaded', () => {
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
       a.innerHTML = `
-        <span class="lecture-name">${escapeHTML(note.title || `Note ${idx + 1}`)}</span>
-        <span class="course-name-sub">${escapeHTML(note.url)}</span>
+        <span class="lecture-name" title="${escapeHTML(note.title || `Note ${idx + 1}`)}">${escapeHTML(note.title || `Note ${idx + 1}`)}</span>
+        <span class="course-name-sub" title="${escapeHTML(note.url)}">${escapeHTML(note.url)}</span>
       `;
       a.addEventListener('click', () => {
         closeNotesSelectModal();

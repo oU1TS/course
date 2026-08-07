@@ -56,19 +56,25 @@ The Hero Section is **not** defined statically in `index.html`. It is generated 
 
 ### Data Schema
 ```json
-// technical.json (Root -> Discussion Item Accordions)
+// technical.json (Root -> Topics -> Discussion Item Accordions)
 {
-  "discussions": [
+  "topics": [
     {
-      "discussionId": "tech-disc-1.1",
-      "title": "Technical Discussion #1.1 | CSE-55 UITS",
-      "semester": "Autumn 2026",
-      "instructor": "OmniPotato23",
-      "description": "This video covers topics ranging from hosting portfolio websites...",
-      "videoUrl": "https://youtu.be/icGNcUG_fKI",
-      "notesUrl": [
-        "render.html?file=note/technical/tech-1.1.md",
-        "https://github.com/user-attachments/files/30622748/Linux.VM.Installation.Guide.pdf"
+      "topicId": "tech-disc-1",
+      "topicName": "Technical Discussion #1",
+      "discussions": [
+        {
+          "discussionId": "tech-disc-1.1",
+          "title": "Technical Discussion #1.1 | CSE-55 UITS",
+          "semester": "Autumn 2026",
+          "instructor": "OmniPotato23",
+          "description": "This video covers topics ranging from hosting portfolio websites...",
+          "videoUrl": "https://youtu.be/icGNcUG_fKI",
+          "notesUrl": [
+            "render.html?file=note/technical/tech-1.1.md",
+            "https://github.com/user-attachments/files/30622748/Linux.VM.Installation.Guide.pdf"
+          ]
+        }
       ]
     }
   ]

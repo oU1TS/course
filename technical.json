@@ -1,26 +1,46 @@
 {
-  "discussions": [
+  "topics": [
     {
-      "discussionId": "tech-disc-1.1",
-      "title": "Technical Discussion #1.1 | CSE-55 UITS",
-      "semester": "Autumn 2026",
-      "instructor": "OmniPotato23",
-      "description": "This video covers topics ranging from hosting portfolio websites using GitHub Pages and Vercel to cloud development environments with GitHub CodeSpaces and essential Git concepts. The primary focus of the video centers around setting up a Linux environment, walking viewers through a VirtualBox installation as an alternative before tackling a persistent VMware workstation issue where the mouse cursor fails to display. After demonstrating multiple unsuccessful CLI and software fixes, the video provides a working solution by guiding users step-by-step through installing the official VMware Workstation Pro—navigating confusing UI elements such as using an email address as the username, clicking Terms & Conditions to enable the download checkbox, and successfully completing the setup.",
-      "videoUrl": "https://youtu.be/icGNcUG_fKI",
-      "notesUrl": [
-        "render.html?file=note/technical/tech-1.1.md",
-        "https://github.com/user-attachments/files/30622748/Linux.VM.Installation.Guide.pdf",
-        "https://github.com/codespaces"
+      "topicId": "tech-disc-1",
+      "topicName": "Technical Discussion #1",
+      "discussions": [
+        {
+          "discussionId": "tech-disc-1.2",
+          "title": "Technical Discussion #1.2 | CSE-55 UITS",
+          "semester": "Autumn 2026",
+          "instructor": "OmniPotato23",
+          "description": "",
+          "videoUrl": "https://youtu.be/AZ2gCnOuxtI",
+          "notesUrl": [
+            "render.html?file=note/technical/tech-1.2.md",
+            "https://github.com/b1tranger/glut_project_setup",
+            "https://github.com/user-attachments/files/30829818/Log_.Kali.Linux.in.GitHub.Codespaces.pdf",
+            "https://github.com/user-attachments/files/30830005/Removing.the.Shortcut.Virus.from.a.USB.Drive.pdf"
+          ]
+        },
+        {
+          "discussionId": "tech-disc-1.1",
+          "title": "Technical Discussion #1.1 | CSE-55 UITS",
+          "semester": "Autumn 2026",
+          "instructor": "OmniPotato23",
+          "description": "This video covers topics ranging from hosting portfolio websites using GitHub Pages and Vercel to cloud development environments with GitHub CodeSpaces and essential Git concepts. The primary focus of the video centers around setting up a Linux environment, walking viewers through a VirtualBox installation as an alternative before tackling a persistent VMware workstation issue where the mouse cursor fails to display. After demonstrating multiple unsuccessful CLI and software fixes, the video provides a working solution by guiding users step-by-step through installing the official VMware Workstation Pro—navigating confusing UI elements such as using an email address as the username, clicking Terms & Conditions to enable the download checkbox, and successfully completing the setup.",
+          "videoUrl": "https://youtu.be/icGNcUG_fKI",
+          "notesUrl": [
+            "render.html?file=note/technical/tech-1.1.md",
+            "https://github.com/user-attachments/files/30622748/Linux.VM.Installation.Guide.pdf",
+            "https://github.com/codespaces"
+          ]
+        },
+        {
+          "discussionId": "tech-disc-1",
+          "title": "Technical Discussion #1 | CSE-55 UITS | 07 28 22 12 08",
+          "semester": "Autumn 2026",
+          "instructor": "OmniPotato23",
+          "description": "This video covers software tools and setups across several computer science domains, beginning with installing the Emu8086 emulator for Microprocessor Lab work and setting up Google Colab alongside Kaggle for Machine Learning tasks. It demonstrates local network file sharing using LocalSend and HTTP File Server, as well as creating Linux live bootable USB drives using Rufus and Ventoy. The remainder of the session provides an in-depth walkthrough of GitHub as a platform, covering profile and repository management, version control concepts like branching, forking, and pull requests, and features such as GitHub Actions, Pages, Wikis, Codespaces, and topic discovery.",
+          "videoUrl": "https://youtu.be/kWSYilxPv4s",
+          "notesUrl": "render.html?file=note/technical/tech-1.md"
+        }
       ]
-    },
-    {
-      "discussionId": "tech-disc-1",
-      "title": "Technical Discussion #1 | CSE-55 UITS | 07 28 22 12 08",
-      "semester": "Autumn 2026",
-      "instructor": "OmniPotato23",
-      "description": "This video covers software tools and setups across several computer science domains, beginning with installing the Emu8086 emulator for Microprocessor Lab work and setting up Google Colab alongside Kaggle for Machine Learning tasks. It demonstrates local network file sharing using LocalSend and HTTP File Server, as well as creating Linux live bootable USB drives using Rufus and Ventoy. The remainder of the session provides an in-depth walkthrough of GitHub as a platform, covering profile and repository management, version control concepts like branching, forking, and pull requests, and features such as GitHub Actions, Pages, Wikis, Codespaces, and topic discovery.",
-      "videoUrl": "https://youtu.be/kWSYilxPv4s",
-      "notesUrl": "render.html?file=note/technical/tech-1.md"
     }
   ]
 }

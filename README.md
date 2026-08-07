@@ -30,7 +30,7 @@ Here is a summary of the main files in this repository:
 | **[app.js](app.js)** | SPA router, state manager, template view compilers, modal controllers, and clipboard copy engines. |
 | **[data.json](data.json)** | Content database housing the motto, roadmap timeline steps, about sections, and join channels. |
 | **[course.json](course.json)** | Content database for recorded peer classes and course lectures indexed by `courseId`. |
-| **[technical.json](technical.json)** | Content database for technical workshops and discussions indexed by `discussionId`. |
+| **[technical.json](technical.json)** | Content database for technical workshops and discussions grouped by sequence/topic (`topicId`). |
 | **[resource.json](resource.json)** | Curated academic resources, toolkits, drive links, and course/lecture mappings. |
 | **[documentation.md](documentation.md)** | Technical reference describing routing flow, lifecycle architecture, and state. |
 | **[explain.md](explain.md)** | Mapping guidelines explaining JSON schemas and corresponding view renderers. |

@@ -912,11 +912,13 @@ body.light-theme .modal-overlay {
   border: 1px solid var(--border-color);
   max-width: 550px;
   width: 100%;
+  max-width: calc(100vw - 3rem);
   border-radius: 4px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   transform: translateY(20px);
   transition: transform 0.25s ease;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 body.light-theme .modal-wrapper {
@@ -958,6 +960,9 @@ body.light-theme .modal-wrapper {
 
 .modal-body {
   padding: 2rem 1.5rem;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .modal-title {
@@ -981,6 +986,10 @@ body.light-theme .modal-wrapper {
   margin-top: 1.5rem;
   border-top: 1px solid var(--border-color);
   padding-top: 1.25rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .modal-link {
@@ -1146,6 +1155,7 @@ body.light-theme .modal-wrapper {
   overflow: visible !important;
 }
 
+.topic-title-text,
 .course-title-text {
   flex: 1;
 }
@@ -1583,6 +1593,11 @@ body.light-theme .modal-wrapper {
   text-align: left;
   transition: all var(--transition-speed) ease;
   cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .select-modal-link:hover {
@@ -1595,11 +1610,26 @@ body.light-theme .modal-wrapper {
   font-size: 0.95rem;
   color: var(--text-primary);
   margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .select-modal-link .course-name-sub {
   font-size: 0.8rem;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  word-break: break-all;
 }
 
 /* Copy ID Link Buttons */
