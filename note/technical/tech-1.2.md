@@ -34,5 +34,5 @@ Resources:
 - https://github.com/user-attachments/files/30830005/Removing.the.Shortcut.Virus.from.a.USB.Drive.pdf
 
 Hosted Pages:
-- https://b1tranger.bro.bd/gh-pages-website/
+- https://b1tranger-s-stash.github.io/gh-pages-website/
 - https://vercel-website-five-gray.vercel.app/
