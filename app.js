@@ -29,10 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // State Variables
-  let appState = null;       // Holds data.json content
-  let lecturesState = null;  // Holds course.json / lecture.json content
-  let technicalState = null; // Holds technical.json content
-  let resourcesState = null; // Holds resource.json content
+  let appState = null;       // Holds json/data.json content
+  let lecturesState = null;  // Holds json/course.json / json/lecture.json content
+  let technicalState = null; // Holds json/technical.json content
+  let resourcesState = null; // Holds json/resource.json content
+  let adminsState = null;    // Holds json/admins.json content
   let isDataLoading = false;
 
   /* ==========================================================================
@@ -124,8 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const Render = {
     // Render Homepage
     home(data) {
-      const motto = data.motto || '';
-      const roadmap = data.roadmap || [];
+      const mainData = (data && data.homeData) || data || {};
+      const adminsData = (data && data.adminsData) || null;
+      const motto = mainData.motto || '';
+      const roadmap = mainData.roadmap || [];
 
       let roadmapHtml = '';
       roadmap.forEach((step, index) => {
@@ -145,6 +148,113 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `;
       });
+
+      // Build Batchwise Admins Dropdown Section HTML
+      let adminsSectionHtml = '';
+      if (adminsData && adminsData.departments && adminsData.departments.length > 0) {
+        let deptAccordionHtml = '';
+        adminsData.departments.forEach((dept, index) => {
+          const isExpanded = dept.isDefaultOpen !== false && index === 0;
+          let batchesHtml = '';
+          (dept.batches || []).forEach(batch => {
+            let adminsCardsHtml = '';
+            (batch.admins || []).forEach(admin => {
+              adminsCardsHtml += `
+                <div class="admin-member-card">
+                  <div class="admin-info">
+                    <div class="admin-avatar-placeholder">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                    </div>
+                    <div class="admin-details">
+                      <div class="admin-name">${escapeHTML(admin.name)}</div>
+                      ${(admin.id || admin.role) ? `<div class="admin-role">${escapeHTML(admin.id || admin.role)}</div>` : ''}
+                    </div>
+                  </div>
+                  ${admin.contact ? `
+                    <a href="${escapeHTML(admin.contact)}" target="_blank" rel="noopener noreferrer" class="admin-contact-btn">
+                      <span>${escapeHTML(admin.contactType || 'Contact')}</span>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="7" y1="17" x2="17" y2="7"></line>
+                        <polyline points="7 7 17 7 17 17"></polyline>
+                      </svg>
+                    </a>
+                  ` : ''}
+                </div>
+              `;
+            });
+
+            batchesHtml += `
+              <div class="batch-card">
+                <div class="batch-card-header">
+                  <h4 class="batch-title">${escapeHTML(batch.batchName)}</h4>
+                  <span class="batch-badge">${(batch.admins || []).length} Admin${(batch.admins || []).length !== 1 ? 's' : ''}</span>
+                </div>
+                <div class="batch-admins-list">
+                  ${adminsCardsHtml}
+                </div>
+              </div>
+            `;
+          });
+
+          deptAccordionHtml += `
+            <div class="dept-accordion-item ${isExpanded ? 'expanded' : ''}" id="dept-${escapeHTML(dept.id)}">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem; position: relative;">
+                <button class="dept-accordion-header" aria-expanded="${isExpanded ? 'true' : 'false'}" aria-controls="content-dept-${escapeHTML(dept.id)}" style="flex: 1; padding-right: 2.2rem; position: relative;">
+                  <div class="dept-header-info">
+                    <span class="dept-name-tag">${escapeHTML(dept.name)}</span>
+                    <span class="dept-full-name">${escapeHTML(dept.fullName || dept.name)}</span>
+                  </div>
+                  <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <button class="btn-copy-id" data-copy-type="dept" data-copy-id="${escapeHTML(dept.id)}" title="Copy ${escapeHTML(dept.name)} Admins Link" style="flex-shrink: 0; margin-left: 0.5rem;">
+                  <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="dept-accordion-content" id="content-dept-${escapeHTML(dept.id)}" style="${isExpanded ? 'max-height: none;' : 'max-height: 0;'}">
+                <div class="dept-batches-grid">
+                  ${batchesHtml}
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        adminsSectionHtml = `
+          <div class="section-divider"></div>
+
+          <div class="admins-container" id="section-admins">
+            <div class="section-header">
+              <span class="section-tag">Batch Support</span>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                <h2 class="section-title" style="margin-bottom: 0;">${escapeHTML(adminsData.title || 'Our Batchwise admins')}</h2>
+                <button class="btn-copy-id" data-copy-type="admins" data-copy-id="admins" title="Copy Batchwise Admins Section Link">
+                  <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+                </button>
+              </div>
+              <p class="section-desc">Designated student admins helping out their respective batches with guidance, notes, and resources.</p>
+            </div>
+            <div class="admins-dropdown-wrapper">
+              <div class="departments-accordion">
+                ${deptAccordionHtml}
+              </div>
+              <div class="admins-note">
+                <span class="note-badge">${escapeHTML(adminsData.note || '(Other departments will be added soon)')}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
 
       return `
         <section class="page-section fade-in" id="home-view">
@@ -182,6 +292,8 @@ document.addEventListener('DOMContentLoaded', () => {
               ${roadmapHtml}
             </div>
           </div>
+
+          ${adminsSectionHtml}
         </section>
       `;
     },
@@ -776,25 +888,29 @@ document.addEventListener('DOMContentLoaded', () => {
      3. Asynchronous Data Fetching & Routing
      ========================================================================== */
   async function fetchAppData(fileName) {
-    if (fileName === 'data.json' && appState) return appState;
-    if ((fileName === 'lecture.json' || fileName === 'course.json') && lecturesState) return lecturesState;
-    if (fileName === 'technical.json' && technicalState) return technicalState;
-    if (fileName === 'resource.json' && resourcesState) return resourcesState;
+    const cleanName = fileName.replace(/^json\//, '');
+    if (cleanName === 'data.json' && appState) return appState;
+    if ((cleanName === 'lecture.json' || cleanName === 'course.json') && lecturesState) return lecturesState;
+    if (cleanName === 'technical.json' && technicalState) return technicalState;
+    if (cleanName === 'resource.json' && resourcesState) return resourcesState;
+    if (cleanName === 'admins.json' && adminsState) return adminsState;
     if (isDataLoading) return null;
 
     isDataLoading = true;
     renderSkeletons();
 
     try {
-      const response = await fetch(fileName);
+      const fetchPath = fileName.startsWith('json/') ? fileName : `json/${fileName}`;
+      const response = await fetch(fetchPath);
       if (!response.ok) {
-        throw new Error(`Failed to load ${fileName} (HTTP ${response.status})`);
+        throw new Error(`Failed to load ${fetchPath} (HTTP ${response.status})`);
       }
       const data = await response.json();
-      if (fileName === 'data.json') appState = data;
-      else if (fileName === 'lecture.json' || fileName === 'course.json') lecturesState = data;
-      else if (fileName === 'technical.json') technicalState = data;
-      else if (fileName === 'resource.json') resourcesState = data;
+      if (cleanName === 'data.json') appState = data;
+      else if (cleanName === 'lecture.json' || cleanName === 'course.json') lecturesState = data;
+      else if (cleanName === 'technical.json') technicalState = data;
+      else if (cleanName === 'resource.json') resourcesState = data;
+      else if (cleanName === 'admins.json') adminsState = data;
       return data;
     } catch (err) {
       console.error(`Error fetching ${fileName}:`, err);
@@ -894,14 +1010,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Fetch data (depending on page/route)
     let data = null;
     const renderKey = validRoutes[currentHash];
-    if (renderKey === 'home' || renderKey === 'about' || renderKey === 'join') {
-      data = await fetchAppData('data.json');
+    if (renderKey === 'home') {
+      const homeData = await fetchAppData('json/data.json');
+      const adminsData = await fetchAppData('json/admins.json');
+      data = { homeData, adminsData };
+    } else if (renderKey === 'about' || renderKey === 'join') {
+      data = await fetchAppData('json/data.json');
     } else if (renderKey === 'discussions') {
-      const courseData = await fetchAppData('course.json');
-      const techData = await fetchAppData('technical.json');
+      const courseData = await fetchAppData('json/course.json');
+      const techData = await fetchAppData('json/technical.json');
       data = { courseData, techData };
     } else if (renderKey === 'resources') {
-      data = await fetchAppData('resource.json');
+      data = await fetchAppData('json/resource.json');
     }
     if (!data) return; // Error or loading rendered inside fetchAppData
 
@@ -932,6 +1052,44 @@ document.addEventListener('DOMContentLoaded', () => {
      3b. Custom Smooth Scroll & Roadmap Section Auto-Bounce
      ========================================================================== */
   let hasBouncedOnPageLoad = false;
+  let isAutoScrolling = false;
+  let scrollAnimFrameId = null;
+  let bounceTimeoutIds = [];
+
+  function cancelAutoScroll() {
+    if (!isAutoScrolling) return;
+    isAutoScrolling = false;
+
+    // Cancel active animation frame
+    if (scrollAnimFrameId) {
+      cancelAnimationFrame(scrollAnimFrameId);
+      scrollAnimFrameId = null;
+    }
+
+    // Clear all pending timeouts
+    bounceTimeoutIds.forEach(id => clearTimeout(id));
+    bounceTimeoutIds = [];
+
+    // Remove bounce CSS class if active
+    const roadmapContainer = document.querySelector('.roadmap-container');
+    if (roadmapContainer) {
+      roadmapContainer.classList.remove('bounce-active');
+    }
+  }
+
+  // Listen for manual user input events to immediately cancel auto-scroll animation
+  const userScrollEvents = ['wheel', 'touchmove', 'keydown', 'mousedown'];
+  userScrollEvents.forEach(eventType => {
+    window.addEventListener(eventType, (e) => {
+      if (eventType === 'keydown') {
+        const scrollKeys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '];
+        if (!scrollKeys.includes(e.key)) return;
+      }
+      if (isAutoScrolling) {
+        cancelAutoScroll();
+      }
+    }, { passive: true });
+  });
 
   function smoothScrollTo(targetY, duration = 1400, callback) {
     const startY = window.pageYOffset || document.documentElement.scrollTop;
@@ -943,6 +1101,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function step(currentTime) {
+      if (!isAutoScrolling) return;
+
       if (!startTime) startTime = currentTime;
       const timeElapsed = currentTime - startTime;
       const progress = Math.min(timeElapsed / duration, 1);
@@ -951,13 +1111,16 @@ document.addEventListener('DOMContentLoaded', () => {
       window.scrollTo(0, startY + distance * easeProgress);
 
       if (timeElapsed < duration) {
-        requestAnimationFrame(step);
-      } else if (callback) {
-        callback();
+        scrollAnimFrameId = requestAnimationFrame(step);
+      } else {
+        scrollAnimFrameId = null;
+        if (callback && isAutoScrolling) {
+          callback();
+        }
       }
     }
 
-    requestAnimationFrame(step);
+    scrollAnimFrameId = requestAnimationFrame(step);
   }
 
   function triggerRoadmapBounce() {
@@ -970,27 +1133,33 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.scrollY > 200) return;
 
     hasBouncedOnPageLoad = true;
+    isAutoScrolling = true;
 
     // Target "Our Study Roadmap" title element specifically
     const titleEl = roadmapContainer.querySelector('.section-title') || roadmapContainer;
     const titleRect = titleEl.getBoundingClientRect();
 
-    // Scroll until "Our Study Roadmap" title reaches half the screen height
+    // Scroll until "Our Study Roadmap" title reaches top-fifth view
     const targetY = Math.max(0, window.pageYOffset + titleRect.top - (window.innerHeight / 5));
 
     // Smooth slow scroll down to half-screen view
     smoothScrollTo(targetY, 1400, () => {
-      // Bounce section in half-screen view
+      if (!isAutoScrolling) return;
       roadmapContainer.classList.add('bounce-active');
 
-      setTimeout(() => {
+      const t1 = setTimeout(() => {
+        if (!isAutoScrolling) return;
         roadmapContainer.classList.remove('bounce-active');
 
-        // Smooth slow scroll back to hero section
-        setTimeout(() => {
-          smoothScrollTo(0, 1400);
+        const t2 = setTimeout(() => {
+          if (!isAutoScrolling) return;
+          smoothScrollTo(0, 1400, () => {
+            isAutoScrolling = false;
+          });
         }, 300);
+        bounceTimeoutIds.push(t2);
       }, 900);
+      bounceTimeoutIds.push(t1);
     });
   }
 
@@ -1032,6 +1201,55 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       });
+
+      // Bind Department Accordion Toggle Click Handlers (Batchwise Admins)
+      const deptHeaders = document.querySelectorAll('.dept-accordion-header');
+      deptHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+          const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+          // Single-open accordion behavior: Close all other sub-dropdowns first
+          deptHeaders.forEach(otherHeader => {
+            otherHeader.setAttribute('aria-expanded', 'false');
+            const otherItem = otherHeader.closest('.dept-accordion-item');
+            if (otherItem) otherItem.classList.remove('expanded');
+            const otherContent = otherHeader.nextElementSibling;
+            if (otherContent) otherContent.style.maxHeight = '0';
+          });
+
+          // Expand current if it was closed
+          if (!isExpanded) {
+            header.setAttribute('aria-expanded', 'true');
+            const currentItem = header.closest('.dept-accordion-item');
+            if (currentItem) currentItem.classList.add('expanded');
+            const currentContent = header.nextElementSibling;
+            if (currentContent) {
+              currentContent.style.maxHeight = currentContent.scrollHeight + 'px';
+            }
+          }
+        });
+      });
+
+      // Deep-link redirection for admins section or department sub-dropdown
+      if (queryParams.admins !== undefined || queryParams.dept) {
+        const targetEl = queryParams.dept
+          ? document.getElementById(`dept-${queryParams.dept}`)
+          : document.getElementById('section-admins');
+
+        if (targetEl) {
+          if (queryParams.dept) {
+            const deptHeader = targetEl.querySelector('.dept-accordion-header');
+            if (deptHeader && deptHeader.getAttribute('aria-expanded') !== 'true') {
+              deptHeader.click();
+            }
+          }
+          setTimeout(() => {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetEl.classList.add('highlight-flash');
+            setTimeout(() => targetEl.classList.remove('highlight-flash'), 2000);
+          }, 200);
+        }
+      }
     } else if (viewKey === 'discussions') {
       // 1. Bind Root Accordion Toggle Click Handlers
       const rootHeaders = document.querySelectorAll('.root-accordion-header');
@@ -1481,7 +1699,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function copyLinkToClipboard(type, id, button) {
     const baseUrl = window.location.origin + window.location.pathname;
     let url = '';
-    if (type === 'section') {
+    if (type === 'admins') {
+      url = `${baseUrl}#home?admins`;
+    } else if (type === 'dept') {
+      url = `${baseUrl}#home?dept=${id}`;
+    } else if (type === 'section') {
       url = `${baseUrl}#discussions?section=${id}`;
     } else if (type === 'topic') {
       url = `${baseUrl}#discussions?topic=${id}`;
@@ -1566,13 +1788,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const response = await fetch('obe_data.json');
-      if (!response.ok) throw new Error('Failed to fetch obe_data.json');
+      const response = await fetch('json/obe_data.json');
+      if (!response.ok) throw new Error('Failed to fetch json/obe_data.json');
       obeDataState = await response.json();
     } catch (err) {
       console.error('OBE Cracked error:', err);
       if (cardsGrid) {
-        cardsGrid.innerHTML = '<p class="no-data">Failed to load OBE outcome data. Please check obe_data.json.</p>';
+        cardsGrid.innerHTML = '<p class="no-data">Failed to load OBE outcome data. Please check json/obe_data.json.</p>';
       }
       return;
     }

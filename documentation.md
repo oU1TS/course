@@ -16,12 +16,14 @@ c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
 ├── obe_cracked.html    # Standalone single-page component layout for OBE Cracked
 ├── style.css           # Typography, themes (dark/light), layouts, modal, and copy styles
 ├── app.js              # SPA router, state manager, view renderers, and OBE Cracked controller
-├── data.json           # Content database for roadmap, about, and join sections
-├── course.json         # Content database for course discussions and lectures
-├── lecture.json        # Synced content database for recorded peer classes and lectures
-├── technical.json      # Content database for technical discussions and workshops
-├── resource.json       # Content database for academic toolkits, drives, and trackers
-├── obe_data.json       # Content database for CO/PO outcome mappings, K-profiles, and sandbox tasks
+├── json/               # Centralized content database directory
+│   ├── data.json       # Content database for roadmap, about, and join sections
+│   ├── course.json     # Content database for course discussions and lectures
+│   ├── lecture.json    # Synced content database for recorded peer classes and lectures
+│   ├── technical.json  # Content database for technical discussions and workshops
+│   ├── resource.json   # Content database for academic toolkits, drives, and trackers
+│   ├── obe_data.json   # Content database for CO/PO outcome mappings, K-profiles, and sandbox tasks
+│   └── admins.json     # Content database for department batchwise student admins and support links
 ├── render.html         # Local markdown document viewer
 ├── render.js           # Markdown parser and search engine for render.html
 ├── css/
@@ -45,28 +47,31 @@ c:\Users\gsmur\Documents\GitHub\[oU1TS]\course
 3. **[style.css](style.css)**
    - Stores design system tokens as CSS Variables in `:root` and `body.light-theme`.
    - Uses pure black (`#000000` default dark theme) and pure white (`#ffffff` light theme) color definitions (no gradients) with solid borders.
-   - Contains styles for root dropdown menus, sub-accordion panels, resource card elements, select list cards, OBE Cracked component layouts, active navigation highlights, and link-copying success states.
+   - Contains styles for root dropdown menus, sub-accordion panels, batchwise admin department sub-dropdowns, resource card elements, select list cards, OBE Cracked component layouts, active navigation highlights, and link-copying success states.
 
 4. **[app.js](app.js)**
    - Initializes the application and controls client-side routing based on `window.location.hash` and page context.
-   - Lazily fetches and caches `data.json`, `course.json`, `technical.json`, `resource.json`, and `obe_data.json` depending on the active page, saving states into in-memory variables.
-   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups, root & child accordion expanders, copy-link clicks, active navigation highlight sync (`routePage`), OBE Cracked outcome filters, and narrative comparison carousel timers with hover/touch pause handlers (`initOBECracked`).
+   - Lazily fetches and caches `json/data.json`, `json/course.json`, `json/technical.json`, `json/resource.json`, `json/obe_data.json`, and `json/admins.json` depending on the active page, saving states into in-memory variables.
+   - Binds event listeners for UI interactions: mobile drawer toggle, theme switcher, modal popups, department sub-dropdown accordions (single-open behavior), root & child accordion expanders, copy-link clicks, active navigation highlight sync (`routePage`), OBE Cracked outcome filters, and narrative comparison carousel timers with hover/touch pause handlers (`initOBECracked`).
    - Normalizes single vs multiple note entries in `notesUrl` (`normalizeNotesUrl`) and compiles safe HTML templates.
 
-5. **[data.json](data.json)**
+5. **[json/data.json](json/data.json)**
    - Stores structural page metadata including motto descriptions, roadmap steps, about text blocks, and channel links.
 
-6. **[course.json](course.json) & [lecture.json](lecture.json)**
+6. **[json/course.json](json/course.json) & [json/lecture.json](json/lecture.json)**
    - Grouped peer recorded lectures, semesters, guided instructors, video links, and note URLs (supporting single strings, string arrays, or note object arrays) indexed by unique course IDs (`courseId`) and lecture IDs (`lectureId`).
 
-7. **[technical.json](technical.json)**
+7. **[json/technical.json](json/technical.json)**
    - Grouped technical workshop discussions, topics/sequences, semesters, guided maintainers, video links, and note URLs (supporting single or multiple note attachments) indexed by unique topic IDs (`topicId`) and discussion IDs (`discussionId`).
 
-8. **[resource.json](resource.json)**
+8. **[json/resource.json](json/resource.json)**
    - Curated study folders, repository links, and guides mapped to unique resource IDs (`resourceId`) and related course or lecture IDs.
 
-9. **[obe_data.json](obe_data.json)**
+9. **[json/obe_data.json](json/obe_data.json)**
    - Stores narrative comparisons, course outcomes mapped to Bloom levels and Knowledge Profiles (K-profiles), plain-English developer translations, applied evidence tasks, resume bullet points, and interactive sandbox developer tasks.
+
+10. **[json/admins.json](json/admins.json)**
+   - Content database maintaining department sub-dropdown listings (e.g. CSE), default open state flags, batch arrays (62nd, 61st, 60th, 59th), student admin names, roles, and direct contact buttons.
 
 ---
 
@@ -85,23 +90,31 @@ graph TD
     B --> D[app.js: routePage & navLink active sync]
     B --> E{Detect Page Context}
     E -->|index.html SPA| F{Match Hash Route}
-    E -->|obe_cracked.html| G[initOBECracked: Fetch obe_data.json]
-    F -->|#home, #about, #join| H[Fetch data.json -> Cache in appState]
-    F -->|#discussions| I[Fetch lecture.json & technical.json -> Cache]
-    F -->|#resources| J[Fetch resource.json -> Cache in resourcesState]
-    H --> K[Call corresponding local Render templates]
-    I --> K
-    J --> K
-    K --> L[app.js: Inject HTML into #content-app]
-    G --> M[initOBECracked: Render cards, sandbox & carousel]
-    M --> N[initNarrativeCarousel: 7s auto-cycle & hover/touch pause]
+    E -->|obe_cracked.html| G[initOBECracked: Fetch json/obe_data.json]
+    F -->|#home| H[Fetch json/data.json & json/admins.json -> Cache]
+    F -->|#about, #join| I[Fetch json/data.json -> Cache in appState]
+    F -->|#discussions| J[Fetch json/course.json & json/technical.json -> Cache]
+    F -->|#resources| K[Fetch json/resource.json -> Cache in resourcesState]
+    H --> L[Call corresponding local Render templates]
+    I --> L
+    J --> L
+    K --> L
+    L --> M[app.js: Inject HTML into #content-app]
+    G --> N[initOBECracked: Render cards, sandbox & carousel]
+    N --> O[initNarrativeCarousel: 7s auto-cycle & hover/touch pause]
 ```
 
 ---
 
 ## 🕒 Version History
 
-### 🔗 v1.6.0 - OBE Cracked Component & Interactive Outcome Sandbox (Current)
+### 🔗 v1.7.0 — Centralized JSON Directory & Batchwise Admins Dropdown (Current)
+* **Centralized JSON Directory (`json/`)**: Moved all `.json` content databases (`course.json`, `data.json`, `lecture.json`, `technical.json`, `resource.json`, `obe_data.json`) from the root directory into a new `json/` directory to clean up the codebase root.
+* **Batchwise Admins Content Database (`json/admins.json`)**: Created `json/admins.json` to keep and maintain batchwise student support administrators categorized by department (CSE 62nd, 61st, 60th, 59th batches), roles, and contact channels.
+* **Homepage Batchwise Admins Dropdown Section**: Added a new "Our Batchwise admins" section at the bottom of the homepage (`#home-view`).
+* **Default View & Accordion Logic**: Rendered CSE sub-dropdown as default expanded (`isDefaultOpen: true`), added `(Other departments will be added soon)` notice text below, and programmed sub-dropdown toggle click handlers in `app.js` to enforce single-open accordion behavior (clicking another sub-dropdown automatically closes CSE and expands the selected department).
+
+### 🔗 v1.6.0 - OBE Cracked Component & Interactive Outcome Sandbox
 * **OBE Cracked Standalone Web Component (`obe_cracked.html`)**: Created a standalone single-page web component that bridges academic Outcome-Based Education (CO/PO) course outlines into concrete software development practices, lab evidence, and resume bullet suggestions.
 * **CO-PO & K-Profile Database (`obe_data.json`)**: Externalized schema storing course outcome mappings across Computer Science courses (`CSE0613321 Compiler`, `CSE0611327 Computer Graphics`, `CSE0611323 Microprocessors`, `CSE0611324 Microprocessors Lab`, `CSE0612325 Cyber Security`, `CSE-211`, `CSE-311`, `CSE-411`), Bloom taxonomy levels (`Understand/C2`, `Analyze/C4`, `Evaluate/C5`, `Design/C6`), Knowledge Profiles (`K2` to `K8`), applied tasks, and resume bullet points.
 * **Interactive Narrative Comparison Carousel**: Built a hero comparison widget contrasting academic jargon vs. real-world engineering value, featuring 7s auto-cycling, smooth 180ms CSS fade-slide transitions, hover/focus/touch pause controls, manual click/tap advancing, and dynamic status hints (`Auto 7s | Click/Tap to cycle` vs `Paused | Click/Tap to cycle`).

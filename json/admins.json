@@ -1,0 +1,74 @@
+{
+  "title": "Our Batchwise admins",
+  "note": "(Other departments will be added soon)",
+  "departments": [
+    {
+      "id": "cse",
+      "name": "CSE",
+      "fullName": "Computer Science & Engineering",
+      "isDefaultOpen": true,
+      "batches": [
+        {
+          "batchId": "cse-60",
+          "batchName": "60th Batch",
+          "admins": [
+            {
+              "name": "Jarif Jawad",
+              "id": "04326205101051",
+              "contact": "https://www.facebook.com/Ownerdied.jar",
+              "contactType": "Facebook"
+            }
+          ]
+        },
+        {
+          "batchId": "cse-59",
+          "batchName": "59th Batch",
+          "admins": [
+            {
+              "name": "Saif Ahmed Joy",
+              "id": "04326105101025",
+              "contact": "https://www.facebook.com/BlackHatT.Saif",
+              "contactType": "Facebook"
+            }
+          ]
+        },
+        {
+          "batchId": "cse-58",
+          "batchName": "58th Batch",
+          "admins": [
+            {
+              "name": "Kazi Rabit Jahir",
+              "id": "04325205101006",
+              "contact": "https://m.facebook.com/kazi.rabit/",
+              "contactType": "Facebook"
+            }
+          ]
+        },
+        {
+          "batchId": "cse-55",
+          "batchName": "55th Batch",
+          "admins": [
+            {
+              "name": "b1tranger",
+              "id": "0432410005101088",
+              "contact": "https://www.facebook.com/b1tranger",
+              "contactType": "Facebook"
+            }
+          ]
+        },
+        {
+          "batchId": "cse-54",
+          "batchName": "54th Batch",
+          "admins": [
+            {
+              "name": "Shafayat Hossain Shafin",
+              "id": "0432320005101088",
+              "contact": "https://www.facebook.com/shafayet.shafin.14",
+              "contactType": "Facebook"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

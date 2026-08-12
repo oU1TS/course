@@ -2385,3 +2385,256 @@ body.light-theme .obe-po-status-card.active .obe-po-status-indicator {
     border-bottom: 1px solid var(--border-color);
   }
 }
+
+/* ==========================================================================
+   Homepage Batchwise Admins Dropdown Styles
+   ========================================================================== */
+.admins-container {
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.admins-dropdown-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.departments-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dept-accordion-item {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-secondary);
+  overflow: hidden;
+  transition: border-color var(--transition-speed) ease;
+}
+
+.dept-accordion-item:hover {
+  border-color: var(--border-hover);
+}
+
+.dept-accordion-header {
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  background: var(--bg-secondary);
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  color: var(--text-primary);
+  transition: background-color var(--transition-speed) ease;
+}
+
+.dept-accordion-header:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.dept-header-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dept-name-tag {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+}
+
+.dept-full-name {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.dept-accordion-header[aria-expanded="true"] .accordion-arrow {
+  transform: rotate(180deg);
+}
+
+.dept-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--bg-primary);
+}
+
+.dept-accordion-item.expanded .dept-accordion-content,
+.dept-accordion-header[aria-expanded="true"] + .dept-accordion-content {
+  border-top: 1px solid var(--border-color);
+  padding: 1.5rem;
+}
+
+.dept-batches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .dept-batches-grid {
+    grid-template-columns: 1fr;
+  }
+  .dept-full-name {
+    display: none;
+  }
+}
+
+.batch-card {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-secondary);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color var(--transition-speed) ease;
+}
+
+.batch-card:hover {
+  border-color: var(--border-hover);
+}
+
+.batch-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.batch-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.batch-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--bg-tertiary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.batch-admins-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-member-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 4px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+}
+
+.admin-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-avatar-placeholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.admin-avatar-placeholder svg {
+  width: 18px;
+  height: 18px;
+}
+
+.admin-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.admin-role {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.admin-contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all var(--transition-speed) ease;
+  flex-shrink: 0;
+}
+
+.admin-contact-btn:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+}
+
+.admin-contact-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.admins-note {
+  text-align: center;
+  padding-top: 0.5rem;
+}
+
+.note-badge {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+}
