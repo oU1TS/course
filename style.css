@@ -215,6 +215,14 @@ button {
   display: flex;
   align-items: center;
   gap: 2rem;
+  overflow-x: auto;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+  scroll-behavior: smooth;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;                /* Chrome/Safari */
 }
 
 .nav-link {
@@ -2636,4 +2644,335 @@ body.light-theme .obe-po-status-card.active .obe-po-status-indicator {
   border: 1px dashed var(--border-color);
   padding: 0.5rem 1.25rem;
   border-radius: 20px;
+}
+
+
+/* ==========================================================================
+   6. Watch Party Page
+   ========================================================================== */
+
+/* Section heading shared */
+.wp-section-heading {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.wp-schedule-note {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* Playlists grid */
+.wp-playlists-section {
+  margin-bottom: 1rem;
+}
+
+.wp-playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.wp-playlist-card {
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--bg-secondary);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+  transition: all var(--transition-speed) ease;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.wp-playlist-card:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-tertiary);
+  transform: translateY(-2px);
+}
+
+.wp-playlist-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.wp-playlist-name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.wp-playlist-author {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.wp-playlist-arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+  margin-top: auto;
+  align-self: flex-end;
+  transition: transform var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.wp-playlist-card:hover .wp-playlist-arrow {
+  transform: translate(2px, -2px);
+  color: var(--text-primary);
+}
+
+/* Schedule timeline — column-reverse so newest appears at top */
+.wp-schedule-section {
+  margin-top: 1rem;
+}
+
+.wp-schedule-timeline {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1.75rem;
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--border-color);
+}
+
+/* Each week row */
+.wp-schedule-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+}
+
+/* Timeline dot */
+.wp-schedule-item::before {
+  content: '';
+  position: absolute;
+  left: -1.65rem;
+  top: 0.6rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--border-hover);
+  border: 2px solid var(--bg-primary);
+  box-sizing: border-box;
+}
+
+.wp-week-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.wp-week-num {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.wp-week-date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.wp-status-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
+}
+
+.wp-status-live {
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.4);
+  background-color: rgba(16, 185, 129, 0.08);
+}
+
+.wp-status-past {
+  color: var(--text-muted);
+  border-color: var(--border-color);
+}
+
+.wp-status-upcoming {
+  color: #60a5fa;
+  border-color: rgba(96, 165, 250, 0.4);
+  background-color: rgba(96, 165, 250, 0.06);
+}
+
+/* Episode row: thumbnail + info side by side */
+.wp-episode-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--bg-secondary);
+  overflow: hidden;
+  transition: border-color var(--transition-speed) ease;
+}
+
+.wp-schedule-item:hover .wp-episode-row {
+  border-color: var(--border-hover);
+}
+
+/* Thumbnail */
+.wp-thumbnail-link {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--bg-tertiary);
+}
+
+.wp-thumbnail-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 128px;
+}
+
+.wp-thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.wp-thumbnail-link:hover .wp-thumbnail-img {
+  transform: scale(1.04);
+}
+
+.wp-play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-speed) ease;
+}
+
+.wp-thumbnail-link:hover .wp-play-overlay {
+  opacity: 1;
+}
+
+/* Episode info panel */
+.wp-episode-info {
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.wp-episode-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.wp-playlist-ref {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  padding: 1px 6px;
+  border-radius: 3px;
+  background-color: var(--bg-primary);
+}
+
+.wp-episode-num,
+.wp-duration {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.wp-episode-num::before {
+  content: '·';
+  margin-right: 0.4rem;
+  color: var(--text-muted);
+}
+
+.wp-duration::before {
+  content: '·';
+  margin-right: 0.4rem;
+  color: var(--text-muted);
+}
+
+.wp-episode-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0.25rem 0 0;
+}
+
+.wp-episode-title a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color var(--transition-speed) ease;
+}
+
+.wp-episode-title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.wp-episode-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 0.3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Watch Party responsive */
+@media (max-width: 700px) {
+  .wp-episode-row {
+    grid-template-columns: 1fr;
+  }
+
+  .wp-thumbnail-wrapper {
+    min-height: 180px;
+  }
+
+  .wp-schedule-timeline {
+    padding-left: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .wp-playlists-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }

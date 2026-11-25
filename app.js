@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const validRoutes = {
     '#home': 'home',
     '#discussions': 'discussions',
+    '#watch-party': 'watchParty',
     '#resources': 'resources',
     '#about': 'about',
     '#join': 'join'
@@ -294,6 +295,183 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           ${adminsSectionHtml}
+        </section>
+      `;
+    },
+
+    // Render Watch Party Page
+    watchParty() {
+      // Static weekly schedule data — newest week at top, displayed bottom-to-top via flex-column-reverse
+      const playlists = [
+        {
+          id: 'eoc',
+          name: 'Essence of Calculus',
+          author: '3Blue1Brown',
+          tag: 'Mathematics',
+          url: 'https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr'
+        },
+        {
+          id: 'cs50x',
+          name: 'CS50x',
+          author: 'David J. Malan — Harvard',
+          tag: 'Computer Science',
+          url: 'https://www.youtube.com/playlist?list=PLhQjrBAgIEJks8rHSPGcqwRLsOkU5BQFG'
+        },
+        {
+          id: 'missing-semester',
+          name: 'Missing Semester of Your CS Education',
+          author: 'MIT CSAIL',
+          tag: 'Developer Tools',
+          url: 'https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J'
+        },
+        {
+          id: 'binary-exploitation',
+          name: 'Binary Exploitation / Pwn',
+          author: 'LiveOverflow',
+          tag: 'Security',
+          url: 'https://www.youtube.com/playlist?list=PLhixgUqwRTjxglIswKp9mpkfPNfHkzyeN'
+        }
+      ];
+
+      const schedule = [
+        {
+          week: 1,
+          date: 'Week of Dec 2, 2026',
+          status: 'upcoming',
+          playlist: 'eoc',
+          episodeTitle: 'Chapter 1: The Essence of Calculus',
+          episodeNum: 'Ep. 1',
+          duration: '17 min',
+          videoUrl: 'https://www.youtube.com/watch?v=WUvTyaaNkzM',
+          thumbnailUrl: 'https://img.youtube.com/vi/WUvTyaaNkzM/mqdefault.jpg',
+          description: 'A bird\'s-eye view of calculus — derivatives, integrals, and how they come together as the fundamental theorem of calculus. No prior calculus needed.'
+        },
+        {
+          week: 2,
+          date: 'Week of Dec 9, 2026',
+          status: 'upcoming',
+          playlist: 'cs50x',
+          episodeTitle: 'Lecture 0: Scratch',
+          episodeNum: 'Ep. 1',
+          duration: '~2 hr',
+          videoUrl: 'https://www.youtube.com/watch?v=jjqgP9dpD1k',
+          thumbnailUrl: 'https://img.youtube.com/vi/jjqgP9dpD1k/mqdefault.jpg',
+          description: 'CS50\'s legendary opening lecture — algorithmic thinking, Scratch programming, and the magic of representing the world in binary.'
+        },
+        {
+          week: 3,
+          date: 'Week of Dec 16, 2026',
+          status: 'upcoming',
+          playlist: 'missing-semester',
+          episodeTitle: 'Lecture 1: Course Overview + The Shell',
+          episodeNum: 'Ep. 1',
+          duration: '48 min',
+          videoUrl: 'https://www.youtube.com/watch?v=Z56Jmr9Z34Q',
+          thumbnailUrl: 'https://img.youtube.com/vi/Z56Jmr9Z34Q/mqdefault.jpg',
+          description: 'The shell is the most powerful tool a CS student has — and most curricula skip it entirely. MIT\'s Missing Semester fixes that.'
+        },
+        {
+          week: 4,
+          date: 'Week of Dec 23, 2026',
+          status: 'upcoming',
+          playlist: 'binary-exploitation',
+          episodeTitle: 'Introduction to Binary Exploitation',
+          episodeNum: 'Ep. 1',
+          duration: '~30 min',
+          videoUrl: 'https://www.youtube.com/watch?v=-I_SP-od_MQ',
+          thumbnailUrl: 'https://img.youtube.com/vi/-I_SP-od_MQ/mqdefault.jpg',
+          description: 'LiveOverflow kicks off one of the best security series on YouTube — covering what binary exploitation is and why it matters for every systems programmer.'
+        }
+      ];
+
+      // Map playlists for quick lookup
+      const playlistMap = {};
+      playlists.forEach(p => { playlistMap[p.id] = p; });
+
+      // Build playlist cards HTML
+      let playlistCardsHtml = '';
+      playlists.forEach(pl => {
+        playlistCardsHtml += `
+          <a href="${escapeHTML(pl.url)}" class="wp-playlist-card" target="_blank" rel="noopener noreferrer">
+            <span class="wp-playlist-tag">${escapeHTML(pl.tag)}</span>
+            <h4 class="wp-playlist-name">${escapeHTML(pl.name)}</h4>
+            <p class="wp-playlist-author">by ${escapeHTML(pl.author)}</p>
+            <svg class="wp-playlist-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7"></line>
+              <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+          </a>
+        `;
+      });
+
+      // Build schedule items (displayed bottom-to-top via CSS flex-column-reverse)
+      let scheduleItemsHtml = '';
+      schedule.forEach(item => {
+        const pl = playlistMap[item.playlist];
+        const statusClass = item.status === 'live' ? 'wp-status-live' : item.status === 'past' ? 'wp-status-past' : 'wp-status-upcoming';
+        const statusLabel = item.status === 'live' ? '● Live Now' : item.status === 'past' ? 'Completed' : 'Upcoming';
+        scheduleItemsHtml += `
+          <div class="wp-schedule-item" id="wp-week-${item.week}">
+            <div class="wp-week-label">
+              <span class="wp-week-num">Week ${item.week}</span>
+              <span class="wp-week-date">${escapeHTML(item.date)}</span>
+              <span class="wp-status-badge ${statusClass}">${statusLabel}</span>
+            </div>
+            <div class="wp-episode-row">
+              <a href="${escapeHTML(item.videoUrl)}" class="wp-thumbnail-link" target="_blank" rel="noopener noreferrer" aria-label="Watch ${escapeHTML(item.episodeTitle)}">
+                <div class="wp-thumbnail-wrapper">
+                  <img class="wp-thumbnail-img" src="${escapeHTML(item.thumbnailUrl)}" alt="${escapeHTML(item.episodeTitle)} thumbnail" loading="lazy">
+                  <div class="wp-play-overlay">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+                      <circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.6)"/>
+                      <polygon points="10 8 18 12 10 16 10 8" fill="white"/>
+                    </svg>
+                  </div>
+                </div>
+              </a>
+              <div class="wp-episode-info">
+                <div class="wp-episode-meta">
+                  ${pl ? `<span class="wp-playlist-ref">${escapeHTML(pl.name)}</span>` : ''}
+                  <span class="wp-episode-num">${escapeHTML(item.episodeNum)}</span>
+                  <span class="wp-duration">${escapeHTML(item.duration)}</span>
+                </div>
+                <h3 class="wp-episode-title">
+                  <a href="${escapeHTML(item.videoUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(item.episodeTitle)}</a>
+                </h3>
+                <p class="wp-episode-desc">${escapeHTML(item.description)}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      return `
+        <section class="page-section fade-in" id="watch-party-view">
+          <div class="section-header">
+            <span class="section-tag">Peer Viewing</span>
+            <h2 class="section-title">Watch Party</h2>
+            <p class="section-desc">Watch important educational playlists together on a weekly schedule — one episode at a time, peer-driven.</p>
+          </div>
+
+          <!-- Active Playlists -->
+          <div class="wp-playlists-section">
+            <h3 class="wp-section-heading">Active Playlists</h3>
+            <div class="wp-playlists-grid">
+              ${playlistCardsHtml}
+            </div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <!-- Weekly Schedule (bottom-to-top: oldest at bottom, newest at top) -->
+          <div class="wp-schedule-section">
+            <h3 class="wp-section-heading">Weekly Schedule
+              <span class="wp-schedule-note">— newest at top, scroll down for history</span>
+            </h3>
+            <div class="wp-schedule-timeline">
+              ${scheduleItemsHtml}
+            </div>
+          </div>
         </section>
       `;
     },
@@ -590,6 +768,50 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
               <div class="root-accordion-content" id="tech-discussions-content" style="max-height: 0;">
                 ${techDiscussionsHtml}
+              </div>
+            </div>
+
+            <!-- Root Dropdown Menu 3: ECA Discussions -->
+            <div class="root-accordion-item" id="root-section-eca">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem; position: relative;">
+                <button class="root-accordion-header" aria-expanded="false" aria-controls="eca-discussions-content" style="flex: 1; padding-right: 2.5rem; position: relative;">
+                  <span class="root-title-text">ECA Discussions</span>
+                  <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                  <span class="root-count">0</span>
+                </button>
+                <button class="btn-copy-id" data-copy-type="section" data-copy-id="eca" title="Copy ECA Discussions Link" style="flex-shrink: 0; margin-left: 0.5rem;">
+                  <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="root-accordion-content" id="eca-discussions-content" style="max-height: 0;">
+                <p class="no-data">No ECA discussions available yet. Check back after community events.</p>
+              </div>
+            </div>
+
+            <!-- Root Dropdown Menu 4: Classes by the Club -->
+            <div class="root-accordion-item" id="root-section-classes-by-the-club">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 1rem; position: relative;">
+                <button class="root-accordion-header" aria-expanded="false" aria-controls="classes-by-the-club-content" style="flex: 1; padding-right: 2.5rem; position: relative;">
+                  <span class="root-title-text">Classes by the Club</span>
+                  <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                  <span class="root-count">0</span>
+                </button>
+                <button class="btn-copy-id" data-copy-type="section" data-copy-id="classes-by-the-club" title="Copy Classes by the Club Link" style="flex-shrink: 0; margin-left: 0.5rem;">
+                  <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="root-accordion-content" id="classes-by-the-club-content" style="max-height: 0;">
+                <p class="no-data">No classes by the club available yet. Coming soon.</p>
               </div>
             </div>
           </div>
@@ -1020,6 +1242,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const courseData = await fetchAppData('json/course.json');
       const techData = await fetchAppData('json/technical.json');
       data = { courseData, techData };
+    } else if (renderKey === 'watchParty') {
+      data = {}; // static data, no fetch needed
     } else if (renderKey === 'resources') {
       data = await fetchAppData('json/resource.json');
     }
@@ -1768,6 +1992,90 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   initializeTheme();
   routePage();
+
+  /* ==========================================================================
+     7a. Navbar Auto-Scroll Banner (Desktop only, only when links overflow)
+     ========================================================================== */
+  (function initNavAutoScroll() {
+    const nav = document.getElementById('main-nav');
+    if (!nav) return;
+
+    let scrollDir = 1;        // 1 = scroll right, -1 = scroll left
+    let rafId = null;
+    let isScrolling = false;
+    const SPEED = 0.5;        // px per animation frame (~30px/s at 60fps)
+    const PAUSE_MS = 1800;    // pause at each end before reversing
+
+    function getIsOverflowing() {
+      // Only active on desktop (nav not in mobile slide-out mode)
+      if (window.innerWidth <= 768) return false;
+      return nav.scrollWidth > nav.clientWidth + 2;
+    }
+
+    function scrollStep() {
+      if (!isScrolling) return;
+
+      const maxScroll = nav.scrollWidth - nav.clientWidth;
+      nav.scrollLeft += SPEED * scrollDir;
+
+      // Hit right edge → pause then reverse
+      if (scrollDir === 1 && nav.scrollLeft >= maxScroll - 1) {
+        nav.scrollLeft = maxScroll;
+        isScrolling = false;
+        setTimeout(() => {
+          scrollDir = -1;
+          isScrolling = true;
+          rafId = requestAnimationFrame(scrollStep);
+        }, PAUSE_MS);
+        return;
+      }
+
+      // Hit left edge → pause then reverse
+      if (scrollDir === -1 && nav.scrollLeft <= 1) {
+        nav.scrollLeft = 0;
+        isScrolling = false;
+        setTimeout(() => {
+          scrollDir = 1;
+          isScrolling = true;
+          rafId = requestAnimationFrame(scrollStep);
+        }, PAUSE_MS);
+        return;
+      }
+
+      rafId = requestAnimationFrame(scrollStep);
+    }
+
+    function startScroll() {
+      if (!getIsOverflowing()) return;
+      if (isScrolling) return;
+      isScrolling = true;
+      rafId = requestAnimationFrame(scrollStep);
+    }
+
+    function stopScroll() {
+      isScrolling = false;
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    }
+
+    // Pause on hover/focus so users can click links comfortably
+    nav.addEventListener('mouseenter', stopScroll);
+    nav.addEventListener('mouseleave', () => { if (getIsOverflowing()) startScroll(); });
+    nav.addEventListener('focusin', stopScroll);
+    nav.addEventListener('focusout', () => { if (getIsOverflowing()) startScroll(); });
+
+    // Re-evaluate on resize
+    window.addEventListener('resize', () => {
+      stopScroll();
+      if (getIsOverflowing()) {
+        setTimeout(startScroll, 500);
+      }
+    });
+
+    // Kick off after a short delay to let the page settle
+    setTimeout(() => {
+      if (getIsOverflowing()) startScroll();
+    }, 1200);
+  })();
 
   /* ==========================================================================
      8. OBE Cracked Controller
