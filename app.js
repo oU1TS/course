@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let technicalState = null; // Holds json/technical.json content
   let resourcesState = null; // Holds json/resource.json content
   let adminsState = null;    // Holds json/admins.json content
+  let watchPartyState = null; // Holds json/watch_party.json content
   let isDataLoading = false;
 
   /* ==========================================================================
@@ -300,89 +301,9 @@ document.addEventListener('DOMContentLoaded', () => {
     },
 
     // Render Watch Party Page
-    watchParty() {
-      // Static weekly schedule data — newest week at top, displayed bottom-to-top via flex-column-reverse
-      const playlists = [
-        {
-          id: 'eoc',
-          name: 'Essence of Calculus',
-          author: '3Blue1Brown',
-          tag: 'Mathematics',
-          url: 'https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr'
-        },
-        {
-          id: 'cs50x',
-          name: 'CS50x',
-          author: 'David J. Malan — Harvard',
-          tag: 'Computer Science',
-          url: 'https://www.youtube.com/playlist?list=PLhQjrBAgIEJks8rHSPGcqwRLsOkU5BQFG'
-        },
-        {
-          id: 'missing-semester',
-          name: 'Missing Semester of Your CS Education',
-          author: 'MIT CSAIL',
-          tag: 'Developer Tools',
-          url: 'https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J'
-        },
-        {
-          id: 'binary-exploitation',
-          name: 'Binary Exploitation / Pwn',
-          author: 'LiveOverflow',
-          tag: 'Security',
-          url: 'https://www.youtube.com/playlist?list=PLhixgUqwRTjxglIswKp9mpkfPNfHkzyeN'
-        }
-      ];
-
-      const schedule = [
-        {
-          week: 1,
-          date: 'Week of Dec 2, 2026',
-          status: 'upcoming',
-          playlist: 'eoc',
-          episodeTitle: 'Chapter 1: The Essence of Calculus',
-          episodeNum: 'Ep. 1',
-          duration: '17 min',
-          videoUrl: 'https://www.youtube.com/watch?v=WUvTyaaNkzM',
-          thumbnailUrl: 'https://img.youtube.com/vi/WUvTyaaNkzM/mqdefault.jpg',
-          description: 'A bird\'s-eye view of calculus — derivatives, integrals, and how they come together as the fundamental theorem of calculus. No prior calculus needed.'
-        },
-        {
-          week: 2,
-          date: 'Week of Dec 9, 2026',
-          status: 'upcoming',
-          playlist: 'cs50x',
-          episodeTitle: 'Lecture 0: Scratch',
-          episodeNum: 'Ep. 1',
-          duration: '~2 hr',
-          videoUrl: 'https://www.youtube.com/watch?v=jjqgP9dpD1k',
-          thumbnailUrl: 'https://img.youtube.com/vi/jjqgP9dpD1k/mqdefault.jpg',
-          description: 'CS50\'s legendary opening lecture — algorithmic thinking, Scratch programming, and the magic of representing the world in binary.'
-        },
-        {
-          week: 3,
-          date: 'Week of Dec 16, 2026',
-          status: 'upcoming',
-          playlist: 'missing-semester',
-          episodeTitle: 'Lecture 1: Course Overview + The Shell',
-          episodeNum: 'Ep. 1',
-          duration: '48 min',
-          videoUrl: 'https://www.youtube.com/watch?v=Z56Jmr9Z34Q',
-          thumbnailUrl: 'https://img.youtube.com/vi/Z56Jmr9Z34Q/mqdefault.jpg',
-          description: 'The shell is the most powerful tool a CS student has — and most curricula skip it entirely. MIT\'s Missing Semester fixes that.'
-        },
-        {
-          week: 4,
-          date: 'Week of Dec 23, 2026',
-          status: 'upcoming',
-          playlist: 'binary-exploitation',
-          episodeTitle: 'Introduction to Binary Exploitation',
-          episodeNum: 'Ep. 1',
-          duration: '~30 min',
-          videoUrl: 'https://www.youtube.com/watch?v=-I_SP-od_MQ',
-          thumbnailUrl: 'https://img.youtube.com/vi/-I_SP-od_MQ/mqdefault.jpg',
-          description: 'LiveOverflow kicks off one of the best security series on YouTube — covering what binary exploitation is and why it matters for every systems programmer.'
-        }
-      ];
+    watchParty(data) {
+      const playlists = (data && data.playlists) || [];
+      const schedule = (data && data.schedule) || [];
 
       // Map playlists for quick lookup
       const playlistMap = {};
@@ -1116,6 +1037,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cleanName === 'technical.json' && technicalState) return technicalState;
     if (cleanName === 'resource.json' && resourcesState) return resourcesState;
     if (cleanName === 'admins.json' && adminsState) return adminsState;
+    if (cleanName === 'watch_party.json' && watchPartyState) return watchPartyState;
     if (isDataLoading) return null;
 
     isDataLoading = true;
@@ -1133,6 +1055,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (cleanName === 'technical.json') technicalState = data;
       else if (cleanName === 'resource.json') resourcesState = data;
       else if (cleanName === 'admins.json') adminsState = data;
+      else if (cleanName === 'watch_party.json') watchPartyState = data;
       return data;
     } catch (err) {
       console.error(`Error fetching ${fileName}:`, err);
@@ -1243,7 +1166,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const techData = await fetchAppData('json/technical.json');
       data = { courseData, techData };
     } else if (renderKey === 'watchParty') {
-      data = {}; // static data, no fetch needed
+      data = await fetchAppData('json/watch_party.json');
     } else if (renderKey === 'resources') {
       data = await fetchAppData('json/resource.json');
     }
